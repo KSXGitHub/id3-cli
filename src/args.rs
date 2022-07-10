@@ -2,6 +2,7 @@ use clap::{Args, Parser, Subcommand};
 
 /// CLI arguments of the program.
 #[derive(Debug, Parser)]
+#[clap(name = "id3")]
 pub struct CliArgs {
     /// Subcommand to execute.
     #[clap(subcommand)]
