@@ -13,12 +13,16 @@ pub struct CliArgs {
 #[derive(Debug, Subcommand)]
 pub enum CliCmd {
     /// View metadata.
-    View,
+    View(ViewArgs),
     /// Modify a field of metadata.
     Modify(ModifyArgs),
     /// Erase all metadata.
     Erase(EraseArgs),
 }
+
+/// CLI arguments of the `view` command.
+#[derive(Debug, Args)]
+pub struct ViewArgs {}
 
 /// CLI arguments of the `modify` subcommand.
 #[derive(Debug, Args)]
