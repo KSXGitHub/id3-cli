@@ -1,3 +1,5 @@
+pub mod view;
+
 use crate::args::CliArgs;
 use clap::Parser;
 use std::process::ExitCode;
