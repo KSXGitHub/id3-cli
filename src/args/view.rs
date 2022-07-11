@@ -36,7 +36,7 @@ pub struct CommentViewArgs {
     #[clap(long)]
     pub description: Option<String>,
     /// Format of the output text.
-    #[clap(long, value_enum, default_value = "plain")]
+    #[clap(long, value_enum, default_value = "json")]
     pub format: TextFormat,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
@@ -65,7 +65,7 @@ pub enum PictureViewCmd {
 #[derive(Debug, Args)]
 pub struct PictureListArgs {
     /// Format of the output text.
-    #[clap(long, value_enum, default_value = "plain")]
+    #[clap(long, value_enum, default_value = "json")]
     pub format: TextFormat,
     /// Path to the input audio file.
     pub input_audio: PathBuf,

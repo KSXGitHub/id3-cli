@@ -4,7 +4,6 @@ use clap::ValueEnum;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
 #[clap(about = "")]
 pub enum TextFormat {
-    Plain,
     Json,
     Yaml,
     Toml,
