@@ -1,6 +1,9 @@
 pub mod view;
 
-use crate::{args::CliArgs, error::Error};
+use crate::{
+    args::{CliArgs, CliCmd},
+    error::Error,
+};
 use clap::Parser;
 use std::process::ExitCode;
 
@@ -20,8 +23,14 @@ impl App {
 
     /// Run the application.
     pub fn run(self) -> Result<(), Error> {
-        dbg!(self.args);
-        Ok(())
+        let CliArgs { command } = self.args;
+        match command {
+            CliCmd::View(args) => view::view(args),
+            command => {
+                dbg!(command);
+                unimplemented!()
+            }
+        }
     }
 
     /// The main program.
