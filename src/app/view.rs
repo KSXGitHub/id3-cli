@@ -30,7 +30,7 @@ pub fn view(args: ViewCmd) -> Result<(), Error> {
 
 fn view_text(args: TextViewArgs, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(), Error> {
     let TextViewArgs { input_audio } = args;
-    let tag = input_audio.pipe(Tag::read_from_path)?;
+    let tag = Tag::read_from_path(input_audio)?;
     if let Some(title) = get(&tag) {
         println!("{title}");
     }
@@ -44,7 +44,7 @@ fn view_comment(args: CommentViewArgs) -> Result<(), Error> {
         format,
         input_audio,
     } = args;
-    let tag = input_audio.pipe(Tag::read_from_path)?;
+    let tag = Tag::read_from_path(input_audio)?;
     let comments: Vec<_> = tag
         .comments()
         .filter(|comment| lang.as_ref().map_or(true, |lang| &comment.lang == lang))
@@ -79,7 +79,7 @@ fn view_picture_list(args: PictureListArgs) -> Result<(), Error> {
         format,
         input_audio,
     } = args;
-    let tag = input_audio.pipe(Tag::read_from_path)?;
+    let tag = Tag::read_from_path(input_audio)?;
     let pictures: Vec<_> = tag.pictures().map(Picture::from_id3_ref).collect();
     let serialized = format.serialize(&pictures)?;
     println!("{serialized}");
@@ -92,18 +92,18 @@ fn view_picture_file(args: PictureFileArgs) -> Result<(), Error> {
         input_audio,
         output_picture,
     } = args;
-    let tag = input_audio.pipe(Tag::read_from_path)?;
+    let tag = Tag::read_from_path(input_audio)?;
     let data = if let Some(picture_type) = picture_type {
         let lowercase_picture_type = picture_type.to_lowercase();
         &tag.pictures()
             .find(|picture| {
                 picture.picture_type.to_string().to_lowercase() == lowercase_picture_type
             })
-            .ok_or_else(|| PictureTypeNotFound { picture_type })?
+            .ok_or(PictureTypeNotFound { picture_type })?
             .data
     } else {
         let mut iter = tag.pictures().map(|picture| &picture.data);
-        let data = iter.next().ok_or_else(|| PictureNotFound)?;
+        let data = iter.next().ok_or(PictureNotFound)?;
         if iter.next().is_some() {
             return NoPicTypeMultiPic.pipe(Error::from).pipe(Err);
         }
