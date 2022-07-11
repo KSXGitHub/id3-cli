@@ -1,6 +1,7 @@
 pub mod field;
 
 use clap::{Args, Parser, Subcommand};
+use field::Field;
 
 /// CLI arguments of the program.
 #[derive(Debug, Parser)]
@@ -15,7 +16,8 @@ pub struct CliArgs {
 #[derive(Debug, Subcommand)]
 pub enum CliCmd {
     /// View metadata.
-    View(ViewArgs),
+    #[clap(subcommand)]
+    View(Field<ViewArgs, ViewArgs>),
     /// Modify a field of metadata.
     Modify(ModifyArgs),
     /// Erase all metadata.
@@ -24,6 +26,7 @@ pub enum CliCmd {
 
 /// CLI arguments of the `view` command.
 #[derive(Debug, Args)]
+#[clap(about = "")]
 pub struct ViewArgs {}
 
 /// CLI arguments of the `modify` subcommand.
