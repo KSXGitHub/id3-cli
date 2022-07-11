@@ -22,7 +22,7 @@ impl ArgsTable for ViewArgsTable {
 #[clap(about = "")]
 pub struct TextViewArgs {
     /// Path to the input file.
-    pub input: PathBuf,
+    pub input_audio: PathBuf,
 }
 
 /// CLI arguments of `view comment`.
@@ -39,7 +39,7 @@ pub struct CommentViewArgs {
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
     /// Path to the input audio file.
-    pub input: PathBuf,
+    pub input_audio: PathBuf,
 }
 
 /// CLI arguments of `view picture`.
@@ -68,7 +68,7 @@ pub struct PictureListArgs {
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
     /// Path to the input audio file.
-    pub input: PathBuf,
+    pub input_audio: PathBuf,
 }
 
 /// CLI arguments of `view picture file`.
@@ -78,7 +78,7 @@ pub struct PictureFileArgs {
     #[clap(long, short = 't')]
     pub picture_type: Option<String>,
     /// Path to the input audio file.
-    pub input: PathBuf,
+    pub input_audio: PathBuf,
     /// Path to the output picture file.
-    pub output: PathBuf,
+    pub output_picture: PathBuf,
 }
