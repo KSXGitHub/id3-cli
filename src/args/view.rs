@@ -20,7 +20,10 @@ impl ArgsTable for ViewArgsTable {
 /// CLI arguments of `view <text-field>`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct TextViewArgs {}
+pub struct TextViewArgs {
+    /// Path to the input file.
+    pub input: PathBuf,
+}
 
 /// CLI arguments of `view comment`.
 #[derive(Debug, Args)]
@@ -35,6 +38,8 @@ pub struct CommentViewArgs {
     /// Format of the output text.
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
+    /// Path to the input file.
+    pub input: PathBuf,
 }
 
 /// CLI arguments of `view picture`.
@@ -62,6 +67,8 @@ pub struct PictureListArgs {
     /// Format of the output text.
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
+    /// Path to the input file.
+    pub input: PathBuf,
 }
 
 /// CLI arguments of `view picture file`.
@@ -70,6 +77,8 @@ pub struct PictureFileArgs {
     /// Picture type to export. Required when there are multiple pictures.
     #[clap(long, short = 't')]
     pub picture_type: Option<String>,
+    /// Path to the input file.
+    pub input: PathBuf,
     /// Path to the output file.
     pub output: PathBuf,
 }
