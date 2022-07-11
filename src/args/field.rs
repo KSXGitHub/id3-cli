@@ -41,6 +41,6 @@ pub enum Text<Args: ArgsTable> {
 /// Frame field subcommand.
 #[derive(Debug, Subcommand)]
 pub enum Frame<Args: ArgsTable> {
-    Picture(Args::Picture),
     Comment(Args::Comment),
+    Picture(Args::Picture),
 }

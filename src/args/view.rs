@@ -10,8 +10,8 @@ pub type ViewCmd = Field<ViewArgsTable>;
 pub struct ViewArgsTable;
 impl ArgsTable for ViewArgsTable {
     type Text = TextViewArgs;
-    type Picture = FrameViewArgs;
     type Comment = FrameViewArgs;
+    type Picture = FrameViewArgs;
 }
 
 /// CLI arguments of `view <text-field>`.
