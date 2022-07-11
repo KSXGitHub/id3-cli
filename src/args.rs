@@ -1,5 +1,4 @@
 pub mod field;
-pub mod text_format;
 pub mod view;
 
 use clap::{Args, Parser, Subcommand};

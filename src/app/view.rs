@@ -1,13 +1,13 @@
 use crate::{
     args::{
         field::{Field, Frame, Text},
-        text_format::TextFormat,
         view::{
             CommentViewArgs, PictureFileArgs, PictureListArgs, PictureViewArgs, PictureViewCmd,
             TextViewArgs, ViewCmd,
         },
     },
     text_data::picture::Picture,
+    text_format::TextFormat,
 };
 use id3::{Tag, TagLike};
 use pipe_trait::Pipe;

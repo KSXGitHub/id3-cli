@@ -1,5 +1,5 @@
-use crate::args::{
-    field::{ArgsTable, Field},
+use crate::{
+    args::field::{ArgsTable, Field},
     text_format::TextFormat,
 };
 use clap::{Args, Subcommand};
