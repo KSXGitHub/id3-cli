@@ -10,7 +10,7 @@ use std::path::PathBuf;
 pub struct CliArgs {
     /// Subcommand to execute.
     #[clap(subcommand)]
-    command: CliCmd,
+    pub command: CliCmd,
 }
 
 /// Subcommand of the program.
@@ -35,7 +35,7 @@ pub struct TextViewArgs {}
 #[clap(about = "")]
 pub struct FrameViewArgs {
     /// Path to the output file.
-    output: PathBuf,
+    pub output: PathBuf,
 }
 
 /// CLI arguments of the `modify` subcommand.
@@ -43,7 +43,7 @@ pub struct FrameViewArgs {
 pub struct ModifyArgs {
     /// Don't create backup.
     #[clap(long)]
-    no_backup: bool,
+    pub no_backup: bool,
 }
 
 /// CLI arguments of the `erase` subcommand.
@@ -51,5 +51,5 @@ pub struct ModifyArgs {
 pub struct EraseArgs {
     /// Don't create backup.
     #[clap(long)]
-    no_backup: bool,
+    pub no_backup: bool,
 }
