@@ -7,7 +7,6 @@ use crate::{
         },
     },
     text_data::picture::Picture,
-    text_format::TextFormat,
 };
 use id3::{Tag, TagLike};
 use pipe_trait::Pipe;
@@ -63,11 +62,7 @@ fn view_comment(args: CommentViewArgs) -> Result<(), String> {
             })
         })
         .collect();
-    let serialized = match format {
-        TextFormat::Json => serde_json::to_string_pretty(&comments).map_err(|e| e.to_string())?,
-        TextFormat::Toml => toml::to_string_pretty(&comments).map_err(|e| e.to_string())?,
-        TextFormat::Yaml => serde_yaml::to_string(&comments).map_err(|e| e.to_string())?,
-    };
+    let serialized = format.serialize(&comments)?;
     println!("{serialized}");
     Ok(())
 }
@@ -89,11 +84,7 @@ fn view_picture_list(args: PictureListArgs) -> Result<(), String> {
         .pipe(Tag::read_from_path)
         .map_err(|e| e.to_string())?;
     let pictures: Vec<_> = tag.pictures().map(Picture::from_id3_ref).collect();
-    let serialized = match format {
-        TextFormat::Json => serde_json::to_string_pretty(&pictures).map_err(|e| e.to_string())?,
-        TextFormat::Toml => toml::to_string_pretty(&pictures).map_err(|e| e.to_string())?,
-        TextFormat::Yaml => serde_yaml::to_string(&pictures).map_err(|e| e.to_string())?,
-    };
+    let serialized = format.serialize(&pictures)?;
     println!("{serialized}");
     Ok(())
 }
