@@ -1,6 +1,6 @@
-use crate::args::ViewArgs;
+use crate::args::{field::Field, FrameViewArgs, TextViewArgs};
 
-pub fn view(args: ViewArgs) -> Result<(), String> {
+pub fn view(args: Field<TextViewArgs, FrameViewArgs>) -> Result<(), String> {
     dbg!(args);
     unimplemented!()
 }
