@@ -1,3 +1,5 @@
+pub mod field;
+
 use clap::{Args, Parser, Subcommand};
 
 /// CLI arguments of the program.
