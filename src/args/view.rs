@@ -5,6 +5,7 @@ use std::path::PathBuf;
 /// Subcommand of the `view` subcommand.
 pub type ViewCmd = Field<ViewArgsTable>;
 
+/// Table of [`Args`] types for [`ViewCmd`].
 #[derive(Debug)]
 pub struct ViewArgsTable;
 impl ArgsTable for ViewArgsTable {
