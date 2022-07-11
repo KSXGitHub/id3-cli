@@ -1,5 +1,5 @@
 use crate::args::field::{ArgsTable, Field};
-use clap::Args;
+use clap::{Args, Subcommand};
 use std::path::PathBuf;
 
 /// Subcommand of the `view` subcommand.
@@ -35,14 +35,26 @@ pub struct CommentViewArgs {
 #[derive(Debug, Args)]
 #[clap(about = "")]
 pub struct PictureViewArgs {
-    /// Filter description.
-    #[clap(long)]
-    pub description: Option<String>,
-    /// Filter MIME type.
-    #[clap(long)]
-    pub mime_type: Option<String>,
-    /// Filter picture type.
-    #[clap(long)]
+    /// Subcommand to execute.
+    #[clap(subcommand)]
+    pub command: PictureViewCmd,
+}
+
+/// Subcommand of `view picture`.
+#[derive(Debug, Subcommand)]
+#[clap(about = "")]
+pub enum PictureViewCmd {
+    /// List descriptions, mime types, picture types, and sizes of all pictures.
+    List,
+    /// Export a single picture to a file.
+    File(PictureFileArgs),
+}
+
+/// CLI arguments of `view picture file`.
+#[derive(Debug, Args)]
+pub struct PictureFileArgs {
+    /// Picture type to export. Required when there are multiple pictures.
+    #[clap(long, short = 't')]
     pub picture_type: Option<String>,
     /// Path to the output file.
     pub output: PathBuf,
