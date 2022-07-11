@@ -1,8 +1,8 @@
 pub mod field;
+pub mod view;
 
 use clap::{Args, Parser, Subcommand};
-use field::Field;
-use std::path::PathBuf;
+use view::ViewCmd;
 
 /// CLI arguments of the program.
 #[derive(Debug, Parser)]
@@ -18,24 +18,11 @@ pub struct CliArgs {
 pub enum CliCmd {
     /// View metadata.
     #[clap(subcommand)]
-    View(Field<TextViewArgs, FrameViewArgs>),
+    View(ViewCmd),
     /// Modify a field of metadata.
     Modify(ModifyArgs),
     /// Erase all metadata.
     Erase(EraseArgs),
-}
-
-/// CLI arguments of `view <text-field>`.
-#[derive(Debug, Args)]
-#[clap(about = "")]
-pub struct TextViewArgs {}
-
-/// CLI arguments of `view <frame-field>`.
-#[derive(Debug, Args)]
-#[clap(about = "")]
-pub struct FrameViewArgs {
-    /// Path to the output file.
-    pub output: PathBuf,
 }
 
 /// CLI arguments of the `modify` subcommand.
