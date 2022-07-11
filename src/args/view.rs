@@ -38,7 +38,7 @@ pub struct CommentViewArgs {
     /// Format of the output text.
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
-    /// Path to the input file.
+    /// Path to the input audio file.
     pub input: PathBuf,
 }
 
@@ -67,7 +67,7 @@ pub struct PictureListArgs {
     /// Format of the output text.
     #[clap(long, value_enum, default_value = "plain")]
     pub format: TextFormat,
-    /// Path to the input file.
+    /// Path to the input audio file.
     pub input: PathBuf,
 }
 
@@ -77,8 +77,8 @@ pub struct PictureFileArgs {
     /// Picture type to export. Required when there are multiple pictures.
     #[clap(long, short = 't')]
     pub picture_type: Option<String>,
-    /// Path to the input file.
+    /// Path to the input audio file.
     pub input: PathBuf,
-    /// Path to the output file.
+    /// Path to the output picture file.
     pub output: PathBuf,
 }
