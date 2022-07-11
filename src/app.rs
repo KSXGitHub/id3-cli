@@ -1,6 +1,6 @@
 pub mod view;
 
-use crate::args::CliArgs;
+use crate::{args::CliArgs, error::Error};
 use clap::Parser;
 use std::process::ExitCode;
 
@@ -19,7 +19,7 @@ impl App {
     }
 
     /// Run the application.
-    pub fn run(self) -> Result<(), String> {
+    pub fn run(self) -> Result<(), Error> {
         dbg!(self.args);
         Ok(())
     }

@@ -1,3 +1,4 @@
+use crate::error::Error;
 use clap::ValueEnum;
 use serde::Serialize;
 
@@ -12,11 +13,11 @@ pub enum TextFormat {
 
 impl TextFormat {
     /// Convert a [serializable](Serialize) value to a string according to the specified [format](TextFormat).
-    pub fn serialize(self, value: &impl Serialize) -> Result<String, String> {
+    pub fn serialize(self, value: &impl Serialize) -> Result<String, Error> {
         match self {
-            TextFormat::Json => serde_json::to_string_pretty(value).map_err(|e| e.to_string()),
-            TextFormat::Yaml => serde_yaml::to_string(value).map_err(|e| e.to_string()),
-            TextFormat::Toml => toml::to_string_pretty(value).map_err(|e| e.to_string()),
+            TextFormat::Json => serde_json::to_string_pretty(value).map_err(Error::from),
+            TextFormat::Yaml => serde_yaml::to_string(value).map_err(Error::from),
+            TextFormat::Toml => toml::to_string_pretty(value).map_err(Error::from),
         }
     }
 }
