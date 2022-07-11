@@ -1,4 +1,7 @@
-use crate::args::field::{ArgsTable, Field};
+use crate::args::{
+    field::{ArgsTable, Field},
+    text_format::TextFormat,
+};
 use clap::{Args, Subcommand};
 use std::path::PathBuf;
 
@@ -29,6 +32,9 @@ pub struct CommentViewArgs {
     /// Filter description.
     #[clap(long)]
     pub description: Option<String>,
+    /// Format of the output text.
+    #[clap(long, value_enum, default_value = "plain")]
+    pub format: TextFormat,
 }
 
 /// CLI arguments of `view picture`.
@@ -45,9 +51,17 @@ pub struct PictureViewArgs {
 #[clap(about = "")]
 pub enum PictureViewCmd {
     /// List descriptions, mime types, picture types, and sizes of all pictures.
-    List,
+    List(PictureListArgs),
     /// Export a single picture to a file.
     File(PictureFileArgs),
+}
+
+/// CLI arguments of `view picture file`.
+#[derive(Debug, Args)]
+pub struct PictureListArgs {
+    /// Format of the output text.
+    #[clap(long, value_enum, default_value = "plain")]
+    pub format: TextFormat,
 }
 
 /// CLI arguments of `view picture file`.
