@@ -1,3 +1,4 @@
+use crate::{error::Error, run::Run};
 use clap::{Args, Subcommand};
 use std::fmt::Debug;
 
@@ -43,4 +44,18 @@ pub enum Text<Args: ArgsTable> {
 pub enum Frame<Args: ArgsTable> {
     Comment(Args::Comment),
     Picture(Args::Picture),
+}
+
+impl<Args> Run for Frame<Args>
+where
+    Args: ArgsTable,
+    Args::Comment: Run,
+    Args::Picture: Run,
+{
+    fn run(self) -> Result<(), Error> {
+        match self {
+            Frame::Comment(args) => args.run(),
+            Frame::Picture(args) => args.run(),
+        }
+    }
 }
