@@ -50,3 +50,8 @@ text_positive!(album_artist_empty0: "album-artist" "audio0" => "");
 text_positive!(album_artist_empty1: "album-artist" "audio1" => "");
 text_positive!(album_artist_positive2: "album-artist" "audio2" => "Astral Trip\n");
 text_positive!(album_artist_positive3: "album-artist" "audio3" => "Astral Trip\n");
+
+text_positive!(genre_empty0: "genre" "audio0" => "");
+text_positive!(genre_empty1: "genre" "audio1" => "");
+text_positive!(genre_positive2: "genre" "audio2" => "(145)\n");
+text_positive!(genre_positive3: "genre" "audio3" => "(13)\n");
