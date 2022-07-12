@@ -45,3 +45,8 @@ text_positive!(album_empty0: "album" "audio0" => "");
 text_positive!(album_empty1: "album" "audio1" => "");
 text_positive!(album_positive2: "album" "audio2" => "幻想郷ミソギバライ\n");
 text_positive!(album_positive3: "album" "audio3" => "Gensoukyou Misogibarai\n");
+
+text_positive!(album_artist_empty0: "album-artist" "audio0" => "");
+text_positive!(album_artist_empty1: "album-artist" "audio1" => "");
+text_positive!(album_artist_positive2: "album-artist" "audio2" => "Astral Trip\n");
+text_positive!(album_artist_positive3: "album-artist" "audio3" => "Astral Trip\n");
