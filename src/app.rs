@@ -50,7 +50,7 @@ pub enum AppCmd {
 impl Run for AppCmd {
     fn run(self) -> Result<(), Error> {
         match self {
-            AppCmd::View(cmd) => cmd.run(),
+            AppCmd::View(proc) => proc.run(),
         }
     }
 }

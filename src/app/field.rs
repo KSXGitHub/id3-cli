@@ -40,8 +40,8 @@ where
 {
     fn run(self) -> Result<(), Error> {
         match self {
-            Field::Text(cmd) => cmd.run(),
-            Field::Frame(cmd) => cmd.run(),
+            Field::Text(proc) => proc.run(),
+            Field::Frame(proc) => proc.run(),
         }
     }
 }
@@ -71,8 +71,8 @@ where
 {
     fn run(self) -> Result<(), Error> {
         match self {
-            Frame::Comment(args) => args.run(),
-            Frame::Picture(args) => args.run(),
+            Frame::Comment(proc) => proc.run(),
+            Frame::Picture(proc) => proc.run(),
         }
     }
 }

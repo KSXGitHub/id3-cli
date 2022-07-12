@@ -130,8 +130,8 @@ pub enum PictureViewCmd {
 impl Run for PictureViewCmd {
     fn run(self) -> Result<(), Error> {
         match self {
-            PictureViewCmd::List(args) => args.run(),
-            PictureViewCmd::File(args) => args.run(),
+            PictureViewCmd::List(proc) => proc.run(),
+            PictureViewCmd::File(proc) => proc.run(),
         }
     }
 }
