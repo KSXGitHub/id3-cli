@@ -1,5 +1,4 @@
 pub mod app;
-pub mod args;
 pub mod error;
 pub mod run;
 pub mod text_data;
