@@ -17,19 +17,19 @@ use std::{fs, path::PathBuf};
 /// Subcommand of the `get` subcommand.
 pub type Get = Field<GetArgsTable>;
 
-macro_rules! get_text {
-    ($args:expr, $get:expr) => {{
-        let GetText { input_audio } = $args;
-        let tag = read_tag_from_path(input_audio)?;
-        if let Some(title) = $get(&tag) {
-            println!("{title}");
-        }
-        Ok(())
-    }};
-}
-
 impl Run for Text<GetArgsTable> {
     fn run(self) -> Result<(), Error> {
+        macro_rules! get_text {
+            ($args:expr, $get:expr) => {{
+                let GetText { input_audio } = $args;
+                let tag = read_tag_from_path(input_audio)?;
+                if let Some(title) = $get(&tag) {
+                    println!("{title}");
+                }
+                Ok(())
+            }};
+        }
+
         match self {
             Text::Title(args) => get_text!(args, Tag::title),
             Text::Artist(args) => get_text!(args, Tag::artist),
