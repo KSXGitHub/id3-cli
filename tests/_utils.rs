@@ -31,20 +31,6 @@ pub fn assets() -> PathBuf {
     Path::new(WORKSPACE).join("tests").join("assets")
 }
 
-macro_rules! asset_path {
-    ($name:ident) => {
-        #[doc = concat!("Get the to the", stringify!($name), "file.")]
-        pub fn $name() -> PathBuf {
-            assets().join(stringify!($name))
-        }
-    };
-}
-
-asset_path!(audio0);
-asset_path!(audio1);
-asset_path!(audio2);
-asset_path!(audio3);
-
 /// Wrapper of main executable.
 pub struct Exe {
     /// Command the execute.

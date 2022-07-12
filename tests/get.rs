@@ -1,17 +1,18 @@
 pub mod _utils;
 
-use _utils::{audio0, audio1, audio2, audio3, u8v_to_string, Exe, WORKSPACE};
+use _utils::{assets, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use std::process::Output;
 
 macro_rules! text_positive {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal $audio_path:expr => $stdout:expr $(;)?
+        $name:ident: $field:literal $audio_path:literal => $stdout:expr $(;)?
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
+            let audio_path = assets().join($audio_path);
             let Output {
                 status,
                 stdout,
@@ -20,7 +21,7 @@ macro_rules! text_positive {
                 .cmd
                 .with_arg("get")
                 .with_arg($field)
-                .with_arg($audio_path)
+                .with_arg(audio_path)
                 .output()
                 .expect("execute command");
             assert!(status.success());
@@ -30,12 +31,12 @@ macro_rules! text_positive {
     };
 }
 
-text_positive!(title_empty0: "title" audio0() => "");
-text_positive!(title_empty1: "title" audio1() => "");
-text_positive!(title_positive2: "title" audio2() => "砕月\n");
-text_positive!(title_positive3: "title" audio3() => "Broken Moon\n");
+text_positive!(title_empty0: "title" "audio0" => "");
+text_positive!(title_empty1: "title" "audio1" => "");
+text_positive!(title_positive2: "title" "audio2" => "砕月\n");
+text_positive!(title_positive3: "title" "audio3" => "Broken Moon\n");
 
-text_positive!(artist_empty0: "artist" audio0() => "");
-text_positive!(artist_empty1: "artist" audio1() => "");
-text_positive!(artist_positive2: "artist" audio2() => "ココ&さつき が てんこもり\n");
-text_positive!(artist_positive3: "artist" audio3() => "Koko & Satsuki ga Tenkomori\n");
+text_positive!(artist_empty0: "artist" "audio0" => "");
+text_positive!(artist_empty1: "artist" "audio1" => "");
+text_positive!(artist_positive2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
+text_positive!(artist_positive3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
