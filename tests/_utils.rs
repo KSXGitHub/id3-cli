@@ -2,6 +2,7 @@ use std::{
     ffi::OsStr,
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
+    str::from_utf8,
 };
 
 /// Version of the package.
@@ -28,6 +29,11 @@ pub const TEMP_SUFFIX: &str = ".test.wdir";
 /// Get path to the directory of assets.
 pub fn assets() -> PathBuf {
     Path::new(WORKSPACE).join("tests").join("assets")
+}
+
+/// Get path to the audio file.
+pub fn audio_path() -> PathBuf {
+    assets().join("audio")
 }
 
 /// Wrapper of main executable.
@@ -78,4 +84,9 @@ impl Exe {
             .expect("write data to child's stdin");
         child.wait_with_output().expect("wait for child's output")
     }
+}
+
+/// Convert `[u8]` to `String`.
+pub fn u8v_to_string(u8v: &[u8]) -> &str {
+    from_utf8(u8v).expect("convert [u8] to String")
 }
