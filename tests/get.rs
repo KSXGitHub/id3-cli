@@ -25,6 +25,7 @@ macro_rules! text_positive {
                 .with_arg(audio_path)
                 .output()
                 .expect("execute command");
+            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
             assert!(status.success());
             assert!(stderr.is_empty());
             assert_eq!(u8v_to_string(&stdout), $stdout);
