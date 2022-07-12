@@ -43,6 +43,7 @@ macro_rules! asset_path {
 asset_path!(audio0);
 asset_path!(audio1);
 asset_path!(audio2);
+asset_path!(audio3);
 
 /// Wrapper of main executable.
 pub struct Exe {
