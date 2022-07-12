@@ -34,3 +34,8 @@ text_positive!(title_empty0: "title" audio0() => "");
 text_positive!(title_empty1: "title" audio1() => "");
 text_positive!(title_positive2: "title" audio2() => "砕月\n");
 text_positive!(title_positive3: "title" audio3() => "Broken Moon\n");
+
+text_positive!(artist_empty0: "artist" audio0() => "");
+text_positive!(artist_empty1: "artist" audio1() => "");
+text_positive!(artist_positive2: "artist" audio2() => "ココ&さつき が てんこもり\n");
+text_positive!(artist_positive3: "artist" audio3() => "Koko & Satsuki ga Tenkomori\n");
