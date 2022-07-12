@@ -21,10 +21,16 @@ impl Run for Text<GetArgsTable> {
     fn run(self) -> Result<(), Error> {
         macro_rules! get_text {
             ($args:expr, $get:expr) => {{
-                let GetText { input_audio } = $args;
+                let GetText {
+                    format,
+                    input_audio,
+                } = $args;
                 let tag = read_tag_from_path(input_audio)?;
-                if let Some(value) = $get(&tag) {
-                    println!("{value}");
+                let value = $get(&tag);
+                match (format, value) {
+                    (Some(format), value) => println!("{}", format.serialize(&value)?),
+                    (None, Some(value)) => println!("{value}"),
+                    (None, None) => {}
                 }
                 Ok(())
             }};
@@ -53,6 +59,9 @@ impl ArgsTable for GetArgsTable {
 #[derive(Debug, Args)]
 #[clap(about = "")]
 pub struct GetText {
+    /// Format of the output text.
+    #[clap(long, value_enum)]
+    pub format: Option<TextFormat>,
     /// Path to the input file.
     pub input_audio: PathBuf,
 }
