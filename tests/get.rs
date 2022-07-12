@@ -1,11 +1,11 @@
 pub mod _utils;
 
-use _utils::{audio_path, u8v_to_string, Exe, WORKSPACE};
+use _utils::{audio2, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use std::process::Output;
 
 #[test]
-fn title() {
+fn title_positive2() {
     let Output {
         status,
         stdout,
@@ -14,7 +14,7 @@ fn title() {
         .cmd
         .with_arg("get")
         .with_arg("title")
-        .with_arg(audio_path())
+        .with_arg(audio2())
         .output()
         .expect("execute command");
     assert!(status.success());

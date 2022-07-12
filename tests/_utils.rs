@@ -31,9 +31,9 @@ pub fn assets() -> PathBuf {
     Path::new(WORKSPACE).join("tests").join("assets")
 }
 
-/// Get path to the audio file.
-pub fn audio_path() -> PathBuf {
-    assets().join("audio")
+/// Get path to the `audio2` file.
+pub fn audio2() -> PathBuf {
+    assets().join("audio2")
 }
 
 /// Wrapper of main executable.
