@@ -40,3 +40,8 @@ text_positive!(artist_empty0: "artist" "audio0" => "");
 text_positive!(artist_empty1: "artist" "audio1" => "");
 text_positive!(artist_positive2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
 text_positive!(artist_positive3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
+
+text_positive!(album_empty0: "album" "audio0" => "");
+text_positive!(album_empty1: "album" "audio1" => "");
+text_positive!(album_positive2: "album" "audio2" => "幻想郷ミソギバライ\n");
+text_positive!(album_positive3: "album" "audio3" => "Gensoukyou Misogibarai\n");
