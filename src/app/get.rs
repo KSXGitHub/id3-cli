@@ -6,6 +6,7 @@ use crate::{
     run::Run,
     text_data::picture::Picture,
     text_format::TextFormat,
+    utils::read_tag_from_path,
 };
 use clap::{Args, Subcommand};
 use id3::{Tag, TagLike};
@@ -30,7 +31,7 @@ impl Run for Text<GetArgsTable> {
 
 fn get_text(args: GetText, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(), Error> {
     let GetText { input_audio } = args;
-    let tag = Tag::read_from_path(input_audio)?;
+    let tag = read_tag_from_path(input_audio)?;
     if let Some(title) = get(&tag) {
         println!("{title}");
     }
@@ -79,7 +80,7 @@ impl Run for GetComment {
             format,
             input_audio,
         } = self;
-        let tag = Tag::read_from_path(input_audio)?;
+        let tag = read_tag_from_path(input_audio)?;
         let comments: Vec<_> = tag
             .comments()
             .filter(|comment| lang.as_ref().map_or(true, |lang| &comment.lang == lang))
@@ -152,7 +153,7 @@ impl Run for GetPictureList {
             format,
             input_audio,
         } = self;
-        let tag = Tag::read_from_path(input_audio)?;
+        let tag = read_tag_from_path(input_audio)?;
         let pictures: Vec<_> = tag.pictures().map(Picture::from_id3_ref).collect();
         let serialized = format.serialize(&pictures)?;
         println!("{serialized}");
@@ -179,7 +180,7 @@ impl Run for GetPictureFile {
             input_audio,
             output_picture,
         } = self;
-        let tag = Tag::read_from_path(input_audio)?;
+        let tag = read_tag_from_path(input_audio)?;
         let data = if let Some(picture_type) = picture_type {
             let lowercase_picture_type = picture_type.to_lowercase();
             &tag.pictures()
