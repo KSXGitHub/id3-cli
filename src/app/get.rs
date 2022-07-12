@@ -17,25 +17,27 @@ use std::{fs, path::PathBuf};
 /// Subcommand of the `get` subcommand.
 pub type Get = Field<GetArgsTable>;
 
+macro_rules! get_text {
+    ($args:expr, $get:expr) => {{
+        let GetText { input_audio } = $args;
+        let tag = read_tag_from_path(input_audio)?;
+        if let Some(title) = $get(&tag) {
+            println!("{title}");
+        }
+        Ok(())
+    }};
+}
+
 impl Run for Text<GetArgsTable> {
     fn run(self) -> Result<(), Error> {
         match self {
-            Text::Title(args) => get_text(args, Tag::title),
-            Text::Artist(args) => get_text(args, Tag::artist),
-            Text::Album(args) => get_text(args, Tag::album),
-            Text::AlbumArtist(args) => get_text(args, Tag::album_artist),
-            Text::Genre(args) => get_text(args, Tag::genre),
+            Text::Title(args) => get_text!(args, Tag::title),
+            Text::Artist(args) => get_text!(args, Tag::artist),
+            Text::Album(args) => get_text!(args, Tag::album),
+            Text::AlbumArtist(args) => get_text!(args, Tag::album_artist),
+            Text::Genre(args) => get_text!(args, Tag::genre_parsed),
         }
     }
-}
-
-fn get_text(args: GetText, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(), Error> {
-    let GetText { input_audio } = args;
-    let tag = read_tag_from_path(input_audio)?;
-    if let Some(title) = get(&tag) {
-        println!("{title}");
-    }
-    Ok(())
 }
 
 /// Table of [`Args`] types for [`GetCmd`].
