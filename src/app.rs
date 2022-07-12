@@ -26,10 +26,6 @@ impl App {
         let CliArgs { command } = self.args;
         match command {
             CliCmd::View(args) => view::view(args),
-            command => {
-                dbg!(command);
-                unimplemented!()
-            }
         }
     }
 
