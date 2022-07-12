@@ -1,10 +1,10 @@
 pub mod field;
-pub mod view;
+pub mod get;
 
 use crate::{error::Error, run::Run};
 use clap::{Args, Parser, Subcommand};
+use get::Get;
 use std::process::ExitCode;
-use view::View;
 
 /// The main application.
 #[derive(Debug, Parser)]
@@ -38,9 +38,9 @@ impl Run for App {
 /// Subcommand of the program.
 #[derive(Debug, Subcommand)]
 pub enum AppCmd {
-    /// View metadata.
+    /// Show or export metadata.
     #[clap(subcommand)]
-    View(View),
+    Get(Get),
     // /// Modify a field of metadata.
     // Modify(ModifyArgs),
     // /// Erase all metadata.
@@ -50,7 +50,7 @@ pub enum AppCmd {
 impl Run for AppCmd {
     fn run(self) -> Result<(), Error> {
         match self {
-            AppCmd::View(proc) => proc.run(),
+            AppCmd::Get(proc) => proc.run(),
         }
     }
 }

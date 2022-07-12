@@ -13,23 +13,23 @@ use pipe_trait::Pipe;
 use serde_json::json;
 use std::{fs, path::PathBuf};
 
-/// Subcommand of the `view` subcommand.
-pub type View = Field<ViewArgsTable>;
+/// Subcommand of the `get` subcommand.
+pub type Get = Field<GetArgsTable>;
 
-impl Run for Text<ViewArgsTable> {
+impl Run for Text<GetArgsTable> {
     fn run(self) -> Result<(), Error> {
         match self {
-            Text::Title(args) => view_text(args, Tag::title),
-            Text::Artist(args) => view_text(args, Tag::artist),
-            Text::Album(args) => view_text(args, Tag::album),
-            Text::AlbumArtist(args) => view_text(args, Tag::album_artist),
-            Text::Genre(args) => view_text(args, Tag::genre),
+            Text::Title(args) => get_text(args, Tag::title),
+            Text::Artist(args) => get_text(args, Tag::artist),
+            Text::Album(args) => get_text(args, Tag::album),
+            Text::AlbumArtist(args) => get_text(args, Tag::album_artist),
+            Text::Genre(args) => get_text(args, Tag::genre),
         }
     }
 }
 
-fn view_text(args: ViewText, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(), Error> {
-    let ViewText { input_audio } = args;
+fn get_text(args: GetText, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(), Error> {
+    let GetText { input_audio } = args;
     let tag = Tag::read_from_path(input_audio)?;
     if let Some(title) = get(&tag) {
         println!("{title}");
@@ -37,27 +37,27 @@ fn view_text(args: ViewText, get: impl FnOnce(&Tag) -> Option<&str>) -> Result<(
     Ok(())
 }
 
-/// Table of [`Args`] types for [`ViewCmd`].
+/// Table of [`Args`] types for [`GetCmd`].
 #[derive(Debug)]
-pub struct ViewArgsTable;
-impl ArgsTable for ViewArgsTable {
-    type Text = ViewText;
-    type Comment = ViewComment;
-    type Picture = ViewPicture;
+pub struct GetArgsTable;
+impl ArgsTable for GetArgsTable {
+    type Text = GetText;
+    type Comment = GetComment;
+    type Picture = GetPicture;
 }
 
-/// CLI arguments of `view <text-field>`.
+/// CLI arguments of `get <text-field>`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct ViewText {
+pub struct GetText {
     /// Path to the input file.
     pub input_audio: PathBuf,
 }
 
-/// CLI arguments of `view comment`.
+/// CLI arguments of `get comment`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct ViewComment {
+pub struct GetComment {
     /// Filter language.
     #[clap(long)]
     pub lang: Option<String>,
@@ -71,9 +71,9 @@ pub struct ViewComment {
     pub input_audio: PathBuf,
 }
 
-impl Run for ViewComment {
+impl Run for GetComment {
     fn run(self) -> Result<(), Error> {
-        let ViewComment {
+        let GetComment {
             lang,
             description,
             format,
@@ -102,43 +102,43 @@ impl Run for ViewComment {
     }
 }
 
-/// CLI arguments of `view picture`.
+/// CLI arguments of `get picture`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct ViewPicture {
+pub struct GetPicture {
     /// Subcommand to execute.
     #[clap(subcommand)]
-    pub command: ViewPictureCmd,
+    pub command: GetPictureCmd,
 }
 
-impl Run for ViewPicture {
+impl Run for GetPicture {
     fn run(self) -> Result<(), Error> {
         self.command.run()
     }
 }
 
-/// Subcommand of `view picture`.
+/// Subcommand of `get picture`.
 #[derive(Debug, Subcommand)]
 #[clap(about = "")]
-pub enum ViewPictureCmd {
+pub enum GetPictureCmd {
     /// List descriptions, mime types, picture types, and sizes of all pictures.
-    List(ViewPictureList),
+    List(GetPictureList),
     /// Export a single picture to a file.
-    File(ViewPictureFile),
+    File(GetPictureFile),
 }
 
-impl Run for ViewPictureCmd {
+impl Run for GetPictureCmd {
     fn run(self) -> Result<(), Error> {
         match self {
-            ViewPictureCmd::List(proc) => proc.run(),
-            ViewPictureCmd::File(proc) => proc.run(),
+            GetPictureCmd::List(proc) => proc.run(),
+            GetPictureCmd::File(proc) => proc.run(),
         }
     }
 }
 
-/// CLI arguments of `view picture file`.
+/// CLI arguments of `get picture file`.
 #[derive(Debug, Args)]
-pub struct ViewPictureList {
+pub struct GetPictureList {
     /// Format of the output text.
     #[clap(long, value_enum, default_value = "json")]
     pub format: TextFormat,
@@ -146,9 +146,9 @@ pub struct ViewPictureList {
     pub input_audio: PathBuf,
 }
 
-impl Run for ViewPictureList {
+impl Run for GetPictureList {
     fn run(self) -> Result<(), Error> {
-        let ViewPictureList {
+        let GetPictureList {
             format,
             input_audio,
         } = self;
@@ -160,9 +160,9 @@ impl Run for ViewPictureList {
     }
 }
 
-/// CLI arguments of `view picture file`.
+/// CLI arguments of `get picture file`.
 #[derive(Debug, Args)]
-pub struct ViewPictureFile {
+pub struct GetPictureFile {
     /// Picture type to export. Required when there are multiple pictures.
     #[clap(long, short = 't')]
     pub picture_type: Option<String>,
@@ -172,9 +172,9 @@ pub struct ViewPictureFile {
     pub output_picture: PathBuf,
 }
 
-impl Run for ViewPictureFile {
+impl Run for GetPictureFile {
     fn run(self) -> Result<(), Error> {
-        let ViewPictureFile {
+        let GetPictureFile {
             picture_type,
             input_audio,
             output_picture,
