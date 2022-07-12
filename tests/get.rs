@@ -4,56 +4,32 @@ use _utils::{audio1, audio2, audio3, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use std::process::Output;
 
-#[test]
-fn title_empty1() {
-    let Output {
-        status,
-        stdout,
-        stderr,
-    } = Exe::new(WORKSPACE)
-        .cmd
-        .with_arg("get")
-        .with_arg("title")
-        .with_arg(audio1())
-        .output()
-        .expect("execute command");
-    assert!(status.success());
-    assert!(stderr.is_empty());
-    assert_eq!(u8v_to_string(&stdout), "");
+macro_rules! text_positive {
+    (
+        $(#[$attributes:meta])*
+        $name:ident: $audio_path:expr => $stdout:expr $(;)?
+    ) => {
+        $(#[$attributes])*
+        #[test]
+        fn $name() {
+            let Output {
+                status,
+                stdout,
+                stderr,
+            } = Exe::new(WORKSPACE)
+                .cmd
+                .with_arg("get")
+                .with_arg("title")
+                .with_arg($audio_path)
+                .output()
+                .expect("execute command");
+            assert!(status.success());
+            assert!(stderr.is_empty());
+            assert_eq!(u8v_to_string(&stdout), $stdout);
+        }
+    };
 }
 
-#[test]
-fn title_positive2() {
-    let Output {
-        status,
-        stdout,
-        stderr,
-    } = Exe::new(WORKSPACE)
-        .cmd
-        .with_arg("get")
-        .with_arg("title")
-        .with_arg(audio2())
-        .output()
-        .expect("execute command");
-    assert!(status.success());
-    assert!(stderr.is_empty());
-    assert_eq!(u8v_to_string(&stdout), "砕月\n");
-}
-
-#[test]
-fn title_positive3() {
-    let Output {
-        status,
-        stdout,
-        stderr,
-    } = Exe::new(WORKSPACE)
-        .cmd
-        .with_arg("get")
-        .with_arg("title")
-        .with_arg(audio3())
-        .output()
-        .expect("execute command");
-    assert!(status.success());
-    assert!(stderr.is_empty());
-    assert_eq!(u8v_to_string(&stdout), "Broken Moon\n");
-}
+text_positive!(title_empty1: audio1() => "");
+text_positive!(title_positive2: audio2() => "砕月\n");
+text_positive!(title_positive3: audio3() => "Broken Moon\n");
