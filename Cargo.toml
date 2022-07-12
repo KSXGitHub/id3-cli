@@ -3,6 +3,13 @@ name = "id3-cli"
 version = "0.0.0"
 edition = "2021"
 license = "MIT"
+include = [
+  "/src",
+  "/cli",
+  "/Cargo.toml",
+  "/README.md",
+  "/LICENSE.md",
+]
 
 [lib]
 name = "id3_cli"
