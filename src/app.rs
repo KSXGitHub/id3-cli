@@ -4,7 +4,7 @@ pub mod view;
 use crate::{error::Error, run::Run};
 use clap::{Args, Parser, Subcommand};
 use std::process::ExitCode;
-use view::ViewCmd;
+use view::View;
 
 /// The main application.
 #[derive(Debug, Parser)]
@@ -40,7 +40,7 @@ impl Run for App {
 pub enum AppCmd {
     /// View metadata.
     #[clap(subcommand)]
-    View(ViewCmd),
+    View(View),
     // /// Modify a field of metadata.
     // Modify(ModifyArgs),
     // /// Erase all metadata.
