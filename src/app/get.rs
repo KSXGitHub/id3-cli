@@ -23,8 +23,8 @@ impl Run for Text<GetArgsTable> {
             ($args:expr, $get:expr) => {{
                 let GetText { input_audio } = $args;
                 let tag = read_tag_from_path(input_audio)?;
-                if let Some(title) = $get(&tag) {
-                    println!("{title}");
+                if let Some(value) = $get(&tag) {
+                    println!("{value}");
                 }
                 Ok(())
             }};
