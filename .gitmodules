@@ -1,3 +1,0 @@
-[submodule "tests/assets"]
-	path = tests/assets
-	url = https://github.com/KSXGitHub/id3-cli-external-assets.git
