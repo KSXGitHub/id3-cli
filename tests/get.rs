@@ -96,7 +96,6 @@ macro_rules! text_format_positive {
 mod deserialize {
     pub use serde_json::from_str as json;
     pub use serde_yaml::from_str as yaml;
-    pub use toml::de::from_str as toml;
 }
 
 text_format_positive!(title_json_empty0: "title" --format=json "audio0" => None);

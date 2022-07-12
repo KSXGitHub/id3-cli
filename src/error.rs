@@ -38,7 +38,6 @@ pub struct NoPicTypeMultiPic;
 #[error("Failed to deserialize: {0}")]
 pub enum DeserializationFailure {
     Json(serde_json::Error),
-    Toml(toml::ser::Error),
     Yaml(serde_yaml::Error),
 }
 
@@ -60,5 +59,4 @@ macro_rules! indirect_convert {
 
 indirect_convert!(id3::Error, TagReadFailure);
 indirect_convert!(serde_json::Error, DeserializationFailure);
-indirect_convert!(toml::ser::Error, DeserializationFailure);
 indirect_convert!(serde_yaml::Error, DeserializationFailure);

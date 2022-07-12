@@ -8,7 +8,6 @@ use serde::Serialize;
 pub enum TextFormat {
     Json,
     Yaml,
-    Toml,
 }
 
 impl TextFormat {
@@ -17,7 +16,6 @@ impl TextFormat {
         match self {
             TextFormat::Json => serde_json::to_string_pretty(value).map_err(Error::from),
             TextFormat::Yaml => serde_yaml::to_string(value).map_err(Error::from),
-            TextFormat::Toml => toml::to_string_pretty(value).map_err(Error::from),
         }
     }
 }
