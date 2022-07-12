@@ -29,6 +29,23 @@ where
     Frame(Frame<Args>),
 }
 
+impl<Args> Run for Field<Args>
+where
+    Args: ArgsTable,
+    Args::Text: Debug,
+    Args::Comment: Debug,
+    Args::Picture: Debug,
+    Text<Args>: Run,
+    Frame<Args>: Run,
+{
+    fn run(self) -> Result<(), Error> {
+        match self {
+            Field::Text(cmd) => cmd.run(),
+            Field::Frame(cmd) => cmd.run(),
+        }
+    }
+}
+
 /// Text field subcommand.
 #[derive(Debug, Subcommand)]
 pub enum Text<Args: ArgsTable> {

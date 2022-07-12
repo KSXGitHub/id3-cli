@@ -16,15 +16,6 @@ use std::{fs, path::PathBuf};
 /// Subcommand of the `view` subcommand.
 pub type ViewCmd = Field<ViewArgsTable>;
 
-impl Run for ViewCmd {
-    fn run(self) -> Result<(), Error> {
-        match self {
-            ViewCmd::Text(cmd) => cmd.run(),
-            ViewCmd::Frame(cmd) => cmd.run(),
-        }
-    }
-}
-
 impl Run for Text<ViewArgsTable> {
     fn run(self) -> Result<(), Error> {
         match self {
