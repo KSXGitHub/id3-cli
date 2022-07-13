@@ -6,7 +6,7 @@ use pipe_trait::Pipe;
 use serde_json::{json, Value as JsonValue};
 use std::process::Output;
 
-macro_rules! text_positive {
+macro_rules! text {
     (
         $(#[$attributes:meta])*
         $name:ident: $field:literal $audio_path:literal => $stdout:expr $(;)?
@@ -34,30 +34,30 @@ macro_rules! text_positive {
     };
 }
 
-text_positive!(title_empty0: "title" "audio0" => "");
-text_positive!(title_empty1: "title" "audio1" => "");
-text_positive!(title_filled2: "title" "audio2" => "砕月\n");
-text_positive!(title_filled3: "title" "audio3" => "Broken Moon\n");
+text!(title_empty0: "title" "audio0" => "");
+text!(title_empty1: "title" "audio1" => "");
+text!(title_filled2: "title" "audio2" => "砕月\n");
+text!(title_filled3: "title" "audio3" => "Broken Moon\n");
 
-text_positive!(artist_empty0: "artist" "audio0" => "");
-text_positive!(artist_empty1: "artist" "audio1" => "");
-text_positive!(artist_filled2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
-text_positive!(artist_filled3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
+text!(artist_empty0: "artist" "audio0" => "");
+text!(artist_empty1: "artist" "audio1" => "");
+text!(artist_filled2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
+text!(artist_filled3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
 
-text_positive!(album_empty0: "album" "audio0" => "");
-text_positive!(album_empty1: "album" "audio1" => "");
-text_positive!(album_filled2: "album" "audio2" => "幻想郷ミソギバライ\n");
-text_positive!(album_filled3: "album" "audio3" => "Gensoukyou Misogibarai\n");
+text!(album_empty0: "album" "audio0" => "");
+text!(album_empty1: "album" "audio1" => "");
+text!(album_filled2: "album" "audio2" => "幻想郷ミソギバライ\n");
+text!(album_filled3: "album" "audio3" => "Gensoukyou Misogibarai\n");
 
-text_positive!(album_artist_empty0: "album-artist" "audio0" => "");
-text_positive!(album_artist_empty1: "album-artist" "audio1" => "");
-text_positive!(album_artist_filled2: "album-artist" "audio2" => "Astral Trip\n");
-text_positive!(album_artist_filled3: "album-artist" "audio3" => "Astral Trip\n");
+text!(album_artist_empty0: "album-artist" "audio0" => "");
+text!(album_artist_empty1: "album-artist" "audio1" => "");
+text!(album_artist_filled2: "album-artist" "audio2" => "Astral Trip\n");
+text!(album_artist_filled3: "album-artist" "audio3" => "Astral Trip\n");
 
-text_positive!(genre_empty0: "genre" "audio0" => "");
-text_positive!(genre_empty1: "genre" "audio1" => "");
-text_positive!(genre_filled2: "genre" "audio2" => "Anime\n");
-text_positive!(genre_filled3: "genre" "audio3" => "Pop\n");
+text!(genre_empty0: "genre" "audio0" => "");
+text!(genre_empty1: "genre" "audio1" => "");
+text!(genre_filled2: "genre" "audio2" => "Anime\n");
+text!(genre_filled3: "genre" "audio3" => "Pop\n");
 
 mod deserialize {
     pub use serde_json::from_str as json;
@@ -69,7 +69,7 @@ mod serialize {
     pub use serde_yaml::to_string as yaml;
 }
 
-macro_rules! text_format_positive {
+macro_rules! text_format {
     (
         $(#[$attributes:meta])*
         $name:ident: $field:literal --format=$format:ident $audio_path:literal => $expected:expr $(;)?
@@ -118,17 +118,17 @@ macro_rules! text_format_positive {
     };
 }
 
-text_format_positive!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
-text_format_positive!(title_json_empty1: "title" --format=json "audio1" => None::<&str>);
-text_format_positive!(title_json_filled2: "title" --format=json "audio2" => Some("砕月"));
-text_format_positive!(title_json_filled3: "title" --format=json "audio3" => Some("Broken Moon"));
+text_format!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
+text_format!(title_json_empty1: "title" --format=json "audio1" => None::<&str>);
+text_format!(title_json_filled2: "title" --format=json "audio2" => Some("砕月"));
+text_format!(title_json_filled3: "title" --format=json "audio3" => Some("Broken Moon"));
 
-text_format_positive!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None::<&str>);
-text_format_positive!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None::<&str>);
-text_format_positive!(artist_yaml_filled2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
-text_format_positive!(artist_yaml_filled3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
+text_format!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None::<&str>);
+text_format!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None::<&str>);
+text_format!(artist_yaml_filled2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
+text_format!(artist_yaml_filled3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
 
-macro_rules! comment_format_positive {
+macro_rules! comment_format {
     (
         $(#[$attributes:meta])*
         $name:ident:
@@ -189,12 +189,12 @@ macro_rules! comment_format_positive {
     };
 }
 
-comment_format_positive!(comment_json_empty0: "audio0" --format=json => json!([]));
-comment_format_positive!(comment_yaml_empty0: "audio0" --format=yaml => json!([]));
-comment_format_positive!(comment_json_empty1: "audio1" --format=json => json!([]));
-comment_format_positive!(comment_yaml_empty1: "audio1" --format=yaml => json!([]));
+comment_format!(comment_json_empty0: "audio0" --format=json => json!([]));
+comment_format!(comment_yaml_empty0: "audio0" --format=yaml => json!([]));
+comment_format!(comment_json_empty1: "audio1" --format=json => json!([]));
+comment_format!(comment_yaml_empty1: "audio1" --format=yaml => json!([]));
 
-comment_format_positive!(comment_json_filled2: "audio2" --format=json => json!([
+comment_format!(comment_json_filled2: "audio2" --format=json => json!([
     {
         "description": "",
         "lang": "jpn",
@@ -202,7 +202,7 @@ comment_format_positive!(comment_json_filled2: "audio2" --format=json => json!([
     },
 ]));
 
-comment_format_positive!(comment_yaml_filled2: "audio2" --format=yaml => json!([
+comment_format!(comment_yaml_filled2: "audio2" --format=yaml => json!([
     {
         "description": "",
         "lang": "jpn",
@@ -210,7 +210,7 @@ comment_format_positive!(comment_yaml_filled2: "audio2" --format=yaml => json!([
     },
 ]));
 
-comment_format_positive!(comment_json_filled3: "audio3" --format=json => json!([
+comment_format!(comment_json_filled3: "audio3" --format=json => json!([
     {
         "description": "",
         "lang": "eng",
@@ -223,7 +223,7 @@ comment_format_positive!(comment_json_filled3: "audio3" --format=json => json!([
     },
 ]));
 
-comment_format_positive!(comment_json_jpn_filled3: "audio3" --format=json --lang=jpn => json!([
+comment_format!(comment_json_jpn_filled3: "audio3" --format=json --lang=jpn => json!([
     {
         "description": "",
         "lang": "jpn",
@@ -231,7 +231,7 @@ comment_format_positive!(comment_json_jpn_filled3: "audio3" --format=json --lang
     },
 ]));
 
-comment_format_positive!(comment_yaml_filled3: "audio3" --format=yaml => json!([
+comment_format!(comment_yaml_filled3: "audio3" --format=yaml => json!([
     {
         "description": "",
         "lang": "eng",
@@ -244,7 +244,7 @@ comment_format_positive!(comment_yaml_filled3: "audio3" --format=yaml => json!([
     },
 ]));
 
-comment_format_positive!(comment_yaml_eng_filled3: "audio3" --format=yaml --lang=eng => json!([
+comment_format!(comment_yaml_eng_filled3: "audio3" --format=yaml --lang=eng => json!([
     {
         "description": "",
         "lang": "eng",
