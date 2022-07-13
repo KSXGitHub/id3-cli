@@ -101,7 +101,7 @@ impl Run for GetComment {
                     .as_ref()
                     .map_or(true, |description| &comment.description == description)
             });
-        let serialized = if let Some(format) = format {
+        let output_text = if let Some(format) = format {
             let comments: Vec<_> = comments
                 .map(|comment| {
                     json!({
@@ -120,7 +120,7 @@ impl Run for GetComment {
             }
             comment.text.to_string()
         };
-        println!("{serialized}");
+        println!("{output_text}");
         Ok(())
     }
 }
