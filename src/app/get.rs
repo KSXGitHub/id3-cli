@@ -2,7 +2,7 @@ use crate::{
     app::field::{ArgsTable, Field, Text},
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
-        PictureFileWriteFailure, PictureNotFound, PictureTypeNotFound,
+        PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
     },
     run::Run,
     text_data::picture::Picture,
@@ -186,9 +186,9 @@ impl Run for GetPictureList {
 /// CLI arguments of `get picture file`.
 #[derive(Debug, Args)]
 pub struct GetPictureFile {
-    /// Picture type to export. Required when there are multiple pictures.
-    #[clap(long, short = 't')]
-    pub picture_type: Option<String>,
+    /// Picture ID to export. Required if there are multiple pictures.
+    #[clap(long)]
+    pub id: Option<u16>,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
     /// Path to the output picture file.
@@ -198,18 +198,17 @@ pub struct GetPictureFile {
 impl Run for GetPictureFile {
     fn run(self) -> Result<(), Error> {
         let GetPictureFile {
-            picture_type,
+            id,
             input_audio,
             output_picture,
         } = self;
         let tag = read_tag_from_path(input_audio)?;
-        let data = if let Some(picture_type) = picture_type {
-            let lowercase_picture_type = picture_type.to_lowercase();
+        let data = if let Some(target_id) = id {
             &tag.pictures()
-                .find(|picture| {
-                    picture.picture_type.to_string().to_lowercase() == lowercase_picture_type
-                })
-                .ok_or(PictureTypeNotFound { picture_type })?
+                .zip(0u16..)
+                .find(|(_, current_id)| *current_id == target_id)
+                .ok_or(PictureIdOutOfBound)?
+                .0
                 .data
         } else {
             let mut iter = tag.pictures().map(|picture| &picture.data);
