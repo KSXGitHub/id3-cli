@@ -89,6 +89,12 @@ macro_rules! text_format_positive {
                 .expect("deserialize value");
             let expected = $expected.map(|x: &str| x.to_string());
             assert_eq!(received, expected);
+            let received = u8v_to_string(&stdout);
+            let expected = $expected
+                .pipe_ref(serialize::$format)
+                .expect("serialize value");
+            let expected = format!("{expected}\n");
+            assert_eq!(received, expected);
         }
     };
 }
@@ -98,12 +104,17 @@ mod deserialize {
     pub use serde_yaml::from_str as yaml;
 }
 
-text_format_positive!(title_json_empty0: "title" --format=json "audio0" => None);
-text_format_positive!(title_json_empty1: "title" --format=json "audio1" => None);
+mod serialize {
+    pub use serde_json::to_string_pretty as json;
+    pub use serde_yaml::to_string as yaml;
+}
+
+text_format_positive!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
+text_format_positive!(title_json_empty1: "title" --format=json "audio1" => None::<&str>);
 text_format_positive!(title_json_positive2: "title" --format=json "audio2" => Some("砕月"));
 text_format_positive!(title_json_positive3: "title" --format=json "audio3" => Some("Broken Moon"));
 
-text_format_positive!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None);
-text_format_positive!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None);
+text_format_positive!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None::<&str>);
+text_format_positive!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None::<&str>);
 text_format_positive!(artist_yaml_positive2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
 text_format_positive!(artist_yaml_positive3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
