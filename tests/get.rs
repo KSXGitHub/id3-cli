@@ -80,15 +80,23 @@ macro_rules! text_format_positive {
                 .with_arg(audio_path)
                 .output()
                 .expect("execute command");
+
+            // for ease of debug
             eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+
+            // basic guarantees
             assert!(status.success());
             assert!(stderr.is_empty());
+
+            // test the structured information
             let received = stdout
                 .pipe_as_ref(u8v_to_string)
                 .pipe(deserialize::$format::<Option<String>>)
                 .expect("deserialize value");
             let expected = $expected.map(|x: &str| x.to_string());
             assert_eq!(received, expected);
+
+            // assert that the output text is prettified
             let received = u8v_to_string(&stdout);
             let expected = $expected
                 .pipe_ref(serialize::$format)
