@@ -7,6 +7,8 @@ use thiserror::Error;
 #[error("{0}")]
 pub enum Error {
     TagReadFailure(TagReadFailure),
+    CommentNotFound(CommentNotFound),
+    AmbiguousCommentChoices(AmbiguousCommentChoices),
     PictureTypeNotFound(PictureTypeNotFound),
     PictureNotFound(PictureNotFound),
     AmbiguousPictureChoices(AmbiguousPictureChoices),
@@ -19,6 +21,14 @@ pub enum Error {
 pub struct TagReadFailure {
     pub error: id3::Error,
 }
+
+#[derive(Debug, Error)]
+#[error("Comment not found")]
+pub struct CommentNotFound;
+
+#[derive(Debug, Error)]
+#[error("Too many comments to choose from")]
+pub struct AmbiguousCommentChoices;
 
 #[derive(Debug, Error)]
 #[error("Picture of type {picture_type:?} not found")]

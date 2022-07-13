@@ -1,8 +1,8 @@
 use crate::{
     app::field::{ArgsTable, Field, Text},
     error::{
-        AmbiguousPictureChoices, Error, PictureFileWriteFailure, PictureNotFound,
-        PictureTypeNotFound,
+        AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
+        PictureFileWriteFailure, PictureNotFound, PictureTypeNotFound,
     },
     run::Run,
     text_data::picture::Picture,
@@ -77,9 +77,9 @@ pub struct GetComment {
     /// Filter description.
     #[clap(long)]
     pub description: Option<String>,
-    /// Format of the output text.
-    #[clap(long, value_enum, default_value = "json")]
-    pub format: TextFormat,
+    /// Format of the output text. Required if there are multiple comments.
+    #[clap(long, value_enum)]
+    pub format: Option<TextFormat>,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
 }
@@ -93,23 +93,33 @@ impl Run for GetComment {
             input_audio,
         } = self;
         let tag = read_tag_from_path(input_audio)?;
-        let comments: Vec<_> = tag
+        let comments = tag
             .comments()
             .filter(|comment| lang.as_ref().map_or(true, |lang| &comment.lang == lang))
             .filter(|comment| {
                 description
                     .as_ref()
                     .map_or(true, |description| &comment.description == description)
-            })
-            .map(|comment| {
-                json!({
-                    "lang": comment.lang,
-                    "description": comment.description,
-                    "text": comment.text,
+            });
+        let serialized = if let Some(format) = format {
+            let comments: Vec<_> = comments
+                .map(|comment| {
+                    json!({
+                        "lang": comment.lang,
+                        "description": comment.description,
+                        "text": comment.text,
+                    })
                 })
-            })
-            .collect();
-        let serialized = format.serialize(&comments)?;
+                .collect();
+            format.serialize(&comments)?
+        } else {
+            let mut iter = comments;
+            let comment = iter.next().ok_or(CommentNotFound)?;
+            if iter.next().is_some() {
+                return AmbiguousCommentChoices.pipe(Error::from).pipe(Err);
+            }
+            comment.text.to_string()
+        };
         println!("{serialized}");
         Ok(())
     }
