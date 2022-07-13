@@ -9,7 +9,7 @@ pub enum Error {
     TagReadFailure(TagReadFailure),
     PictureTypeNotFound(PictureTypeNotFound),
     PictureNotFound(PictureNotFound),
-    NoPicTypeMultiPic(NoPicTypeMultiPic),
+    AmbiguousPictureChoices(AmbiguousPictureChoices),
     DeserializationFailure(DeserializationFailure),
     PictureFileWriteFailure(PictureFileWriteFailure),
 }
@@ -31,8 +31,8 @@ pub struct PictureTypeNotFound {
 pub struct PictureNotFound;
 
 #[derive(Debug, Error)]
-#[error("Multiple pictures detected but no picture type specified")]
-pub struct NoPicTypeMultiPic;
+#[error("Too many pictures to choose from")]
+pub struct AmbiguousPictureChoices;
 
 #[derive(Debug, From, Error)]
 #[error("Failed to deserialize: {0}")]

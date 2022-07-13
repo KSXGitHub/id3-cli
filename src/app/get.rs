@@ -1,7 +1,8 @@
 use crate::{
     app::field::{ArgsTable, Field, Text},
     error::{
-        Error, NoPicTypeMultiPic, PictureFileWriteFailure, PictureNotFound, PictureTypeNotFound,
+        AmbiguousPictureChoices, Error, PictureFileWriteFailure, PictureNotFound,
+        PictureTypeNotFound,
     },
     run::Run,
     text_data::picture::Picture,
@@ -204,7 +205,7 @@ impl Run for GetPictureFile {
             let mut iter = tag.pictures().map(|picture| &picture.data);
             let data = iter.next().ok_or(PictureNotFound)?;
             if iter.next().is_some() {
-                return NoPicTypeMultiPic.pipe(Error::from).pipe(Err);
+                return AmbiguousPictureChoices.pipe(Error::from).pipe(Err);
             }
             data
         };
