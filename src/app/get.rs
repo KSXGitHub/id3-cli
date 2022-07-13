@@ -60,7 +60,7 @@ impl ArgsTable for GetArgsTable {
 #[derive(Debug, Args)]
 #[clap(about = "")]
 pub struct GetText {
-    /// Format of the output text.
+    /// Format the output text into JSON or YAML.
     #[clap(long, value_enum)]
     pub format: Option<TextFormat>,
     /// Path to the input file.
