@@ -85,3 +85,15 @@ impl Exe {
 pub fn u8v_to_string(u8v: &[u8]) -> &str {
     from_utf8(u8v).expect("convert [u8] to String")
 }
+
+/// Deserialize JSON or YAML.
+pub mod deserialize {
+    pub use serde_json::from_str as json;
+    pub use serde_yaml::from_str as yaml;
+}
+
+/// Serialize JSON or YAML.
+pub mod serialize {
+    pub use serde_json::to_string_pretty as json;
+    pub use serde_yaml::to_string as yaml;
+}
