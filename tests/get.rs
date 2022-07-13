@@ -58,6 +58,16 @@ text_positive!(genre_empty1: "genre" "audio1" => "");
 text_positive!(genre_positive2: "genre" "audio2" => "Anime\n");
 text_positive!(genre_positive3: "genre" "audio3" => "Pop\n");
 
+mod deserialize {
+    pub use serde_json::from_str as json;
+    pub use serde_yaml::from_str as yaml;
+}
+
+mod serialize {
+    pub use serde_json::to_string_pretty as json;
+    pub use serde_yaml::to_string as yaml;
+}
+
 macro_rules! text_format_positive {
     (
         $(#[$attributes:meta])*
@@ -105,16 +115,6 @@ macro_rules! text_format_positive {
             assert_eq!(received, expected);
         }
     };
-}
-
-mod deserialize {
-    pub use serde_json::from_str as json;
-    pub use serde_yaml::from_str as yaml;
-}
-
-mod serialize {
-    pub use serde_json::to_string_pretty as json;
-    pub use serde_yaml::to_string as yaml;
 }
 
 text_format_positive!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
