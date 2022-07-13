@@ -176,7 +176,12 @@ impl Run for GetPictureList {
             input_audio,
         } = self;
         let tag = read_tag_from_path(input_audio)?;
-        let pictures: Vec<_> = tag.pictures().map(Picture::from_id3_ref).collect();
+        let pictures: Vec<_> = tag
+            .pictures()
+            .map(Picture::from_id3_ref)
+            .zip(0..)
+            .map(|(picture, id)| picture.with_id(id))
+            .collect();
         let serialized = format.serialize(&pictures)?;
         println!("{serialized}");
         Ok(())
