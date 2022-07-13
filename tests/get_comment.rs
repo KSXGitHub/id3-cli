@@ -6,6 +6,57 @@ use pipe_trait::Pipe;
 use serde_json::{json, Value as JsonValue};
 use std::process::Output;
 
+macro_rules! comment {
+    (
+        $(#[$attributes:meta])*
+        $name:ident:
+        $audio_path:literal
+        $(--lang=$lang:ident)?
+        $(--description=$description:ident)?
+        => $expected:expr $(;)?
+    ) => {
+        #[test]
+        fn $name() {
+            let audio_path = assets().join($audio_path);
+            let Output {
+                status,
+                stdout,
+                stderr,
+            } = Exe::new(WORKSPACE)
+                .cmd
+                .with_arg("get")
+                .with_arg("comment")
+                $(
+                    .with_arg("--lang")
+                    .with_arg(stringify!($lang))
+                )?
+                $(
+                    .with_arg("--description")
+                    .with_arg(stringify!($description))
+                )?
+                .with_arg(audio_path)
+                .output()
+                .expect("execute command");
+
+            // for ease of debug
+            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+
+            // basic guarantees
+            assert!(status.success());
+            assert!(stderr.is_empty());
+
+            // test stdout
+            assert_eq!(u8v_to_string(&stdout), $expected);
+        }
+    };
+}
+
+comment!(comment_fill2: "audio2" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+comment!(comment_jpn_fill2: "audio2" --lang=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+comment!(comment_eng_fill3: "audio3" --lang=eng => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
+comment!(comment_jpn_fill3: "audio3" --lang=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+
 macro_rules! comment_format {
     (
         $(#[$attributes:meta])*
