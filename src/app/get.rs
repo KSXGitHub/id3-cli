@@ -167,7 +167,7 @@ impl Run for GetPictureCmd {
 #[derive(Debug, Args)]
 pub struct GetPictureList {
     /// Format of the output text.
-    #[clap(long, value_enum, default_value = "json")]
+    #[clap(long, value_enum)]
     pub format: TextFormat,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
