@@ -1,9 +1,15 @@
+use fs_extra::dir::{copy as copy_dir, CopyOptions};
+use pipe_trait::Pipe;
+use sha2::{Digest, Sha256};
 use std::{
     ffi::OsStr,
+    fmt::Debug,
+    fs,
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
     str::from_utf8,
 };
+use tempfile as tmp;
 
 /// Version of the package.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -46,6 +52,19 @@ impl Exe {
         let wdir = Path::new(&wdir_ref).to_path_buf();
         cmd.current_dir(&wdir);
         Self { cmd, wdir }
+    }
+
+    /// Create a wrapper with a temporary working directory.
+    pub fn temp_workspace() -> Self {
+        let workspace = tmp::Builder::new()
+            .prefix(TEMP_PREFIX)
+            .suffix(TEMP_SUFFIX)
+            .tempdir()
+            .expect("find temporary workspace")
+            .into_path();
+        copy_dir(assets(), &workspace, &CopyOptions::new())
+            .expect("copy assets to the temporary workspace");
+        Exe::new(&workspace)
     }
 
     /// Run the command.
@@ -96,4 +115,13 @@ pub mod deserialize {
 pub mod serialize {
     pub use serde_json::to_string_pretty as json;
     pub use serde_yaml::to_string as yaml;
+}
+
+/// Create sha256 hash of a file.
+pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
+    let data = fs::read(&file_name)
+        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"));
+    let mut hasher = Sha256::new();
+    hasher.update(data);
+    hasher.finalize().pipe(hex::encode)
 }
