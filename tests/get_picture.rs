@@ -4,6 +4,7 @@ use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use id3_cli::text_data::picture::{self, Picture};
 use pipe_trait::Pipe;
+use pretty_assertions::assert_eq;
 use std::process::Output;
 
 macro_rules! picture {

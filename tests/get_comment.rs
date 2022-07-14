@@ -3,6 +3,7 @@ pub mod _utils;
 use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use pipe_trait::Pipe;
+use pretty_assertions::assert_eq;
 use serde_json::{json, Value as JsonValue};
 use std::process::Output;
 

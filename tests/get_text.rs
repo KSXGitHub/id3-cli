@@ -3,6 +3,7 @@ pub mod _utils;
 use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use pipe_trait::Pipe;
+use pretty_assertions::assert_eq;
 use std::process::Output;
 
 macro_rules! text {

@@ -23,6 +23,7 @@ impl TextFormat {
 #[cfg(test)]
 mod tests {
     use super::TextFormat;
+    use pretty_assertions::assert_eq;
     use serde::Serialize;
     use text_block_macros::text_block;
 
