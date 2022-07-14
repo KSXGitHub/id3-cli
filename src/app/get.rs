@@ -2,15 +2,16 @@ use crate::{
     app::field::{ArgsTable, Field, Text},
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
-        PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
+        OutputDirCreationFailure, PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
     },
     run::Run,
     text_data::picture::Picture,
     text_format::TextFormat,
-    utils::read_tag_from_path,
+    utils::{get_image_extension, read_tag_from_path},
 };
 use clap::{Args, Subcommand};
 use id3::{Tag, TagLike};
+use mediatype::MediaType;
 use pipe_trait::Pipe;
 use serde_json::json;
 use std::{fs, path::PathBuf};
@@ -148,6 +149,8 @@ pub enum GetPictureCmd {
     List(GetPictureList),
     /// Export a single picture to a file.
     File(GetPictureFile),
+    /// Export all single pictures to a directory.
+    Dir(GetPictureDir),
 }
 
 impl Run for GetPictureCmd {
@@ -155,6 +158,7 @@ impl Run for GetPictureCmd {
         match self {
             GetPictureCmd::List(proc) => proc.run(),
             GetPictureCmd::File(proc) => proc.run(),
+            GetPictureCmd::Dir(proc) => proc.run(),
         }
     }
 }
@@ -226,5 +230,47 @@ impl Run for GetPictureFile {
         fs::write(output_picture, data)
             .map_err(PictureFileWriteFailure::from)
             .map_err(Error::from)
+    }
+}
+
+/// CLI arguments of `get picture dir`.
+#[derive(Debug, Args)]
+pub struct GetPictureDir {
+    /// Path to the input audio file.
+    pub input_audio: PathBuf,
+    /// Path to the directory to contain the output pictures.
+    pub output_directory: PathBuf,
+}
+
+impl Run for GetPictureDir {
+    fn run(self) -> Result<(), Error> {
+        let GetPictureDir {
+            input_audio,
+            output_directory,
+        } = self;
+
+        let tag = read_tag_from_path(input_audio)?;
+        let pictures = tag.pictures().zip(0..);
+        for (picture, index) in pictures {
+            let id3::frame::Picture {
+                picture_type,
+                mime_type,
+                description,
+                data,
+            } = picture;
+            fs::create_dir_all(&output_directory).map_err(OutputDirCreationFailure::from)?;
+            eprintln!("#{index}> {picture_type} {mime_type} {description}");
+            let ext = MediaType::parse(mime_type)
+                .ok()
+                .and_then(get_image_extension);
+            let output_file_name = match ext {
+                Some(ext) => format!("{index}.{ext}"),
+                None => index.to_string(),
+            };
+            let output_file_path = output_directory.join(output_file_name);
+            fs::write(output_file_path, data).map_err(PictureFileWriteFailure::from)?;
+        }
+
+        Ok(())
     }
 }

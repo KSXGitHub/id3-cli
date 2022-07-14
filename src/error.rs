@@ -14,6 +14,7 @@ pub enum Error {
     AmbiguousPictureChoices(AmbiguousPictureChoices),
     DeserializationFailure(DeserializationFailure),
     PictureFileWriteFailure(PictureFileWriteFailure),
+    OutputDirCreationFailure(OutputDirCreationFailure),
 }
 
 #[derive(Debug, From, Error)]
@@ -52,6 +53,12 @@ pub enum DeserializationFailure {
 #[derive(Debug, From, Error)]
 #[error("Failed to write picture to file: {error}")]
 pub struct PictureFileWriteFailure {
+    pub error: io::Error,
+}
+
+#[derive(Debug, From, Error)]
+#[error("Failed to create output directory: {error}")]
+pub struct OutputDirCreationFailure {
     pub error: io::Error,
 }
 

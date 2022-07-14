@@ -166,6 +166,7 @@ dependencies = [
  "command-extra",
  "derive_more",
  "id3",
+ "mediatype",
  "pipe-trait",
  "serde",
  "serde_json",
@@ -200,6 +201,12 @@ name = "linked-hash-map"
 version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
+
+[[package]]
+name = "mediatype"
+version = "0.19.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46fed21d9c0047469448f2ffe167a39fa10f1fffd331211a7356c0792865902f"
 
 [[package]]
 name = "miniz_oxide"

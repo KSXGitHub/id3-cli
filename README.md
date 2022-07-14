@@ -63,10 +63,7 @@ id3 get picture file --id=0 /path/to/my/audio.mp3 /path/to/the/exported/picture.
 ##### Export all pictures to a directory
 
 ```sh
-mkdir -p target-directory
-id3 get picture list --format=json /path/to/my/audio.mp3 | jq '.[].id' | while read id; do
-  id3 get picture file --id=$id /path/to/my/audio.mp3 target-directory/$id.jpg;
-done
+id3 get picture dir /path/to/my/audio.mp3 /path/to/the/output/directory/
 ```
 
 ## License
