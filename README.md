@@ -7,23 +7,23 @@
 #### `id3 get <text-field>`
 
 ```sh
-id3 get title /path/to/my/audio.mp3
+id3 get title ~/Music/input-audio.mp3
 ```
 
 ```sh
-id3 get artist /path/to/my/audio.mp3
+id3 get artist ~/Music/input-audio.mp3
 ```
 
 ```sh
-id3 get album /path/to/my/audio.mp3
+id3 get album ~/Music/input-audio.mp3
 ```
 
 ```sh
-id3 get album-artist /path/to/my/audio.mp3
+id3 get album-artist ~/Music/input-audio.mp3
 ```
 
 ```sh
-id3 get genre /path/to/my/audio.mp3
+id3 get genre ~/Music/input-audio.mp3
 ```
 
 #### `id3 get comment`
@@ -31,13 +31,13 @@ id3 get genre /path/to/my/audio.mp3
 ##### Print the only comment
 
 ```sh
-id3 get comment /path/to/my/audio.mp3
+id3 get comment ~/Music/input-audio.mp3
 ```
 
 ##### List multiple comments
 
 ```sh
-id3 get comment --format=json /path/to/my/audio.mp3
+id3 get comment --format=json ~/Music/input-audio.mp3
 ```
 
 #### `id3 get picture`
@@ -45,25 +45,25 @@ id3 get comment --format=json /path/to/my/audio.mp3
 ##### List pictures
 
 ```sh
-id3 get picture list --format=json /path/to/my/audio.mp3
+id3 get picture list --format=json ~/Music/input-audio.mp3
 ```
 
 ##### Export the only picture
 
 ```sh
-id3 get picture file /path/to/my/audio.mp3 /path/to/the/exported/picture.jpg
+id3 get picture file ~/Music/input-audio.mp3 ~/Pictures/output-picture.jpg
 ```
 
 ##### Export the first picture of many
 
 ```sh
-id3 get picture file --id=0 /path/to/my/audio.mp3 /path/to/the/exported/picture.jpg
+id3 get picture file --id=0 ~/Music/input-audio.mp3 ~/Pictures/exported-picture.jpg
 ```
 
 ##### Export all pictures to a directory
 
 ```sh
-id3 get picture dir /path/to/my/audio.mp3 /path/to/the/output/directory/
+id3 get picture dir ~/Music/input-audio.mp3 ~/Pictures/exported-pictures/
 ```
 
 ## License
