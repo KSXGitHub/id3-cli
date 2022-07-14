@@ -1,7 +1,7 @@
 use id3::frame::Picture as Id3Picture;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Picture {
     pub mime_type: String,
     pub picture_type: String,
@@ -34,7 +34,7 @@ impl Picture {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct WithId {
     pub id: u16,
     #[serde(flatten)]
