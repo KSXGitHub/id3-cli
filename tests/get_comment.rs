@@ -13,7 +13,7 @@ macro_rules! comment {
         $audio_path:literal
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
-        => $expected:expr $(;)?
+        => $expected:expr
     ) => {
         #[test]
         fn $name() {
@@ -59,7 +59,7 @@ macro_rules! comment_fail {
         $audio_path:literal
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
-        => $expected:expr $(;)?
+        => $expected:expr
     ) => {
         #[test]
         fn $name() {
@@ -115,7 +115,7 @@ macro_rules! comment_format {
         --format=$format:ident
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
-        => $expected:expr $(;)?
+        => $expected:expr
     ) => {
         #[test]
         fn $name() {

@@ -8,7 +8,7 @@ use std::process::Output;
 macro_rules! text {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal $audio_path:literal => $stdout:expr $(;)?
+        $name:ident: $field:literal $audio_path:literal => $stdout:expr
     ) => {
         $(#[$attributes])*
         #[test]
@@ -61,7 +61,7 @@ text!(genre_filled3: "genre" "audio3" => "Pop\n");
 macro_rules! text_format {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal --format=$format:ident $audio_path:literal => $expected:expr $(;)?
+        $name:ident: $field:literal --format=$format:ident $audio_path:literal => $expected:expr
     ) => {
         $(#[$attributes])*
         #[test]
