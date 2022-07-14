@@ -259,7 +259,7 @@ impl Run for GetPictureDir {
                 data,
             } = picture;
             fs::create_dir_all(&output_directory).map_err(OutputDirCreationFailure::from)?;
-            eprintln!("#{index}> {picture_type} {mime_type} {description}");
+            eprintln!("#{index}: {picture_type} {mime_type} {description}");
             let ext = MediaType::parse(mime_type)
                 .ok()
                 .and_then(get_image_extension);
