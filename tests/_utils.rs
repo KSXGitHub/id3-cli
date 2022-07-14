@@ -41,9 +41,9 @@ pub struct Exe {
 
 impl Exe {
     /// Create a wrapper with specified working directory.
-    pub fn new<Dir: AsRef<OsStr> + ?Sized>(wdir_ref: &Dir) -> Self {
+    pub fn new<Dir: AsRef<OsStr>>(wdir_ref: Dir) -> Self {
         let mut cmd = Command::new(EXE);
-        let wdir = Path::new(wdir_ref).to_path_buf();
+        let wdir = Path::new(&wdir_ref).to_path_buf();
         cmd.current_dir(&wdir);
         Self { cmd, wdir }
     }
