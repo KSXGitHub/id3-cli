@@ -167,7 +167,7 @@ picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
 macro_rules! picture_file {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal --id=$id:literal => $expected:literal
+        $name:ident: $audio_path:literal $(--id=$id:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
@@ -185,8 +185,10 @@ macro_rules! picture_file {
                 .with_arg("file")
                 .with_arg(&audio_path)
                 .with_arg(&image_path)
-                .with_arg("--id")
-                .with_arg($id)
+                $(
+                    .with_arg("--id")
+                    .with_arg($id)
+                )?
                 .output()
                 .expect("execute command");
 
@@ -208,7 +210,7 @@ macro_rules! picture_file {
 macro_rules! picture_file_fail {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal --id=$id:literal => $expected:literal
+        $name:ident: $audio_path:literal $(--id=$id:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
@@ -226,8 +228,10 @@ macro_rules! picture_file_fail {
                 .with_arg("file")
                 .with_arg(&audio_path)
                 .with_arg(&image_path)
-                .with_arg("--id")
-                .with_arg($id)
+                $(
+                    .with_arg("--id")
+                    .with_arg($id)
+                )?
                 .output()
                 .expect("execute command");
 
