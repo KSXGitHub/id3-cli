@@ -41,6 +41,8 @@ pub enum AppCmd {
     /// Show or export metadata.
     #[clap(subcommand)]
     Get(Get),
+    // TODO: id3 set [--no-backup]
+    // TODO: id3 delete [--no-backup]
 }
 
 impl Run for AppCmd {
