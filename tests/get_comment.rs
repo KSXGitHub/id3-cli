@@ -108,6 +108,9 @@ comment!(comment_jpn_filled2: "audio2" --lang=jpn => "【東方3DPV風】砕月 
 comment!(comment_eng_filled3: "audio3" --lang=eng => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
 comment!(comment_jpn_filled3: "audio3" --lang=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 
+comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => "error: Failed to read tag from file: IO: No such file or directory (os error 2)\n");
+comment_fail!(#[cfg(unix)] comment_dir: "." => "error: Failed to read tag from file: IO: Is a directory (os error 21)\n");
+
 macro_rules! comment_format {
     (
         $(#[$attributes:meta])*

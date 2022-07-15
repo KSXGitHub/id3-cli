@@ -118,3 +118,34 @@ text_format!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None::<&str>
 text_format!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None::<&str>);
 text_format!(artist_yaml_filled2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
 text_format!(artist_yaml_filled3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
+
+macro_rules! text_fail {
+    (
+        $(#[$attributes:meta])*
+        $name:ident: $field:literal $audio_path:literal => $stderr:expr
+    ) => {
+        $(#[$attributes])*
+        #[test]
+        fn $name() {
+            let audio_path = assets().join($audio_path);
+            let Output {
+                status,
+                stdout,
+                stderr,
+            } = Exe::new(WORKSPACE)
+                .cmd
+                .with_arg("get")
+                .with_arg($field)
+                .with_arg(audio_path)
+                .output()
+                .expect("execute command");
+            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            assert!(!status.success());
+            assert!(stdout.is_empty());
+            assert_eq!(u8v_to_string(&stderr), $stderr);
+        }
+    };
+}
+
+text_fail!(#[cfg(unix)] title_not_exist: "title" "not-exist" => "error: Failed to read tag from file: IO: No such file or directory (os error 2)\n");
+text_fail!(#[cfg(unix)] title_dir: "title" "." => "error: Failed to read tag from file: IO: Is a directory (os error 21)\n");

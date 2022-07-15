@@ -266,6 +266,9 @@ picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b
 picture_file!(picture_file_3_filled3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
 picture_file_fail!(picture_file_4_filled3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
 
+picture_file_fail!(#[cfg(unix)] picture_file_not_exist: "not-exist" => "error: Failed to read tag from file: IO: No such file or directory (os error 2)\n");
+picture_file_fail!(#[cfg(unix)] picture_file_dir: "." => "error: Failed to read tag from file: IO: Is a directory (os error 21)\n");
+
 macro_rules! picture_dir_empty {
     (
         $(#[$attributes:meta])*
