@@ -2,7 +2,7 @@ pub mod field;
 pub mod get;
 
 use crate::{error::Error, run::Run};
-use clap::{Args, Parser, Subcommand};
+use clap::{Parser, Subcommand};
 use get::Get;
 use std::process::ExitCode;
 
@@ -41,10 +41,6 @@ pub enum AppCmd {
     /// Show or export metadata.
     #[clap(subcommand)]
     Get(Get),
-    // /// Modify a field of metadata.
-    // Modify(ModifyArgs),
-    // /// Erase all metadata.
-    // Erase(EraseArgs),
 }
 
 impl Run for AppCmd {
@@ -53,20 +49,4 @@ impl Run for AppCmd {
             AppCmd::Get(proc) => proc.run(),
         }
     }
-}
-
-/// CLI arguments of the `modify` subcommand.
-#[derive(Debug, Args)]
-pub struct ModifyArgs {
-    /// Don't create backup.
-    #[clap(long)]
-    pub no_backup: bool,
-}
-
-/// CLI arguments of the `erase` subcommand.
-#[derive(Debug, Args)]
-pub struct EraseArgs {
-    /// Don't create backup.
-    #[clap(long)]
-    pub no_backup: bool,
 }
