@@ -1,5 +1,6 @@
 pub mod field;
 pub mod get;
+pub mod set;
 
 use crate::{error::Error, run::Run};
 use clap::{Parser, Subcommand};
