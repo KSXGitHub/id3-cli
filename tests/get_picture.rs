@@ -164,6 +164,45 @@ picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
     },
 ]);
 
+macro_rules! picture_dir_empty {
+    (
+        $(#[$attributes:meta])*
+        $name:ident: $audio_path:literal
+    ) => {
+        $(#[$attributes])*
+        #[test]
+        fn $name() {
+            let Exe { cmd, wdir } = Exe::temp_workspace();
+            let audio_path = wdir.join("assets").join($audio_path);
+            let image_dir_path = wdir.join("exported-images");
+            let Output {
+                status,
+                stdout,
+                stderr,
+            } = cmd
+                .with_arg("get")
+                .with_arg("picture")
+                .with_arg("dir")
+                .with_arg(&audio_path)
+                .with_arg(&image_dir_path)
+                .output()
+                .expect("execute command");
+
+            // for ease of debug
+            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+
+            // basic guarantees
+            assert!(status.success());
+            assert!(stdout.is_empty());
+            assert!(stderr.is_empty());
+
+            // test the filesystem
+            assert!(!image_dir_path.exists());
+        }
+    };
+}
+
 macro_rules! picture_dir_filled {
     (
         $(#[$attributes:meta])*
@@ -221,6 +260,9 @@ macro_rules! picture_dir_filled {
         }
     };
 }
+
+picture_dir_empty!(picture_dir_empty0: "audio0");
+picture_dir_empty!(picture_dir_empty1: "audio1");
 
 picture_dir_filled!(picture_dir_filled2: "audio2" => [(
     "0.jpg",
