@@ -249,10 +249,14 @@ macro_rules! picture_file_fail {
     };
 }
 
+picture_file_fail!(picture_file_empty0: "audio0" => "error: Picture not found\n");
 picture_file_fail!(picture_file_0_empty0: "audio0" --id="0" => "error: Specified picture ID is out of bound\n");
+picture_file_fail!(picture_file_empty1: "audio1" => "error: Picture not found\n");
 picture_file_fail!(picture_file_0_empty1: "audio1" --id="1" => "error: Specified picture ID is out of bound\n");
+picture_file!(picture_file_filled2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
 picture_file!(picture_file_0_filled2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
 picture_file_fail!(picture_file_1_filled2: "audio2" --id="1" => "error: Specified picture ID is out of bound\n");
+picture_file_fail!(picture_file_filled3: "audio3" => "error: Too many pictures to choose from\n");
 picture_file!(picture_file_0_filled3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
 picture_file!(picture_file_1_filled3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
 picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
