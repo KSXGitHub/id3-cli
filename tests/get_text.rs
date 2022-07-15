@@ -26,6 +26,7 @@ macro_rules! text {
                 .with_arg(audio_path)
                 .output()
                 .expect("execute command");
+            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
             eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
             assert!(status.success());
             assert!(stderr.is_empty());
