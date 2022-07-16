@@ -39,7 +39,6 @@ impl<'a> FilePath<'a> {
     }
 }
 
-#[cfg(unix)]
 #[cfg(test)]
 mod tests {
     use super::FilePath;
