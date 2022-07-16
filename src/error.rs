@@ -21,6 +21,7 @@ pub enum Error {
 #[derive(Debug, From, Error)]
 #[error("Failed to read tag from file: {error}")]
 pub struct TagReadFailure {
+    #[source]
     pub error: id3::Error,
 }
 
@@ -54,12 +55,14 @@ pub enum DeserializationFailure {
 #[derive(Debug, From, Error)]
 #[error("Failed to write picture to file: {error}")]
 pub struct PictureFileWriteFailure {
+    #[source]
     pub error: io::Error,
 }
 
 #[derive(Debug, From, Error)]
 #[error("Failed to create output directory: {error}")]
 pub struct OutputDirCreationFailure {
+    #[source]
     pub error: io::Error,
 }
 
