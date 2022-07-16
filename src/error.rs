@@ -15,6 +15,7 @@ pub enum Error {
     DeserializationFailure(DeserializationFailure),
     PictureFileWriteFailure(PictureFileWriteFailure),
     OutputDirCreationFailure(OutputDirCreationFailure),
+    InvalidFilePath(InvalidFilePath),
 }
 
 #[derive(Debug, From, Error)]
@@ -61,6 +62,10 @@ pub struct PictureFileWriteFailure {
 pub struct OutputDirCreationFailure {
     pub error: io::Error,
 }
+
+#[derive(Debug, From, Error)]
+#[error("Provided path is not a file")]
+pub struct InvalidFilePath;
 
 macro_rules! indirect_convert {
     ($source:ty, $intermediate:ident) => {

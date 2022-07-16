@@ -1,3 +1,4 @@
+use crate::error::InvalidFilePath;
 use chrono::{DateTime, Datelike, Local, Timelike};
 use pipe_trait::Pipe;
 use std::path::{Path, PathBuf};
@@ -17,14 +18,14 @@ pub struct FilePath<'a> {
 
 impl<'a> FilePath<'a> {
     /// Construct backup file path.
-    pub fn path(self) -> Option<PathBuf> {
+    pub fn path(self) -> Result<PathBuf, InvalidFilePath> {
         let FilePath {
             source_file_path,
             source_file_hash,
             date_time,
         } = self;
-        let source_file_parent = source_file_path.parent()?;
-        let source_file_name = source_file_path.file_name()?;
+        let source_file_parent = source_file_path.parent().ok_or(InvalidFilePath)?;
+        let source_file_name = source_file_path.file_name().ok_or(InvalidFilePath)?;
         let date = date_time.date();
         let date = format!("{:04}-{:02}-{:02}", date.year(), date.month(), date.day());
         let time = date_time.time();
@@ -40,7 +41,7 @@ impl<'a> FilePath<'a> {
             .join(date)
             .join(time)
             .join(source_file_hash)
-            .pipe(Some)
+            .pipe(Ok)
     }
 }
 
