@@ -12,5 +12,6 @@ pub fn main() -> std::process::ExitCode {
     app::App::main()
 }
 
+pub use chrono;
 pub use clap;
 pub use id3;
