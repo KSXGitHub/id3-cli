@@ -1,6 +1,7 @@
 mod utils;
 
 pub mod app;
+pub mod backup;
 pub mod error;
 pub mod run;
 pub mod text_data;
