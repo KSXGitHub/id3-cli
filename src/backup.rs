@@ -56,8 +56,10 @@ impl<'a> FilePath<'a> {
         let src = self.source_file_path;
         let dest = self.path()?;
         if dest.exists() {
+            eprintln!("backup: {dest:?} already exists. Skip.");
             return Ok(false);
         }
+        eprintln!("backup: Copying {src:?} to {dest:?}");
         copy(src, &dest).map_err(|error| BackupFailure {
             src: src.to_path_buf(),
             dest: dest.to_path_buf(),
