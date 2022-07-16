@@ -1,12 +1,15 @@
 use chrono::{DateTime, Datelike, Local, Timelike};
-use std::path::{Path, PathBuf};
+use std::{
+    ffi::OsStr,
+    path::{Path, PathBuf},
+};
 use typed_builder::TypedBuilder;
 
 /// Parameters to construct a backup file path.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, TypedBuilder)]
 pub struct FilePath<'a> {
     /// Name of the source file (not path).
-    pub source_file_name: &'a Path,
+    pub source_file_name: &'a OsStr,
     /// Hash of the source file in hexadecimal string.
     pub source_file_hash: &'a str,
     /// Current date time.
@@ -44,12 +47,12 @@ mod tests {
     use super::FilePath;
     use chrono::{Local, TimeZone};
     use pretty_assertions::assert_eq;
-    use std::path::Path;
+    use std::{ffi::OsStr, path::Path};
 
     #[test]
     fn file_path() {
         let received = FilePath::builder()
-            .source_file_name(Path::new("mysterious-file.mp3"))
+            .source_file_name(OsStr::new("mysterious-file.mp3"))
             .source_file_hash("34a1e24aba0a02316b786933761beedcea40c8eda46a39054f994e0fdef87adf")
             .date_time(Local.ymd(2022, 7, 16).and_hms(12, 26, 5))
             .build()
