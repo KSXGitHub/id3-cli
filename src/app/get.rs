@@ -48,7 +48,7 @@ impl Run for Text<GetArgsTable> {
     }
 }
 
-/// Table of [`Args`] types for [`GetCmd`].
+/// Table of [`Args`] types for [`Get`].
 #[derive(Debug)]
 pub struct GetArgsTable;
 impl ArgsTable for GetArgsTable {
