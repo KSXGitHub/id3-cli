@@ -54,7 +54,8 @@ mod tests {
     #[test]
     fn file_path() {
         let source_file_parent = Path::new("Music").join("fav");
-        let source_file_path = source_file_parent.join("mysterious-file.mp3");
+        let source_file_name = "mysterious-file.mp3";
+        let source_file_path = source_file_parent.join(source_file_name);
         let received = FilePath::builder()
             .source_file_path(&source_file_path)
             .source_file_hash("34a1e24aba0a02316b786933761beedcea40c8eda46a39054f994e0fdef87adf")
@@ -64,7 +65,7 @@ mod tests {
             .expect("get internal content");
         let expected = source_file_parent
             .join(".id3-backups")
-            .join("mysterious-file.mp3")
+            .join(source_file_name)
             .join("2022-07-16")
             .join("12.26.05")
             .join("34a1e24aba0a02316b786933761beedcea40c8eda46a39054f994e0fdef87adf");
