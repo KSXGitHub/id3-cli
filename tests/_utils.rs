@@ -1,5 +1,4 @@
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
-use pipe_trait::Pipe;
 use sha2::{Digest, Sha256};
 use std::{
     ffi::OsStr,
@@ -123,5 +122,5 @@ pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
         .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"));
     let mut hasher = Sha256::new();
     hasher.update(data);
-    hasher.finalize().pipe(hex::encode)
+    format!("{:x}", hasher.finalize())
 }
