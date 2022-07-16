@@ -4,7 +4,8 @@ use mediatype::{
     MediaType,
 };
 use pipe_trait::Pipe;
-use std::path::Path;
+use sha2::{Digest, Sha256};
+use std::{fmt::Debug, fs::read as read_file, path::Path};
 
 /// Return an empty tag if the reason for the error was "no tag".
 /// Otherwise, return the error.
@@ -44,4 +45,13 @@ pub(crate) fn get_image_extension(mime: MediaType) -> Option<&str> {
     map_subty_ext!(WEBP -> "webp");
 
     None
+}
+
+/// Create sha256 hash of a file.
+pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
+    let data = read_file(&file_name)
+        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"));
+    let mut hasher = Sha256::new();
+    hasher.update(data);
+    format!("{:x}", hasher.finalize())
 }

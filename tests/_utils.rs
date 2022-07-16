@@ -1,9 +1,6 @@
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
-use sha2::{Digest, Sha256};
 use std::{
     ffi::OsStr,
-    fmt::Debug,
-    fs,
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
     str::from_utf8,
@@ -114,13 +111,4 @@ pub mod deserialize {
 pub mod serialize {
     pub use serde_json::to_string_pretty as json;
     pub use serde_yaml::to_string as yaml;
-}
-
-/// Create sha256 hash of a file.
-pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
-    let data = fs::read(&file_name)
-        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"));
-    let mut hasher = Sha256::new();
-    hasher.update(data);
-    format!("{:x}", hasher.finalize())
 }
