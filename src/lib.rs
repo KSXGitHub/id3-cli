@@ -1,11 +1,10 @@
-mod utils;
-
 pub mod app;
 pub mod backup;
 pub mod error;
 pub mod run;
 pub mod text_data;
 pub mod text_format;
+pub mod utils;
 
 /// The main program.
 pub fn main() -> std::process::ExitCode {
