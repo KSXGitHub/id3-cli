@@ -5,6 +5,7 @@ pub mod set;
 use crate::{error::Error, run::Run};
 use clap::{Parser, Subcommand};
 use get::Get;
+use set::Set;
 use std::process::ExitCode;
 
 /// The main application.
@@ -42,6 +43,9 @@ pub enum AppCmd {
     /// Show or export metadata.
     #[clap(subcommand)]
     Get(Get),
+    /// Modify metadata.
+    #[clap(subcommand)]
+    Set(Set),
     // TODO: id3 set [--no-backup]
     // TODO: id3 delete [--no-backup]
 }
@@ -50,6 +54,7 @@ impl Run for AppCmd {
     fn run(self) -> Result<(), Error> {
         match self {
             AppCmd::Get(proc) => proc.run(),
+            AppCmd::Set(proc) => proc.run(),
         }
     }
 }
