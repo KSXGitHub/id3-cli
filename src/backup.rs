@@ -1,15 +1,13 @@
 use chrono::{DateTime, Datelike, Local, Timelike};
-use std::{
-    ffi::OsStr,
-    path::{Path, PathBuf},
-};
+use pipe_trait::Pipe;
+use std::path::{Path, PathBuf};
 use typed_builder::TypedBuilder;
 
 /// Parameters to construct a backup file path.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, TypedBuilder)]
 pub struct FilePath<'a> {
-    /// Name of the source file (not path).
-    pub source_file_name: &'a OsStr,
+    /// Path to the source file.
+    pub source_file_path: &'a Path,
     /// Hash of the source file in hexadecimal string.
     pub source_file_hash: &'a str,
     /// Current date time.
@@ -19,12 +17,14 @@ pub struct FilePath<'a> {
 
 impl<'a> FilePath<'a> {
     /// Construct backup file path.
-    pub fn path(self) -> PathBuf {
+    pub fn path(self) -> Option<PathBuf> {
         let FilePath {
-            source_file_name,
+            source_file_path,
             source_file_hash,
             date_time,
         } = self;
+        let source_file_dir = source_file_path.parent()?;
+        let source_file_name = source_file_path.file_name()?;
         let date = date_time.date();
         let date = format!("{:04}-{:02}-{:02}", date.year(), date.month(), date.day());
         let time = date_time.time();
@@ -34,11 +34,13 @@ impl<'a> FilePath<'a> {
             time.minute(),
             time.second(),
         );
-        Path::new(".id3-backups")
+        source_file_dir
+            .join(".id3-backups")
             .join(source_file_name)
             .join(date)
             .join(time)
             .join(source_file_hash)
+            .pipe(Some)
     }
 }
 
@@ -47,17 +49,21 @@ mod tests {
     use super::FilePath;
     use chrono::{Local, TimeZone};
     use pretty_assertions::assert_eq;
-    use std::{ffi::OsStr, path::Path};
+    use std::path::Path;
 
     #[test]
     fn file_path() {
+        let source_file_parent = Path::new("Music").join("fav");
+        let source_file_path = source_file_parent.join("mysterious-file.mp3");
         let received = FilePath::builder()
-            .source_file_name(OsStr::new("mysterious-file.mp3"))
+            .source_file_path(&source_file_path)
             .source_file_hash("34a1e24aba0a02316b786933761beedcea40c8eda46a39054f994e0fdef87adf")
             .date_time(Local.ymd(2022, 7, 16).and_hms(12, 26, 5))
             .build()
-            .path();
-        let expected = Path::new(".id3-backups")
+            .path()
+            .expect("get internal content");
+        let expected = source_file_parent
+            .join(".id3-backups")
             .join("mysterious-file.mp3")
             .join("2022-07-16")
             .join("12.26.05")
