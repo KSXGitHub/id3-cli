@@ -64,7 +64,7 @@ pub struct GetText {
     /// Format the output text into JSON or YAML.
     #[clap(long, value_enum)]
     pub format: Option<TextFormat>,
-    /// Path to the input file.
+    /// Path to the input audio file.
     pub input_audio: PathBuf,
 }
 
