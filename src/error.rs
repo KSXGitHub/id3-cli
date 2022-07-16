@@ -1,6 +1,6 @@
 use derive_more::From;
 use pipe_trait::Pipe;
-use std::io;
+use std::{io, path::PathBuf};
 use thiserror::Error;
 
 #[derive(Debug, From, Error)]
@@ -16,6 +16,7 @@ pub enum Error {
     PictureFileWriteFailure(PictureFileWriteFailure),
     OutputDirCreationFailure(OutputDirCreationFailure),
     InvalidFilePath(InvalidFilePath),
+    BackupFailure(BackupFailure),
 }
 
 #[derive(Debug, From, Error)]
@@ -69,6 +70,15 @@ pub struct OutputDirCreationFailure {
 #[derive(Debug, From, Error)]
 #[error("Provided path is not a file")]
 pub struct InvalidFilePath;
+
+#[derive(Debug, Error)]
+#[error("Failed to create a backup of {src:?} at {dest:?}: {error}")]
+pub struct BackupFailure {
+    pub src: PathBuf,
+    pub dest: PathBuf,
+    #[source]
+    pub error: io::Error,
+}
 
 macro_rules! indirect_convert {
     ($source:ty, $intermediate:ident) => {

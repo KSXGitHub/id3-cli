@@ -1,7 +1,10 @@
-use crate::error::InvalidFilePath;
+use crate::error::{BackupFailure, Error, InvalidFilePath};
 use chrono::{DateTime, Datelike, Local, Timelike};
 use pipe_trait::Pipe;
-use std::path::{Path, PathBuf};
+use std::{
+    fs::copy,
+    path::{Path, PathBuf},
+};
 use typed_builder::TypedBuilder;
 
 /// Parameters to construct a backup file path.
@@ -42,6 +45,25 @@ impl<'a> FilePath<'a> {
             .join(time)
             .join(source_file_hash)
             .pipe(Ok)
+    }
+
+    /// Copy the original file to the backup destination.
+    ///
+    /// If the backup destination already exists, skip copying and return `Ok(false)`.
+    ///
+    /// If the backup destination does not exist, perform copying and return `Ok(true)`.
+    pub fn backup(self) -> Result<bool, Error> {
+        let src = self.source_file_path;
+        let dest = self.path()?;
+        if dest.exists() {
+            return Ok(false);
+        }
+        copy(src, &dest).map_err(|error| BackupFailure {
+            src: src.to_path_buf(),
+            dest: dest.to_path_buf(),
+            error,
+        })?;
+        Ok(true)
     }
 }
 
