@@ -23,7 +23,7 @@ impl<'a> FilePath<'a> {
             source_file_hash,
             date_time,
         } = self;
-        let source_file_dir = source_file_path.parent()?;
+        let source_file_parent = source_file_path.parent()?;
         let source_file_name = source_file_path.file_name()?;
         let date = date_time.date();
         let date = format!("{:04}-{:02}-{:02}", date.year(), date.month(), date.day());
@@ -34,7 +34,7 @@ impl<'a> FilePath<'a> {
             time.minute(),
             time.second(),
         );
-        source_file_dir
+        source_file_parent
             .join(".id3-backups")
             .join(source_file_name)
             .join(date)
