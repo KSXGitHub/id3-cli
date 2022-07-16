@@ -63,7 +63,7 @@ mod tests {
             .date_time(Local.ymd(2022, 7, 16).and_hms(12, 26, 5))
             .build()
             .path()
-            .expect("get internal content");
+            .expect("get backup file path");
         let expected = source_file_parent
             .join(".id3-backups")
             .join(source_file_name)
