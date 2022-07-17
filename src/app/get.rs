@@ -3,7 +3,6 @@ use crate::{
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
         OutputDirCreationFailure, PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
-        TagReadFailure,
     },
     run::Run,
     text_data::picture::Picture,
@@ -28,7 +27,7 @@ impl Run for Text<GetArgsTable> {
                     format,
                     input_audio,
                 } = $args;
-                let tag = read_tag_from_path(input_audio).map_err(TagReadFailure::from)?;
+                let tag = read_tag_from_path(input_audio)?;
                 let value = $get(&tag);
                 match (format, value) {
                     (Some(format), value) => println!("{}", format.serialize(&value)?),
@@ -94,7 +93,7 @@ impl Run for GetComment {
             format,
             input_audio,
         } = self;
-        let tag = read_tag_from_path(input_audio).map_err(TagReadFailure::from)?;
+        let tag = read_tag_from_path(input_audio)?;
         let comments = tag
             .comments()
             .filter(|comment| lang.as_ref().map_or(true, |lang| &comment.lang == lang))
@@ -180,7 +179,7 @@ impl Run for GetPictureList {
             format,
             input_audio,
         } = self;
-        let tag = read_tag_from_path(input_audio).map_err(TagReadFailure::from)?;
+        let tag = read_tag_from_path(input_audio)?;
         let pictures: Vec<_> = tag
             .pictures()
             .map(Picture::from_id3_ref)
@@ -212,7 +211,7 @@ impl Run for GetPictureFile {
             input_audio,
             output_picture,
         } = self;
-        let tag = read_tag_from_path(input_audio).map_err(TagReadFailure::from)?;
+        let tag = read_tag_from_path(input_audio)?;
         let data = if let Some(target_id) = id {
             &tag.pictures()
                 .zip(0u16..)
@@ -250,7 +249,7 @@ impl Run for GetPictureDir {
             output_directory,
         } = self;
 
-        let tag = read_tag_from_path(input_audio).map_err(TagReadFailure::from)?;
+        let tag = read_tag_from_path(input_audio)?;
         let pictures = tag.pictures().zip(0..);
         for (picture, index) in pictures {
             let id3::frame::Picture {
