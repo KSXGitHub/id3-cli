@@ -47,11 +47,16 @@ pub(crate) fn get_image_extension(mime: MediaType) -> Option<&str> {
     None
 }
 
-/// Create sha256 hash of a file.
-pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
-    let data = read_file(&file_name)
-        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"));
+/// Create sha256 hash of a binary blob.
+pub fn sha256_data(data: impl AsRef<[u8]>) -> String {
     let mut hasher = Sha256::new();
     hasher.update(data);
     format!("{:x}", hasher.finalize())
+}
+
+/// Create sha256 hash of a file.
+pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
+    read_file(&file_name)
+        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"))
+        .pipe(sha256_data)
 }
