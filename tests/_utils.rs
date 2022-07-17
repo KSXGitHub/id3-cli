@@ -1,6 +1,8 @@
+use derive_more::{AsRef, Deref, From};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
 use std::{
     ffi::OsStr,
+    fs::remove_dir_all,
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
     str::from_utf8,
@@ -34,33 +36,24 @@ pub fn assets() -> PathBuf {
 }
 
 /// Wrapper of main executable.
-pub struct Exe {
+pub struct Exe<WorkDir> {
     /// Command the execute.
     pub cmd: Command,
     /// Working directory.
-    pub wdir: PathBuf,
+    pub wdir: WorkDir,
 }
 
-impl Exe {
+impl<WorkDir> Exe<WorkDir> {
     /// Create a wrapper with specified working directory.
-    pub fn new<Dir: AsRef<OsStr>>(wdir_ref: Dir) -> Self {
+    pub fn new<Dir: AsRef<OsStr>>(wdir_ref: Dir) -> Self
+    where
+        PathBuf: Into<WorkDir>,
+    {
         let mut cmd = Command::new(EXE);
         let wdir = Path::new(&wdir_ref).to_path_buf();
         cmd.current_dir(&wdir);
+        let wdir = wdir.into();
         Self { cmd, wdir }
-    }
-
-    /// Create a wrapper with a temporary working directory.
-    pub fn temp_workspace() -> Self {
-        let workspace = tmp::Builder::new()
-            .prefix(TEMP_PREFIX)
-            .suffix(TEMP_SUFFIX)
-            .tempdir()
-            .expect("find temporary workspace")
-            .into_path();
-        copy_dir(assets(), &workspace, &CopyOptions::new())
-            .expect("copy assets to the temporary workspace");
-        Exe::new(&workspace)
     }
 
     /// Run the command.
@@ -93,6 +86,44 @@ impl Exe {
             .write_all(stdin)
             .expect("write data to child's stdin");
         child.wait_with_output().expect("wait for child's output")
+    }
+}
+
+impl Exe<PathBuf> {
+    /// Create a wrapper with the project root as working directory.
+    pub fn project_root() -> Self {
+        Exe::new(WORKSPACE)
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, AsRef, Deref, From)]
+#[as_ref(forward)]
+#[deref(forward)]
+pub struct TempDir(PathBuf);
+
+impl Drop for TempDir {
+    fn drop(&mut self) {
+        let target: &Path = self;
+        let name = target.file_name().expect("get name").to_string_lossy();
+        assert!(name.starts_with(TEMP_PREFIX));
+        assert!(name.ends_with(TEMP_SUFFIX));
+        eprintln!("TempDir: Deleting {target:?}");
+        remove_dir_all(target).expect("delete temporary directory");
+    }
+}
+
+impl Exe<TempDir> {
+    /// Create a wrapper with a temporary working directory.
+    pub fn temp_workspace() -> Self {
+        let workspace = tmp::Builder::new()
+            .prefix(TEMP_PREFIX)
+            .suffix(TEMP_SUFFIX)
+            .tempdir()
+            .expect("find temporary workspace")
+            .into_path();
+        copy_dir(assets(), &workspace, &CopyOptions::new())
+            .expect("copy assets to the temporary workspace");
+        Exe::new(&workspace)
     }
 }
 

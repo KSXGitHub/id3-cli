@@ -1,12 +1,12 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
+use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use id3_cli::text_data::picture::{self, Picture};
 use id3_cli::utils::sha256_file;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
-use std::{fs::read_dir, path::PathBuf, process::Output};
+use std::{fs::read_dir, path::Path, process::Output};
 
 macro_rules! picture {
     (
@@ -41,7 +41,7 @@ macro_rules! picture_list {
                 status,
                 stdout,
                 stderr,
-            } = Exe::new(WORKSPACE)
+            } = Exe::project_root()
                 .cmd
                 .with_arg("get")
                 .with_arg("picture")
@@ -258,7 +258,7 @@ macro_rules! picture_file_fail_fn {
         $(#[$attributes])*
         #[test]
         fn $name() {
-            let get_expected: fn(wdir: PathBuf) -> String = $get_expected;
+            let get_expected: fn(wdir: &Path) -> String = $get_expected;
             let Exe { cmd, wdir } = Exe::temp_workspace();
             let audio_path = wdir.join("assets").join($audio_path);
             let image_path = wdir.join("exported-image");
@@ -288,7 +288,7 @@ macro_rules! picture_file_fail_fn {
             assert!(stdout.is_empty());
 
             // compare stderr
-            assert_eq!(u8v_to_string(&stderr), get_expected(wdir));
+            assert_eq!(u8v_to_string(&stderr), get_expected(wdir.as_ref()));
         }
     };
 }

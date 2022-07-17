@@ -1,6 +1,6 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
+use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
@@ -23,7 +23,7 @@ macro_rules! comment {
                 status,
                 stdout,
                 stderr,
-            } = Exe::new(WORKSPACE)
+            } = Exe::project_root()
                 .cmd
                 .with_arg("get")
                 .with_arg("comment")
@@ -69,7 +69,7 @@ macro_rules! comment_fail {
                 status,
                 stdout,
                 stderr,
-            } = Exe::new(WORKSPACE)
+            } = Exe::project_root()
                 .cmd
                 .with_arg("get")
                 .with_arg("comment")
@@ -136,7 +136,7 @@ macro_rules! comment_format {
                 status,
                 stdout,
                 stderr,
-            } = Exe::new(WORKSPACE)
+            } = Exe::project_root()
                 .cmd
                 .with_arg("get")
                 .with_arg("comment")
