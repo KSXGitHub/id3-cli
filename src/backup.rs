@@ -1,8 +1,8 @@
-use crate::error::{BackupFailure, Error, InvalidFilePath};
+use crate::error::{BackupFailure, DirCreationFailure, Error, InvalidFilePath};
 use chrono::{DateTime, Datelike, Local, Timelike};
 use pipe_trait::Pipe;
 use std::{
-    fs::copy,
+    fs::{copy, create_dir_all},
     path::{Path, PathBuf},
 };
 use typed_builder::TypedBuilder;
@@ -58,6 +58,13 @@ impl<'a> Backup<'a> {
         if dest.exists() {
             eprintln!("backup: {dest:?} already exists. Skip.");
             return Ok(false);
+        }
+        if let Some(parent) = dest.parent() {
+            eprintln!("backup: Creating a directory at {parent:?}");
+            create_dir_all(parent).map_err(move |error| DirCreationFailure {
+                dir: parent.to_path_buf(),
+                error,
+            })?;
         }
         eprintln!("backup: Copying {src:?} to {dest:?}");
         copy(src, &dest).map_err(|error| BackupFailure {

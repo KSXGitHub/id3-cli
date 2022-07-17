@@ -16,6 +16,7 @@ pub enum Error {
     PictureFileWriteFailure(PictureFileWriteFailure),
     OutputDirCreationFailure(OutputDirCreationFailure),
     InvalidFilePath(InvalidFilePath),
+    DirCreationFailure(DirCreationFailure),
     BackupFailure(BackupFailure),
 }
 
@@ -70,6 +71,14 @@ pub struct OutputDirCreationFailure {
 #[derive(Debug, From, Error)]
 #[error("Provided path is not a file")]
 pub struct InvalidFilePath;
+
+#[derive(Debug, Error)]
+#[error("Failed to create a directory at {dir:?}: {error}")]
+pub struct DirCreationFailure {
+    pub dir: PathBuf,
+    #[source]
+    pub error: io::Error,
+}
 
 #[derive(Debug, Error)]
 #[error("Failed to create a backup of {src:?} at {dest:?}: {error}")]
