@@ -1,4 +1,4 @@
-use derive_more::{AsRef, Deref, From};
+use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
 use std::{
     ffi::OsStr,
@@ -45,14 +45,12 @@ pub struct Exe<WorkDir> {
 
 impl<WorkDir> Exe<WorkDir> {
     /// Create a wrapper with specified working directory.
-    pub fn new<Dir: AsRef<OsStr>>(wdir_ref: Dir) -> Self
+    pub fn new(wdir: WorkDir) -> Self
     where
-        PathBuf: Into<WorkDir>,
+        WorkDir: AsRef<Path>,
     {
         let mut cmd = Command::new(EXE);
-        let wdir = Path::new(&wdir_ref).to_path_buf();
         cmd.current_dir(&wdir);
-        let wdir = wdir.into();
         Self { cmd, wdir }
     }
 
@@ -92,16 +90,31 @@ impl<WorkDir> Exe<WorkDir> {
 impl Exe<PathBuf> {
     /// Create a wrapper with the project root as working directory.
     pub fn project_root() -> Self {
-        Exe::new(WORKSPACE)
+        Exe::new(WORKSPACE.into())
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, AsRef, Deref, From)]
+/// Temporary workspace that will automatically be deleted on [drop].
+#[derive(Debug, PartialEq, Eq, Clone, AsRef, Deref)]
 #[as_ref(forward)]
 #[deref(forward)]
-pub struct TempDir(PathBuf);
+pub struct TempWorkspace(PathBuf);
 
-impl Drop for TempDir {
+impl Default for TempWorkspace {
+    fn default() -> Self {
+        let workspace = tmp::Builder::new()
+            .prefix(TEMP_PREFIX)
+            .suffix(TEMP_SUFFIX)
+            .tempdir()
+            .expect("find temporary workspace")
+            .into_path();
+        copy_dir(assets(), &workspace, &CopyOptions::new())
+            .expect("copy assets to the temporary workspace");
+        TempWorkspace(workspace)
+    }
+}
+
+impl Drop for TempWorkspace {
     fn drop(&mut self) {
         let target: &Path = self;
         let name = target.file_name().expect("get name").to_string_lossy();
@@ -112,18 +125,10 @@ impl Drop for TempDir {
     }
 }
 
-impl Exe<TempDir> {
+impl Exe<TempWorkspace> {
     /// Create a wrapper with a temporary working directory.
     pub fn temp_workspace() -> Self {
-        let workspace = tmp::Builder::new()
-            .prefix(TEMP_PREFIX)
-            .suffix(TEMP_SUFFIX)
-            .tempdir()
-            .expect("find temporary workspace")
-            .into_path();
-        copy_dir(assets(), &workspace, &CopyOptions::new())
-            .expect("copy assets to the temporary workspace");
-        Exe::new(&workspace)
+        Exe::new(TempWorkspace::default())
     }
 }
 
