@@ -4,7 +4,7 @@ use _utils::{assets, deserialize, serialize, u8v_to_string, Exe, WORKSPACE};
 use command_extra::CommandExtra;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
-use std::{path::Path, process::Output};
+use std::process::Output;
 
 macro_rules! text {
     (
@@ -149,9 +149,9 @@ macro_rules! text_fail {
 
 text_fail!(#[cfg(unix)] title_not_exist: "title" "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
-    Path::new(WORKSPACE).join("tests").join("assets").join("not-exist"),
+    assets().join("not-exist"),
 ));
 text_fail!(#[cfg(unix)] title_dir: "title" "." => format!(
     "error: Failed to read {:?}: Is a directory (os error 21)\n",
-    Path::new(WORKSPACE).join("tests").join("assets").join("."),
+    assets().join("."),
 ));

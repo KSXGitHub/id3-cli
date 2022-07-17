@@ -5,7 +5,7 @@ use command_extra::CommandExtra;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use serde_json::{json, Value as JsonValue};
-use std::{path::Path, process::Output};
+use std::process::Output;
 
 macro_rules! comment {
     (
@@ -110,11 +110,11 @@ comment!(comment_jpn_filled3: "audio3" --lang=jpn => "【東方3DPV風】砕月 
 
 comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
-    Path::new(WORKSPACE).join("tests").join("assets").join("not-exist"),
+    assets().join("not-exist"),
 ));
 comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
     "error: Failed to read {:?}: Is a directory (os error 21)\n",
-    Path::new(WORKSPACE).join("tests").join("assets").join("."),
+    assets().join("."),
 ));
 
 macro_rules! comment_format {
