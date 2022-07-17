@@ -4,7 +4,7 @@ use crate::{
         Run,
     },
     backup::Backup,
-    error::{Error, FileReadFailure, TagWriteFailure},
+    error::{Error, FileReadFailure, TagReadFailure, TagWriteFailure},
     utils::{read_tag_from_data, sha256_data},
 };
 use clap::Args;
@@ -33,7 +33,7 @@ impl Run for Text<SetArgsTable> {
                     .build()
                     .backup()?;
             }
-            let mut tag = read_tag_from_data(&audio_content)?;
+            let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
             let version = tag.version();
             set(&mut tag, value);
             tag.write_to_path(target_audio, version)

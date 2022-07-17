@@ -116,6 +116,5 @@ macro_rules! indirect_convert {
     };
 }
 
-indirect_convert!(id3::Error, TagReadFailure);
 indirect_convert!(serde_json::Error, DeserializationFailure);
 indirect_convert!(serde_yaml::Error, DeserializationFailure);
