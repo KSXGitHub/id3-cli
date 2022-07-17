@@ -3,17 +3,51 @@ use crate::{
         field::{ArgsTable, Field, Text},
         Run,
     },
-    error::Error,
+    backup::Backup,
+    error::{Error, FileReadFailure, TagWriteFailure},
+    utils::{read_tag_from_data, sha256_data},
 };
 use clap::Args;
-use std::path::PathBuf;
+use id3::{Tag, TagLike};
+use std::{fs::read as read_file, path::PathBuf};
 
 /// Subcommand of the `set` subcommand.
 pub type Set = Field<SetArgsTable>;
 
 impl Run for Text<SetArgsTable> {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        fn set_text(args: SetText, set: impl FnOnce(&mut Tag, String)) -> Result<(), Error> {
+            let SetText {
+                no_backup,
+                target_audio,
+                value,
+            } = args;
+            let audio_content = read_file(&target_audio).map_err(|error| FileReadFailure {
+                file: target_audio.clone(),
+                error,
+            })?;
+            if !no_backup {
+                Backup::builder()
+                    .source_file_path(&target_audio)
+                    .source_file_hash(&sha256_data(&audio_content))
+                    .build()
+                    .backup()?;
+            }
+            let mut tag = read_tag_from_data(&audio_content)?;
+            let version = tag.version();
+            set(&mut tag, value);
+            tag.write_to_path(target_audio, version)
+                .map_err(TagWriteFailure::from)?;
+            Ok(())
+        }
+
+        match self {
+            Text::Title(args) => set_text(args, Tag::set_title),
+            Text::Artist(args) => set_text(args, Tag::set_artist),
+            Text::Album(args) => set_text(args, Tag::set_album),
+            Text::AlbumArtist(args) => set_text(args, Tag::set_album_artist),
+            Text::Genre(args) => set_text(args, |_, _| unimplemented!()),
+        }
     }
 }
 

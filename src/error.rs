@@ -7,6 +7,7 @@ use thiserror::Error;
 #[error("{0}")]
 pub enum Error {
     TagReadFailure(TagReadFailure),
+    TagWriteFailure(TagWriteFailure),
     CommentNotFound(CommentNotFound),
     AmbiguousCommentChoices(AmbiguousCommentChoices),
     PictureIdOutOfBound(PictureIdOutOfBound),
@@ -16,6 +17,7 @@ pub enum Error {
     PictureFileWriteFailure(PictureFileWriteFailure),
     OutputDirCreationFailure(OutputDirCreationFailure),
     InvalidFilePath(InvalidFilePath),
+    FileReadFailure(FileReadFailure),
     DirCreationFailure(DirCreationFailure),
     BackupFailure(BackupFailure),
 }
@@ -23,6 +25,13 @@ pub enum Error {
 #[derive(Debug, From, Error)]
 #[error("Failed to read tag from file: {error}")]
 pub struct TagReadFailure {
+    #[source]
+    pub error: id3::Error,
+}
+
+#[derive(Debug, From, Error)]
+#[error("Failed to write tag from file: {error}")]
+pub struct TagWriteFailure {
     #[source]
     pub error: id3::Error,
 }
@@ -71,6 +80,14 @@ pub struct OutputDirCreationFailure {
 #[derive(Debug, From, Error)]
 #[error("Provided path is not a file")]
 pub struct InvalidFilePath;
+
+#[derive(Debug, Error)]
+#[error("Failed to read {file:?}: {error}")]
+pub struct FileReadFailure {
+    pub file: PathBuf,
+    #[source]
+    pub error: io::Error,
+}
 
 #[derive(Debug, Error)]
 #[error("Failed to create a directory at {dir:?}: {error}")]

@@ -23,6 +23,13 @@ pub(crate) fn read_tag_from_path(path: impl AsRef<Path>) -> id3::Result<Tag> {
     path.pipe(Tag::read_from_path).or_else(no_tag_to_empty_tag)
 }
 
+/// Read tag from a binary blob.
+/// Return an empty tag if tag does not exist.
+pub(crate) fn read_tag_from_data(data: impl AsRef<[u8]>) -> id3::Result<Tag> {
+    data.pipe_as_ref(Tag::read_from)
+        .or_else(no_tag_to_empty_tag)
+}
+
 /// Get extension from some well known image media types.
 pub(crate) fn get_image_extension(mime: MediaType) -> Option<&str> {
     if mime.ty != IMAGE {
