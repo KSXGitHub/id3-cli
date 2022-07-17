@@ -23,14 +23,14 @@ pub enum Error {
 }
 
 #[derive(Debug, From, Error)]
-#[error("Failed to read tag from file: {error}")]
+#[error("Failed to read tag: {error}")]
 pub struct TagReadFailure {
     #[source]
     pub error: id3::Error,
 }
 
 #[derive(Debug, From, Error)]
-#[error("Failed to write tag from file: {error}")]
+#[error("Failed to write tag: {error}")]
 pub struct TagWriteFailure {
     #[source]
     pub error: id3::Error,
