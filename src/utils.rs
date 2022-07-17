@@ -1,4 +1,4 @@
-use crate::error::{Error, TagReadFailure};
+use crate::error::{Error, FileReadFailure, TagReadFailure};
 use id3::{self, Tag};
 use mediatype::{
     names::{BMP, GIF, IMAGE, JPEG, PNG, SVG, WEBP},
@@ -21,8 +21,12 @@ pub(crate) fn no_tag_to_empty_tag(error: id3::Error) -> id3::Result<Tag> {
 /// Read tag from a path.
 /// Return an empty tag if tag does not exist.
 pub(crate) fn read_tag_from_path(path: impl AsRef<Path>) -> Result<Tag, Error> {
-    path.pipe(Tag::read_from_path)
-        .or_else(no_tag_to_empty_tag)
+    path.pipe_as_ref(read_file)
+        .map_err(|error| FileReadFailure {
+            file: path.as_ref().to_path_buf(),
+            error,
+        })?
+        .pipe(read_tag_from_data)
         .map_err(TagReadFailure::from)
         .map_err(Error::from)
 }

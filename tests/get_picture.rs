@@ -6,7 +6,7 @@ use id3_cli::text_data::picture::{self, Picture};
 use id3_cli::utils::sha256_file;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
-use std::{fs::read_dir, process::Output};
+use std::{fs::read_dir, path::PathBuf, process::Output};
 
 macro_rules! picture {
     (
@@ -250,6 +250,49 @@ macro_rules! picture_file_fail {
     };
 }
 
+macro_rules! picture_file_fail_fn {
+    (
+        $(#[$attributes:meta])*
+        $name:ident: $audio_path:literal $(--id=$id:literal)? => $get_expected:expr
+    ) => {
+        $(#[$attributes])*
+        #[test]
+        fn $name() {
+            let get_expected: fn(wdir: PathBuf) -> String = $get_expected;
+            let Exe { cmd, wdir } = Exe::temp_workspace();
+            let audio_path = wdir.join("assets").join($audio_path);
+            let image_path = wdir.join("exported-image");
+            let Output {
+                status,
+                stdout,
+                stderr,
+            } = cmd
+                .with_arg("get")
+                .with_arg("picture")
+                .with_arg("file")
+                .with_arg(&audio_path)
+                .with_arg(&image_path)
+                $(
+                    .with_arg("--id")
+                    .with_arg($id)
+                )?
+                .output()
+                .expect("execute command");
+
+            // for ease of debug
+            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+
+            // basic guarantees
+            assert!(!status.success());
+            assert!(stdout.is_empty());
+
+            // compare stderr
+            assert_eq!(u8v_to_string(&stderr), get_expected(wdir));
+        }
+    };
+}
+
 picture_file_fail!(picture_file_empty0: "audio0" => "error: Picture not found\n");
 picture_file_fail!(picture_file_0_empty0: "audio0" --id="0" => "error: Specified picture ID is out of bound\n");
 
@@ -267,8 +310,12 @@ picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b
 picture_file!(picture_file_3_filled3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
 picture_file_fail!(picture_file_4_filled3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
 
-picture_file_fail!(#[cfg(unix)] picture_file_not_exist: "not-exist" => "error: Failed to read tag from file: IO: No such file or directory (os error 2)\n");
-picture_file_fail!(#[cfg(unix)] picture_file_dir: "." => "error: Failed to read tag from file: IO: Is a directory (os error 21)\n");
+picture_file_fail_fn!(#[cfg(unix)] picture_file_not_exist: "not-exist" => |wdir| {
+    format!("error: Failed to read {:?}: No such file or directory (os error 2)\n", wdir.join("assets").join("not-exist"))
+});
+picture_file_fail_fn!(#[cfg(unix)] picture_file_dir: "." => |wdir| {
+    format!("error: Failed to read {:?}: Is a directory (os error 21)\n", wdir.join("assets").join("."))
+});
 
 macro_rules! picture_dir_empty {
     (

@@ -5,7 +5,7 @@ use command_extra::CommandExtra;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use serde_json::{json, Value as JsonValue};
-use std::process::Output;
+use std::{path::Path, process::Output};
 
 macro_rules! comment {
     (
@@ -108,8 +108,14 @@ comment!(comment_jpn_filled2: "audio2" --lang=jpn => "【東方3DPV風】砕月 
 comment!(comment_eng_filled3: "audio3" --lang=eng => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
 comment!(comment_jpn_filled3: "audio3" --lang=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 
-comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => "error: Failed to read tag from file: IO: No such file or directory (os error 2)\n");
-comment_fail!(#[cfg(unix)] comment_dir: "." => "error: Failed to read tag from file: IO: Is a directory (os error 21)\n");
+comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
+    "error: Failed to read {:?}: No such file or directory (os error 2)\n",
+    Path::new(WORKSPACE).join("tests").join("assets").join("not-exist"),
+));
+comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
+    "error: Failed to read {:?}: Is a directory (os error 21)\n",
+    Path::new(WORKSPACE).join("tests").join("assets").join("."),
+));
 
 macro_rules! comment_format {
     (
