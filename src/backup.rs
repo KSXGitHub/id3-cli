@@ -7,9 +7,9 @@ use std::{
 };
 use typed_builder::TypedBuilder;
 
-/// Parameters to construct a backup file path.
+/// Settings of a backup.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, TypedBuilder)]
-pub struct FilePath<'a> {
+pub struct Backup<'a> {
     /// Path to the source file.
     pub source_file_path: &'a Path,
     /// Hash of the source file in hexadecimal string.
@@ -19,10 +19,10 @@ pub struct FilePath<'a> {
     pub date_time: DateTime<Local>,
 }
 
-impl<'a> FilePath<'a> {
+impl<'a> Backup<'a> {
     /// Construct backup file path.
     pub fn path(self) -> Result<PathBuf, InvalidFilePath> {
-        let FilePath {
+        let Backup {
             source_file_path,
             source_file_hash,
             date_time,
@@ -71,7 +71,7 @@ impl<'a> FilePath<'a> {
 
 #[cfg(test)]
 mod tests {
-    use super::FilePath;
+    use super::Backup;
     use chrono::{Local, TimeZone};
     use pretty_assertions::assert_eq;
     use std::path::Path;
@@ -81,7 +81,7 @@ mod tests {
         let source_file_parent = Path::new("Music").join("fav");
         let source_file_name = "mysterious-file.mp3";
         let source_file_path = source_file_parent.join(source_file_name);
-        let received = FilePath::builder()
+        let received = Backup::builder()
             .source_file_path(&source_file_path)
             .source_file_hash("34a1e24aba0a02316b786933761beedcea40c8eda46a39054f994e0fdef87adf")
             .date_time(Local.ymd(2022, 7, 16).and_hms(12, 26, 5))
