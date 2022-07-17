@@ -1,6 +1,7 @@
 use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
 use std::{
+    env::temp_dir,
     ffi::OsStr,
     fs::remove_dir_all,
     path::{Path, PathBuf},
@@ -116,6 +117,8 @@ impl Default for TempWorkspace {
 impl Drop for TempWorkspace {
     fn drop(&mut self) {
         let target: &Path = self;
+        let parent = target.parent().expect("get parent");
+        assert_eq!(parent, &temp_dir());
         let name = target.file_name().expect("get name").to_string_lossy();
         assert!(name.starts_with(TEMP_PREFIX));
         assert!(name.ends_with(TEMP_SUFFIX));
