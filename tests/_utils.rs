@@ -97,7 +97,6 @@ impl Exe<PathBuf> {
 /// Temporary workspace that will automatically be deleted on [drop].
 #[derive(Debug, PartialEq, Eq, Clone, AsRef, Deref)]
 #[as_ref(forward)]
-#[deref(forward)]
 pub struct TempWorkspace(PathBuf);
 
 impl Default for TempWorkspace {
