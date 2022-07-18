@@ -5,11 +5,14 @@ use crate::{
     },
     backup::Backup,
     error::{Error, FileReadFailure, TagReadFailure, TagWriteFailure},
+    text_format::TextFormat,
     utils::{read_tag_from_data, sha256_data},
 };
 use clap::Args;
-use id3::{Tag, TagLike};
-use std::{fs::read as read_file, path::PathBuf};
+use id3::{frame::Comment, Content, Tag, TagLike};
+use pipe_trait::Pipe;
+use serde_json::json;
+use std::{borrow::Cow, fs::read as read_file, path::PathBuf};
 
 /// Subcommand of the `set` subcommand.
 pub type Set = Field<SetArgsTable>;
@@ -80,14 +83,76 @@ pub struct SetComment {
     /// Don't create backup for the target audio file.
     #[clap(long)]
     pub no_backup: bool,
+    /// Comment language (ISO 639-2).
+    #[clap(long)]
+    pub language: Option<String>,
+    /// Comment description.
+    #[clap(long)]
+    pub description: Option<String>,
+    /// Format of the ejected comment (if any).
+    #[clap(long, value_enum)]
+    pub format: Option<TextFormat>,
     /// Path to the input audio file.
     pub target_audio: PathBuf,
-    // TODO: implement
+    /// Content of the comment.
+    pub content: String,
 }
 
 impl Run for SetComment {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        let SetComment {
+            no_backup,
+            language,
+            description,
+            format,
+            target_audio,
+            content,
+        } = self;
+        let language = language.unwrap_or_else(|| "\0\0\0".to_string());
+        let description = description.unwrap_or_default();
+
+        let audio_content = read_file(&target_audio).map_err(|error| FileReadFailure {
+            file: target_audio.clone(),
+            error,
+        })?;
+        if !no_backup {
+            Backup::builder()
+                .source_file_path(&target_audio)
+                .source_file_hash(&sha256_data(&audio_content))
+                .build()
+                .backup()?;
+        }
+        let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
+        let version = tag.version();
+
+        let ejected_frame = tag.add_frame(Comment {
+            description,
+            lang: language,
+            text: content,
+        });
+
+        tag.write_to_path(target_audio, version)
+            .map_err(TagWriteFailure::from)?;
+
+        let ejected_comment = match ejected_frame.as_ref().map(id3::Frame::content) {
+            None => return Ok(()),
+            Some(Content::Comment(comment)) => comment,
+            Some(content) => panic!("Impossible! The ejected frame wasn't a comment: {content:?}"),
+        };
+
+        let output_text: Cow<str> = if let Some(format) = format {
+            let output_object = json!({
+                "lang": ejected_comment.lang,
+                "description": ejected_comment.description,
+                "text": ejected_comment.text,
+            });
+            format.serialize(&output_object)?.pipe(Cow::Owned)
+        } else {
+            Cow::Borrowed(&ejected_comment.text)
+        };
+
+        println!("{output_text}");
+        Ok(())
     }
 }
 
