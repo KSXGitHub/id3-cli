@@ -1,14 +1,17 @@
 use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
+use id3_cli::utils::sha256_file;
+use pipe_trait::Pipe;
 use std::{
     env::temp_dir,
     ffi::OsStr,
-    fs::remove_dir_all,
+    fs::{read_dir, remove_dir_all},
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
     str::from_utf8,
 };
 use tempfile as tmp;
+use typed_builder::TypedBuilder;
 
 /// Version of the package.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -149,4 +152,44 @@ pub mod deserialize {
 pub mod serialize {
     pub use serde_json::to_string_pretty as json;
     pub use serde_yaml::to_string as yaml;
+}
+
+/// Test backup of an audio file.
+#[derive(Debug, TypedBuilder)]
+pub struct TestBackup<'a> {
+    /// Path to the workspace.
+    pub workspace: &'a Path,
+    /// Name (not path) of the audio file.
+    pub audio_name: &'a str,
+    /// Hash of the audio file before modification.
+    pub initial_hash: &'a str,
+}
+
+impl<'a> TestBackup<'a> {
+    /// Run the test.
+    pub fn test(&self) {
+        let TestBackup {
+            workspace,
+            audio_name,
+            initial_hash,
+        } = self;
+
+        let backup_path: Vec<_> = workspace
+            .join("assets")
+            .join(".id3-backups")
+            .join(audio_name)
+            .pipe(read_dir)
+            .expect("read backup directory")
+            .flatten()
+            .flat_map(|entry| entry.path().pipe(read_dir))
+            .flatten()
+            .flatten()
+            .map(|entry| entry.path().join(&initial_hash))
+            .collect();
+        dbg!(&backup_path);
+        assert_eq!(backup_path.len(), 1);
+        let backup_path = &backup_path[0];
+        let backup_hash = sha256_file(backup_path);
+        assert_eq!(&backup_hash, initial_hash);
+    }
 }

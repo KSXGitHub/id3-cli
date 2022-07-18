@@ -1,12 +1,11 @@
 pub mod _utils;
 
-use _utils::{u8v_to_string, Exe};
+use _utils::{u8v_to_string, Exe, TestBackup};
 use command_extra::CommandExtra;
 use id3::{Tag, TagLike};
 use id3_cli::utils::sha256_file;
-use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
-use std::{fs::read_dir, process::Output};
+use std::process::Output;
 
 macro_rules! set_text {
     (
@@ -85,22 +84,12 @@ macro_rules! set_text {
             assert_eq!(tag.$method(), Some($text));
 
             // make sure that a backup was created
-            let backup_path: Vec<_> = wdir
-                .join("assets")
-                .join(".id3-backups")
-                .join($audio_path)
-                .pipe(read_dir)
-                .expect("read backup directory")
-                .flatten()
-                .flat_map(|entry| entry.path().pipe(read_dir))
-                .flatten()
-                .flatten()
-                .map(|entry| entry.path().join(&initial_hash))
-                .collect();
-            dbg!(&backup_path);
-            assert_eq!(backup_path.len(), 1);
-            let backup_path = &backup_path[0];
-            assert_eq!(sha256_file(backup_path), initial_hash);
+            TestBackup::builder()
+                .workspace(&wdir)
+                .audio_name($audio_path)
+                .initial_hash(&initial_hash)
+                .build()
+                .test();
         }
     };
 }
