@@ -11,12 +11,12 @@ use std::process::Output;
 macro_rules! set_text {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal --no-backup $audio_path:literal $text:literal => $method:ident
+        $name:ident: $field:literal --no-backup $audio_name:literal $text:literal => $method:ident
     ) => {
         #[test]
         pub fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             dbg!(&audio_path);
             let Output {
                 status,
@@ -51,12 +51,12 @@ macro_rules! set_text {
 
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal $audio_path:literal $text:literal => $method:ident
+        $name:ident: $field:literal $audio_name:literal $text:literal => $method:ident
     ) => {
         #[test]
         pub fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             dbg!(&audio_path);
             let initial_hash = sha256_file(&audio_path);
             dbg!(&initial_hash);
@@ -89,7 +89,7 @@ macro_rules! set_text {
             // make sure that a backup was created
             TestBackup::builder()
                 .workspace(&wdir)
-                .audio_name($audio_path)
+                .audio_name($audio_name)
                 .initial_hash(&initial_hash)
                 .before_run(before_run)
                 .build()

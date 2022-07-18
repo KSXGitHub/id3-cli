@@ -29,14 +29,14 @@ macro_rules! picture {
 macro_rules! picture_list {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal --format=$format:ident => $expected:expr
+        $name:ident: $audio_name:literal --format=$format:ident => $expected:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let expected = $expected;
 
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
@@ -168,13 +168,13 @@ picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
 macro_rules! picture_file {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal $(--id=$id:literal)? => $expected:literal
+        $name:ident: $audio_name:literal $(--id=$id:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             let image_path = wdir.join("exported-image");
             let Output {
                 status,
@@ -211,13 +211,13 @@ macro_rules! picture_file {
 macro_rules! picture_file_fail {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal $(--id=$id:literal)? => $expected:literal
+        $name:ident: $audio_name:literal $(--id=$id:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             let image_path = wdir.join("exported-image");
             let Output {
                 status,
@@ -253,14 +253,14 @@ macro_rules! picture_file_fail {
 macro_rules! picture_file_fail_fn {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal $(--id=$id:literal)? => $get_expected:expr
+        $name:ident: $audio_name:literal $(--id=$id:literal)? => $get_expected:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let get_expected: fn(wdir: &Path) -> String = $get_expected;
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             let image_path = wdir.join("exported-image");
             let Output {
                 status,
@@ -320,13 +320,13 @@ picture_file_fail_fn!(#[cfg(unix)] picture_file_dir: "." => |wdir| {
 macro_rules! picture_dir_empty {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal
+        $name:ident: $audio_name:literal
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             let image_dir_path = wdir.join("exported-images");
             let Output {
                 status,
@@ -359,13 +359,13 @@ macro_rules! picture_dir_empty {
 macro_rules! picture_dir_filled {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_path:literal => $expected:expr
+        $name:ident: $audio_name:literal => $expected:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
-            let audio_path = wdir.join("assets").join($audio_path);
+            let audio_path = wdir.join("assets").join($audio_name);
             let image_dir_path = wdir.join("exported-images");
             let Output {
                 status,

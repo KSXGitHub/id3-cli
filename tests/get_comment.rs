@@ -11,14 +11,14 @@ macro_rules! comment {
     (
         $(#[$attributes:meta])*
         $name:ident:
-        $audio_path:literal
+        $audio_name:literal
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
         => $expected:expr
     ) => {
         #[test]
         fn $name() {
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
@@ -57,14 +57,14 @@ macro_rules! comment_fail {
     (
         $(#[$attributes:meta])*
         $name:ident:
-        $audio_path:literal
+        $audio_name:literal
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
         => $expected:expr
     ) => {
         #[test]
         fn $name() {
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
@@ -121,7 +121,7 @@ macro_rules! comment_format {
     (
         $(#[$attributes:meta])*
         $name:ident:
-        $audio_path:literal
+        $audio_name:literal
         --format=$format:ident
         $(--lang=$lang:ident)?
         $(--description=$description:ident)?
@@ -131,7 +131,7 @@ macro_rules! comment_format {
         fn $name() {
             let expected = $expected;
 
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,

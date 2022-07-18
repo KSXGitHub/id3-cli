@@ -9,12 +9,12 @@ use std::process::Output;
 macro_rules! text {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal $audio_path:literal => $stdout:expr
+        $name:ident: $field:literal $audio_name:literal => $stdout:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
@@ -63,12 +63,12 @@ text!(genre_filled3: "genre" "audio3" => "Pop\n");
 macro_rules! text_format {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal --format=$format:ident $audio_path:literal => $expected:expr
+        $name:ident: $field:literal --format=$format:ident $audio_name:literal => $expected:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
@@ -122,12 +122,12 @@ text_format!(artist_yaml_filled3: "artist" --format=yaml "audio3" => Some("Koko 
 macro_rules! text_fail {
     (
         $(#[$attributes:meta])*
-        $name:ident: $field:literal $audio_path:literal => $stderr:expr
+        $name:ident: $field:literal $audio_name:literal => $stderr:expr
     ) => {
         $(#[$attributes])*
         #[test]
         fn $name() {
-            let audio_path = assets().join($audio_path);
+            let audio_path = assets().join($audio_name);
             let Output {
                 status,
                 stdout,
