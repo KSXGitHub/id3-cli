@@ -1,6 +1,7 @@
 pub mod _utils;
 
 use _utils::{u8v_to_string, Exe, TestBackup};
+use chrono::Local;
 use command_extra::CommandExtra;
 use id3::{Tag, TagLike};
 use id3_cli::utils::sha256_file;
@@ -59,6 +60,8 @@ macro_rules! set_text {
             dbg!(&audio_path);
             let initial_hash = sha256_file(&audio_path);
             dbg!(&initial_hash);
+            let before_run = Local::now();
+            dbg!(before_run);
             let Output {
                 status,
                 stdout,
@@ -88,6 +91,7 @@ macro_rules! set_text {
                 .workspace(&wdir)
                 .audio_name($audio_path)
                 .initial_hash(&initial_hash)
+                .before_run(before_run)
                 .build()
                 .test();
         }

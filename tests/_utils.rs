@@ -1,3 +1,5 @@
+use assert_cmp::assert_op;
+use chrono::{DateTime, Local, TimeZone};
 use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
 use id3_cli::utils::sha256_file;
@@ -163,17 +165,21 @@ pub struct TestBackup<'a> {
     pub audio_name: &'a str,
     /// Hash of the audio file before modification.
     pub initial_hash: &'a str,
+    /// Moment before the command runs.
+    pub before_run: DateTime<Local>,
 }
 
 impl<'a> TestBackup<'a> {
     /// Run the test.
-    pub fn test(&self) {
+    pub fn test(self) {
         let TestBackup {
             workspace,
             audio_name,
             initial_hash,
+            before_run,
         } = self;
 
+        // get path to the backup file
         let backup_path: Vec<_> = workspace
             .join("assets")
             .join(".id3-backups")
@@ -189,7 +195,34 @@ impl<'a> TestBackup<'a> {
         dbg!(&backup_path);
         assert_eq!(backup_path.len(), 1);
         let backup_path = &backup_path[0];
+
+        // compare hash
         let backup_hash = sha256_file(backup_path);
         assert_eq!(&backup_hash, initial_hash);
+
+        // compare date and time
+        let parent = backup_path.parent().expect("get parent");
+        let grandparent = parent.parent().expect("get grandparent");
+        let time = parent
+            .file_name()
+            .expect("get time")
+            .to_str()
+            .expect("convert time to UTF-8");
+        let date = grandparent
+            .file_name()
+            .expect("get date")
+            .to_str()
+            .expect("convert date to UTF-8");
+        let dt_str = format!("{}/{}", date, time);
+        let dt_fmt = "%Y-%m-%d/%H.%M.%S";
+        dbg!(&dt_str);
+        let backup_date_time = Local
+            .datetime_from_str(&dt_str, dt_fmt)
+            .expect("parse date time");
+        dbg!(backup_date_time);
+        let distance = backup_date_time.signed_duration_since(before_run);
+        dbg!(distance);
+        let seconds = distance.num_seconds();
+        assert_op!(seconds <= 2);
     }
 }

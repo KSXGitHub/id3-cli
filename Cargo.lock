@@ -18,6 +18,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "assert-cmp"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e265fd63d6fdda6433b6c7d4614b47a281cc152c2987bbfe0f8b4538c4ee3b9e"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -263,6 +269,7 @@ dependencies = [
 name = "id3-cli"
 version = "0.0.0"
 dependencies = [
+ "assert-cmp",
  "chrono",
  "clap",
  "command-extra",
