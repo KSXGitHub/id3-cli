@@ -14,7 +14,7 @@ use id3::{Tag, TagLike};
 use mediatype::MediaType;
 use pipe_trait::Pipe;
 use serde_json::json;
-use std::{fs, path::PathBuf};
+use std::{borrow::Cow, fs, path::PathBuf};
 
 /// Subcommand of the `get` subcommand.
 pub type Get = Field<GetArgsTable>;
@@ -106,7 +106,7 @@ impl Run for GetComment {
                     .as_ref()
                     .map_or(true, |description| &comment.description == description)
             });
-        let output_text = if let Some(format) = format {
+        let output_text: Cow<str> = if let Some(format) = format {
             let comments: Vec<_> = comments
                 .map(|comment| {
                     json!({
@@ -116,14 +116,14 @@ impl Run for GetComment {
                     })
                 })
                 .collect();
-            format.serialize(&comments)?
+            format.serialize(&comments)?.pipe(Cow::Owned)
         } else {
             let mut iter = comments;
             let comment = iter.next().ok_or(CommentNotFound)?;
             if iter.next().is_some() {
                 return AmbiguousCommentChoices.pipe(Error::from).pipe(Err);
             }
-            comment.text.to_string()
+            Cow::Borrowed(&comment.text)
         };
         println!("{output_text}");
         Ok(())
