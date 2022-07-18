@@ -74,7 +74,7 @@ pub struct GetText {
 pub struct GetComment {
     /// Filter language.
     #[clap(long)]
-    pub lang: Option<String>,
+    pub language: Option<String>,
     /// Filter description.
     #[clap(long)]
     pub description: Option<String>,
@@ -88,7 +88,7 @@ pub struct GetComment {
 impl Run for GetComment {
     fn run(self) -> Result<(), Error> {
         let GetComment {
-            lang,
+            language,
             description,
             format,
             input_audio,
@@ -96,7 +96,11 @@ impl Run for GetComment {
         let tag = read_tag_from_path(input_audio)?;
         let comments = tag
             .comments()
-            .filter(|comment| lang.as_ref().map_or(true, |lang| &comment.lang == lang))
+            .filter(|comment| {
+                language
+                    .as_ref()
+                    .map_or(true, |language| &comment.lang == language)
+            })
             .filter(|comment| {
                 description
                     .as_ref()
