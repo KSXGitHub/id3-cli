@@ -90,6 +90,7 @@ pub(crate) struct ModifyTags<'a> {
 }
 
 impl<'a> ModifyTags<'a> {
+    /// Run a callback that modify the tags of an audio file.
     pub fn run<Callback, Value>(self, callback: Callback) -> Result<Value, Error>
     where
         Callback: FnOnce(&mut Tag) -> Value,
