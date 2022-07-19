@@ -3,16 +3,15 @@ use crate::{
         field::{ArgsTable, Field, Text},
         Run,
     },
-    backup::Backup,
     comment::Comment,
-    error::{Error, FileReadFailure, TagReadFailure, TagWriteFailure},
+    error::Error,
     text_format::TextFormat,
-    utils::{read_tag_from_data, sha256_data},
+    utils::ModifyTags,
 };
 use clap::Args;
 use id3::{Content, Tag, TagLike};
 use pipe_trait::Pipe;
-use std::{borrow::Cow, fs::read as read_file, path::PathBuf};
+use std::{borrow::Cow, path::PathBuf};
 
 /// Subcommand of the `set` subcommand.
 pub type Set = Field<SetArgsTable>;
@@ -25,23 +24,11 @@ impl Run for Text<SetArgsTable> {
                 target_audio,
                 value,
             } = args;
-            let audio_content = read_file(&target_audio).map_err(|error| FileReadFailure {
-                file: target_audio.clone(),
-                error,
-            })?;
-            if !no_backup {
-                Backup::builder()
-                    .source_file_path(&target_audio)
-                    .source_file_hash(&sha256_data(&audio_content))
-                    .build()
-                    .backup()?;
-            }
-            let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
-            let version = tag.version();
-            set(&mut tag, value);
-            tag.write_to_path(target_audio, version)
-                .map_err(TagWriteFailure::from)?;
-            Ok(())
+            ModifyTags::builder()
+                .no_backup(no_backup)
+                .target_audio(&target_audio)
+                .build()
+                .run(move |tag| set(tag, value))
         }
 
         match self {
@@ -105,34 +92,23 @@ impl Run for SetComment {
             language,
             description,
             format,
-            target_audio,
+            ref target_audio,
             content,
         } = self;
         let language = language.unwrap_or_else(|| "\0\0\0".to_string());
         let description = description.unwrap_or_default();
 
-        let audio_content = read_file(&target_audio).map_err(|error| FileReadFailure {
-            file: target_audio.clone(),
-            error,
-        })?;
-        if !no_backup {
-            Backup::builder()
-                .source_file_path(&target_audio)
-                .source_file_hash(&sha256_data(&audio_content))
-                .build()
-                .backup()?;
+        let ejected_frame = ModifyTags {
+            no_backup,
+            target_audio,
         }
-        let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
-        let version = tag.version();
-
-        let ejected_frame = tag.add_frame(Comment {
-            language,
-            description,
-            content,
-        });
-
-        tag.write_to_path(target_audio, version)
-            .map_err(TagWriteFailure::from)?;
+        .run(|tag| {
+            tag.add_frame(Comment {
+                language,
+                description,
+                content,
+            })
+        })?;
 
         let ejected_comment = match ejected_frame.as_ref().map(id3::Frame::content) {
             None => return Ok(()),

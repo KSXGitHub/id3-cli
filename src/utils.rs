@@ -1,4 +1,7 @@
-use crate::error::{Error, FileReadFailure, TagReadFailure};
+use crate::{
+    backup::Backup,
+    error::{Error, FileReadFailure, TagReadFailure, TagWriteFailure},
+};
 use id3::{self, Tag};
 use mediatype::{
     names::{BMP, GIF, IMAGE, JPEG, PNG, SVG, WEBP},
@@ -7,6 +10,7 @@ use mediatype::{
 use pipe_trait::Pipe;
 use sha2::{Digest, Sha256};
 use std::{fmt::Debug, fs::read as read_file, path::Path};
+use typed_builder::TypedBuilder;
 
 /// Return an empty tag if the reason for the error was "no tag".
 /// Otherwise, return the error.
@@ -74,4 +78,45 @@ pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
     read_file(&file_name)
         .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"))
         .pipe(sha256_data)
+}
+
+/// Modify id3 tags of an audio file.
+#[derive(Debug, Clone, Copy, TypedBuilder)]
+pub(crate) struct ModifyTags<'a> {
+    /// Whether `--no-backup` was specified.
+    pub no_backup: bool,
+    /// Provided `<TARGET_AUDIO>` argument.
+    pub target_audio: &'a Path,
+}
+
+impl<'a> ModifyTags<'a> {
+    pub fn run<Callback, Value>(self, callback: Callback) -> Result<Value, Error>
+    where
+        Callback: FnOnce(&mut Tag) -> Value,
+    {
+        let ModifyTags {
+            no_backup,
+            target_audio,
+        } = self;
+        let audio_content = read_file(&target_audio).map_err(|error| FileReadFailure {
+            file: target_audio.to_path_buf(),
+            error,
+        })?;
+        if !no_backup {
+            Backup::builder()
+                .source_file_path(target_audio)
+                .source_file_hash(&sha256_data(&audio_content))
+                .build()
+                .backup()?;
+        }
+        let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
+        let version = tag.version();
+
+        let value = callback(&mut tag);
+
+        tag.write_to_path(target_audio, version)
+            .map_err(TagWriteFailure::from)?;
+
+        Ok(value)
+    }
 }
