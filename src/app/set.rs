@@ -125,13 +125,11 @@ impl Run for SetComment {
         let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
         let version = tag.version();
 
-        let ejected_frame = tag.add_frame(
-            Comment::builder()
-                .language(language)
-                .description(description)
-                .content(content)
-                .build(),
-        );
+        let ejected_frame = tag.add_frame(Comment {
+            language,
+            description,
+            content,
+        });
 
         tag.write_to_path(target_audio, version)
             .map_err(TagWriteFailure::from)?;
