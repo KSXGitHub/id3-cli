@@ -1,10 +1,9 @@
 use id3::{frame, Frame};
 use pipe_trait::Pipe;
 use serde::{Deserialize, Serialize};
-use typed_builder::TypedBuilder;
 
 /// Representation of the comment.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, TypedBuilder)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Comment<Language, Description, Content> {
     /// Language code (ISO 639-2) of the comment.
     pub language: Language,
