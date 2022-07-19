@@ -4,14 +4,14 @@ use crate::{
         Run,
     },
     backup::Backup,
+    comment::Comment,
     error::{Error, FileReadFailure, TagReadFailure, TagWriteFailure},
     text_format::TextFormat,
     utils::{read_tag_from_data, sha256_data},
 };
 use clap::Args;
-use id3::{frame::Comment, Content, Tag, TagLike};
+use id3::{Content, Tag, TagLike};
 use pipe_trait::Pipe;
-use serde_json::json;
 use std::{borrow::Cow, fs::read as read_file, path::PathBuf};
 
 /// Subcommand of the `set` subcommand.
@@ -125,11 +125,13 @@ impl Run for SetComment {
         let mut tag = read_tag_from_data(&audio_content).map_err(TagReadFailure::from)?;
         let version = tag.version();
 
-        let ejected_frame = tag.add_frame(Comment {
-            description,
-            lang: language,
-            text: content,
-        });
+        let ejected_frame = tag.add_frame(
+            Comment::builder()
+                .language(language)
+                .description(description)
+                .content(content)
+                .build(),
+        );
 
         tag.write_to_path(target_audio, version)
             .map_err(TagWriteFailure::from)?;
@@ -141,11 +143,7 @@ impl Run for SetComment {
         };
 
         let output_text: Cow<str> = if let Some(format) = format {
-            let output_object = json!({
-                "lang": ejected_comment.lang,
-                "description": ejected_comment.description,
-                "text": ejected_comment.text,
-            });
+            let output_object = Comment::from(ejected_comment);
             format.serialize(&output_object)?.pipe(Cow::Owned)
         } else {
             Cow::Borrowed(&ejected_comment.text)

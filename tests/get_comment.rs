@@ -2,9 +2,9 @@ pub mod _utils;
 
 use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
 use command_extra::CommandExtra;
+use id3_cli::comment::Comment;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
-use serde_json::{json, Value as JsonValue};
 use std::process::Output;
 
 macro_rules! comment {
@@ -65,7 +65,7 @@ macro_rules! comment {
     ) => {
         #[test]
         fn $name() {
-            let expected = $expected;
+            let expected = $expected.map(|comment: Comment<&str, &str, &str>| comment.to_owned_strings());
 
             let audio_path = assets().join($audio_name);
             let Output {
@@ -101,9 +101,9 @@ macro_rules! comment {
             // test the structured information
             let received = stdout
                 .pipe_as_ref(u8v_to_string)
-                .pipe(deserialize::$format::<JsonValue>)
+                .pipe(deserialize::$format::<Vec<Comment<String, String, String>>>)
                 .expect("deserialize value");
-            assert_eq!(received, expected);
+            assert_eq!(received.as_slice(), expected);
 
             // assert that the output text is prettified
             let received = u8v_to_string(&stdout);
@@ -178,65 +178,65 @@ comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
     assets().join("."),
 ));
 
-comment!(comment_json_empty0: "audio0" --format=json => json!([]));
-comment!(comment_yaml_empty0: "audio0" --format=yaml => json!([]));
-comment!(comment_json_empty1: "audio1" --format=json => json!([]));
-comment!(comment_yaml_empty1: "audio1" --format=yaml => json!([]));
+comment!(comment_json_empty0: "audio0" --format=json => []);
+comment!(comment_yaml_empty0: "audio0" --format=yaml => []);
+comment!(comment_json_empty1: "audio1" --format=json => []);
+comment!(comment_yaml_empty1: "audio1" --format=yaml => []);
 
-comment!(comment_json_filled2: "audio2" --format=json => json!([
-    {
-        "description": "",
-        "lang": "jpn",
-        "text": "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
+comment!(comment_json_filled2: "audio2" --format=json => [
+    Comment {
+        description: "",
+        language: "jpn",
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
     },
-]));
+]);
 
-comment!(comment_yaml_filled2: "audio2" --format=yaml => json!([
-    {
-        "description": "",
-        "lang": "jpn",
-        "text": "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
+comment!(comment_yaml_filled2: "audio2" --format=yaml => [
+    Comment {
+        description: "",
+        language: "jpn",
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
     },
-]));
+]);
 
-comment!(comment_json_filled3: "audio3" --format=json => json!([
-    {
-        "description": "",
-        "lang": "eng",
-        "text": "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
+comment!(comment_json_filled3: "audio3" --format=json => [
+    Comment {
+        description: "",
+        language: "eng",
+        content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
     },
-    {
-        "description": "",
-        "lang": "jpn",
-        "text": "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
+    Comment {
+        description: "",
+        language: "jpn",
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
     },
-]));
+]);
 
-comment!(comment_json_jpn_filled3: "audio3" --format=json --language=jpn => json!([
-    {
-        "description": "",
-        "lang": "jpn",
-        "text": "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
+comment!(comment_json_jpn_filled3: "audio3" --format=json --language=jpn => [
+    Comment {
+        description: "",
+        language: "jpn",
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
     },
-]));
+]);
 
-comment!(comment_yaml_filled3: "audio3" --format=yaml => json!([
-    {
-        "description": "",
-        "lang": "eng",
-        "text": "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
+comment!(comment_yaml_filled3: "audio3" --format=yaml => [
+    Comment {
+        description: "",
+        language: "eng",
+        content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
     },
-    {
-        "description": "",
-        "lang": "jpn",
-        "text": "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
+    Comment {
+        description: "",
+        language: "jpn",
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
     },
-]));
+]);
 
-comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language=eng => json!([
-    {
-        "description": "",
-        "lang": "eng",
-        "text": "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
+comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language=eng => [
+    Comment {
+        description: "",
+        language: "eng",
+        content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
     },
-]));
+]);

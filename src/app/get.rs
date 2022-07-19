@@ -1,5 +1,6 @@
 use crate::{
     app::field::{ArgsTable, Field, Text},
+    comment::Comment,
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
         OutputDirCreationFailure, PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
@@ -13,7 +14,6 @@ use clap::{Args, Subcommand};
 use id3::{Tag, TagLike};
 use mediatype::MediaType;
 use pipe_trait::Pipe;
-use serde_json::json;
 use std::{borrow::Cow, fs, path::PathBuf};
 
 /// Subcommand of the `get` subcommand.
@@ -107,15 +107,7 @@ impl Run for GetComment {
                     .map_or(true, |description| &comment.description == description)
             });
         let output_text: Cow<str> = if let Some(format) = format {
-            let comments: Vec<_> = comments
-                .map(|comment| {
-                    json!({
-                        "lang": comment.lang,
-                        "description": comment.description,
-                        "text": comment.text,
-                    })
-                })
-                .collect();
+            let comments: Vec<_> = comments.map(Comment::from).collect();
             format.serialize(&comments)?.pipe(Cow::Owned)
         } else {
             let mut iter = comments;
