@@ -128,7 +128,9 @@ impl Drop for TempWorkspace {
         assert!(name.starts_with(TEMP_PREFIX));
         assert!(name.ends_with(TEMP_SUFFIX));
         eprintln!("TempDir: Deleting {target:?}");
-        remove_dir_all(target).expect("delete temporary directory");
+        if let Err(error) = remove_dir_all(target) {
+            eprintln!("warning: Failed to delete {target:?}: {error}");
+        }
     }
 }
 
