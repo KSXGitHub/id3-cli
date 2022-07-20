@@ -135,9 +135,18 @@ pub struct SetPicture {
     /// Don't create backup for the target audio file.
     #[clap(long)]
     pub no_backup: bool,
+    /// Mime type of the picture.
+    #[clap(long)]
+    pub mime_type: Option<String>,
+    /// Description of the picture.
+    #[clap(long)]
+    pub description: Option<String>,
     /// Path to the input audio file.
     pub target_audio: PathBuf,
-    // TODO: implement
+    /// Type of picture.
+    pub picture_type: String,
+    /// Path to the input picture file.
+    pub target_picture: PathBuf,
 }
 
 impl Run for SetPicture {
