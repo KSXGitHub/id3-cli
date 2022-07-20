@@ -13,8 +13,8 @@ macro_rules! comment {
         $(#[$attributes:meta])*
         $name:ident:
         $audio_name:literal
-        $(--language=$language:ident)?
-        $(--description=$description:ident)?
+        $(--language=$language:literal)?
+        $(--description=$description:literal)?
         => $expected:expr
     ) => {
         #[test]
@@ -30,11 +30,11 @@ macro_rules! comment {
                 .with_arg("comment")
                 $(
                     .with_arg("--language")
-                    .with_arg(stringify!($language))
+                    .with_arg($language)
                 )?
                 $(
                     .with_arg("--description")
-                    .with_arg(stringify!($description))
+                    .with_arg($description)
                 )?
                 .with_arg(audio_path)
                 .output()
@@ -59,8 +59,8 @@ macro_rules! comment {
         $name:ident:
         $audio_name:literal
         --format=$format:ident
-        $(--language=$language:ident)?
-        $(--description=$description:ident)?
+        $(--language=$language:literal)?
+        $(--description=$description:literal)?
         => $expected:expr
     ) => {
         #[test]
@@ -78,11 +78,11 @@ macro_rules! comment {
                 .with_arg("comment")
                 $(
                     .with_arg("--language")
-                    .with_arg(stringify!($language))
+                    .with_arg($language)
                 )?
                 $(
                     .with_arg("--description")
-                    .with_arg(stringify!($description))
+                    .with_arg($description)
                 )?
                 .with_arg("--format")
                 .with_arg(stringify!($format))
@@ -119,8 +119,8 @@ macro_rules! comment_fail {
         $(#[$attributes:meta])*
         $name:ident:
         $audio_name:literal
-        $(--language=$language:ident)?
-        $(--description=$description:ident)?
+        $(--language=$language:literal)?
+        $(--description=$description:literal)?
         => $expected:expr
     ) => {
         #[test]
@@ -136,11 +136,11 @@ macro_rules! comment_fail {
                 .with_arg("comment")
                 $(
                     .with_arg("--language")
-                    .with_arg(stringify!($language))
+                    .with_arg($language)
                 )?
                 $(
                     .with_arg("--description")
-                    .with_arg(stringify!($description))
+                    .with_arg($description)
                 )?
                 .with_arg(audio_path)
                 .output()
@@ -163,11 +163,11 @@ macro_rules! comment_fail {
 comment_fail!(comment_fail0: "audio0" => "error: Comment not found\n");
 comment_fail!(comment_fail1: "audio1" => "error: Comment not found\n");
 comment!(comment_filled2: "audio2" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
-comment_fail!(comment_eng_fail2: "audio2" --language=eng => "error: Comment not found\n");
+comment_fail!(comment_eng_fail2: "audio2" --language="eng" => "error: Comment not found\n");
 comment_fail!(comment_fail3: "audio3" => "error: Too many comments to choose from\n");
-comment!(comment_jpn_filled2: "audio2" --language=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
-comment!(comment_eng_filled3: "audio3" --language=eng => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
-comment!(comment_jpn_filled3: "audio3" --language=jpn => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+comment!(comment_jpn_filled2: "audio2" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+comment!(comment_eng_filled3: "audio3" --language="eng" => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
+comment!(comment_jpn_filled3: "audio3" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 
 comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
@@ -212,7 +212,7 @@ comment!(comment_json_filled3: "audio3" --format=json => [
     },
 ]);
 
-comment!(comment_json_jpn_filled3: "audio3" --format=json --language=jpn => [
+comment!(comment_json_jpn_filled3: "audio3" --format=json --language="jpn" => [
     Comment {
         description: "",
         language: "jpn",
@@ -233,7 +233,7 @@ comment!(comment_yaml_filled3: "audio3" --format=yaml => [
     },
 ]);
 
-comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language=eng => [
+comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language="eng" => [
     Comment {
         description: "",
         language: "eng",
