@@ -2,7 +2,7 @@ pub mod _utils;
 
 use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
 use command_extra::CommandExtra;
-use id3_cli::comment::Comment;
+use id3_cli::text_data::comment::Comment;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use std::process::Output;

@@ -4,7 +4,7 @@ use _utils::{serialize, u8v_to_string, Exe, TestBackup};
 use chrono::Local;
 use command_extra::CommandExtra;
 use id3::Tag;
-use id3_cli::{comment::Comment, utils::sha256_file};
+use id3_cli::{text_data::comment::Comment, utils::sha256_file};
 use pretty_assertions::assert_eq;
 use std::process::Output;
 

@@ -3,8 +3,8 @@ use crate::{
         field::{ArgsTable, Field, Text},
         Run,
     },
-    comment::Comment,
     error::Error,
+    text_data::comment::Comment,
     text_format::TextFormat,
     utils::ModifyTags,
 };

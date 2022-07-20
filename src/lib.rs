@@ -1,6 +1,5 @@
 pub mod app;
 pub mod backup;
-pub mod comment;
 pub mod error;
 pub mod run;
 pub mod text_data;

@@ -1,12 +1,11 @@
 use crate::{
     app::field::{ArgsTable, Field, Text},
-    comment::Comment,
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
         OutputDirCreationFailure, PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
     },
     run::Run,
-    text_data::picture::Picture,
+    text_data::{comment::Comment, picture::Picture},
     text_format::TextFormat,
     utils::{get_image_extension, read_tag_from_path},
 };
