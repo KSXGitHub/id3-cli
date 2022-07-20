@@ -33,6 +33,7 @@ macro_rules! format_comment {
 }
 
 macro_rules! comment {
+    // With --no-backup, without ejection
     (
         $(#[$attributes:meta])*
         $name:ident:
@@ -103,6 +104,7 @@ macro_rules! comment {
         }
     };
 
+    // With --no-backup, with ejection
     (
         $(#[$attributes:meta])*
         $name:ident:
@@ -177,6 +179,7 @@ macro_rules! comment {
         }
     };
 
+    // Without --no-backup, without ejection
     (
         $(#[$attributes:meta])*
         $name:ident:
@@ -254,6 +257,7 @@ macro_rules! comment {
         }
     };
 
+    // With --no-backup, with ejection
     (
         $(#[$attributes:meta])*
         $name:ident:

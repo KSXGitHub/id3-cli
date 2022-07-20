@@ -9,6 +9,7 @@ use pretty_assertions::assert_eq;
 use std::process::Output;
 
 macro_rules! set_text {
+    // With --no-backup
     (
         $(#[$attributes:meta])*
         $name:ident: $field:literal --no-backup $audio_name:literal $text:literal => $method:ident
@@ -49,6 +50,7 @@ macro_rules! set_text {
         }
     };
 
+    // Without --no-backup
     (
         $(#[$attributes:meta])*
         $name:ident: $field:literal $audio_name:literal $text:literal => $method:ident
