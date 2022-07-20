@@ -57,7 +57,7 @@ pub struct SetText {
     /// Don't create backup for the target audio file.
     #[clap(long)]
     pub no_backup: bool,
-    /// Path to the input audio file.
+    /// Path to the target audio file.
     pub target_audio: PathBuf,
     /// New value to set.
     pub value: String,
@@ -79,7 +79,7 @@ pub struct SetComment {
     /// Format of the ejected comment (if any).
     #[clap(long, value_enum)]
     pub format: Option<TextFormat>,
-    /// Path to the input audio file.
+    /// Path to the target audio file.
     pub target_audio: PathBuf,
     /// Content of the comment.
     pub content: String,
