@@ -23,7 +23,7 @@ path = "cli/id3.rs"
 id3 = "1.2.0"
 mediatype = "0.19.3"
 infer = "0.9.0"
-clap = { version = "3.1.18", features = ["derive"] }
+clap = { version = "3.2.15", features = ["derive"] }
 serde = { version = "1.0.138", features = ["derive"] }
 serde_json = "1.0.82"
 serde_yaml = "0.8.25"
