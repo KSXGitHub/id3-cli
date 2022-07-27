@@ -146,7 +146,7 @@ pub struct SetPicture {
     pub target_audio: PathBuf,
     /// Type of picture.
     #[clap(value_enum)]
-    pub picture_type: Option<PictureType>,
+    pub picture_type: PictureType,
     /// Path to the input picture file.
     pub target_picture: PathBuf,
 }
@@ -174,10 +174,7 @@ impl Run for SetPicture {
         let description =
             description.unwrap_or_else(|| target_picture.to_string_lossy().to_string());
 
-        let picture_type = match picture_type {
-            Some(picture_type) => picture_type.into(),
-            None => frame::PictureType::Other,
-        };
+        let picture_type: frame::PictureType = picture_type.into();
 
         let frame = frame::Picture {
             data,
