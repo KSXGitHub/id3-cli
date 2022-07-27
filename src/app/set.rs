@@ -1,17 +1,18 @@
 use crate::{
     app::{
         field::{ArgsTable, Field, Text},
+        picture_type::PictureType,
         Run,
     },
-    error::Error,
+    error::{Error, FileReadFailure},
     text_data::comment::Comment,
     text_format::TextFormat,
     utils::ModifyTags,
 };
 use clap::Args;
-use id3::{Content, Tag, TagLike};
+use id3::{frame, Content, Tag, TagLike};
 use pipe_trait::Pipe;
-use std::{borrow::Cow, path::PathBuf};
+use std::{borrow::Cow, fs::read as read_file, path::PathBuf};
 
 /// Subcommand of the `set` subcommand.
 pub type Set = Field<SetArgsTable>;
@@ -144,13 +145,59 @@ pub struct SetPicture {
     /// Path to the input audio file.
     pub target_audio: PathBuf,
     /// Type of picture.
-    pub picture_type: String,
+    #[clap(value_enum)]
+    pub picture_type: Option<PictureType>,
     /// Path to the input picture file.
     pub target_picture: PathBuf,
 }
 
 impl Run for SetPicture {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        let SetPicture {
+            no_backup,
+            mime_type,
+            description,
+            ref target_audio,
+            picture_type,
+            ref target_picture,
+        } = self;
+
+        let data = read_file(target_picture).map_err(|error| FileReadFailure {
+            file: target_picture.to_path_buf(),
+            error,
+        })?;
+
+        let mime_type = mime_type
+            .or_else(|| infer::get(&data)?.mime_type().to_string().pipe(Some))
+            .unwrap_or_default();
+
+        let description =
+            description.unwrap_or_else(|| target_picture.to_string_lossy().to_string());
+
+        let picture_type = match picture_type {
+            Some(picture_type) => picture_type.into(),
+            None => frame::PictureType::Other,
+        };
+
+        let frame = frame::Picture {
+            data,
+            description,
+            mime_type,
+            picture_type,
+        };
+
+        let ejected_picture = ModifyTags::builder()
+            .target_audio(target_audio)
+            .no_backup(no_backup)
+            .build()
+            .run(|tag| tag.add_frame(frame))?;
+
+        if ejected_picture.is_some() {
+            eprintln!("A picture had been replaced");
+        } else {
+            eprintln!("A picture had been added");
+        }
+
+        Ok(())
     }
 }
