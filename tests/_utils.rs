@@ -2,7 +2,7 @@ use assert_cmp::assert_op;
 use chrono::{DateTime, Local, TimeZone};
 use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
-use id3_cli::utils::sha256_file;
+use id3_cli::utils::{read_tag_from_path, sha256_data, sha256_file};
 use pipe_trait::Pipe;
 use std::{
     env::temp_dir,
@@ -226,5 +226,36 @@ impl<'a> TestBackup<'a> {
         dbg!(distance);
         let seconds = distance.num_seconds();
         assert_op!(seconds <= 2);
+    }
+}
+
+/// Information about a picture item in a tag.
+#[derive(Debug, PartialEq, Eq)]
+pub struct PictureInfo {
+    pub mime_type: String,
+    pub picture_type: String,
+    pub description: String,
+    pub sha256: String,
+}
+
+impl PictureInfo {
+    /// Create a [`PictureInfo`] from an [id3](id3::frame::Picture) reference.
+    fn from_id3_ref(picture: &id3::frame::Picture) -> Self {
+        PictureInfo {
+            mime_type: picture.mime_type.clone(),
+            picture_type: picture.picture_type.to_string(),
+            description: picture.description.clone(),
+            sha256: sha256_data(&picture.data),
+        }
+    }
+
+    /// List all [`PictureInfo`]s from an audio file.
+    pub fn from_audio_file(audio_path: impl AsRef<Path>) -> Vec<Self> {
+        audio_path
+            .pipe(read_tag_from_path)
+            .expect("read tag from path")
+            .pictures()
+            .map(PictureInfo::from_id3_ref)
+            .collect()
     }
 }
