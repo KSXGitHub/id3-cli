@@ -1,10 +1,9 @@
 pub mod _utils;
 
-use _utils::{u8v_to_string, Exe, TestBackup};
+use _utils::{sha256_file, u8v_to_string, Exe, TestBackup};
 use chrono::Local;
 use command_extra::CommandExtra;
 use id3::{Tag, TagLike};
-use id3_cli::utils::sha256_file;
 use pretty_assertions::assert_eq;
 use std::process::Output;
 

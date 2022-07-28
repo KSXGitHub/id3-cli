@@ -1,10 +1,10 @@
 pub mod _utils;
 
-use _utils::{serialize, u8v_to_string, Exe, TestBackup};
+use _utils::{serialize, sha256_file, u8v_to_string, Exe, TestBackup};
 use chrono::Local;
 use command_extra::CommandExtra;
 use id3::Tag;
-use id3_cli::{text_data::comment::Comment, utils::sha256_file};
+use id3_cli::text_data::comment::Comment;
 use pretty_assertions::assert_eq;
 use std::process::Output;
 

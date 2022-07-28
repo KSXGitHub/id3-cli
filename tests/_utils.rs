@@ -2,12 +2,13 @@ use assert_cmp::assert_op;
 use chrono::{DateTime, Local, TimeZone};
 use derive_more::{AsRef, Deref};
 use fs_extra::dir::{copy as copy_dir, CopyOptions};
-use id3_cli::utils::{read_tag_from_path, sha256_data, sha256_file};
+use id3_cli::utils::{read_tag_from_path, sha256_data};
 use pipe_trait::Pipe;
 use std::{
     env::temp_dir,
     ffi::OsStr,
-    fs::{read_dir, remove_dir_all},
+    fmt::Debug,
+    fs::{read as read_file, read_dir, remove_dir_all},
     path::{Path, PathBuf},
     process::{Child as ChildProcess, Command, Output as CommandOutput, Stdio},
     str::from_utf8,
@@ -144,6 +145,13 @@ impl Exe<TempWorkspace> {
 /// Convert `[u8]` to `String`.
 pub fn u8v_to_string(u8v: &[u8]) -> &str {
     from_utf8(u8v).expect("convert [u8] to String")
+}
+
+/// Create sha256 hash of a file.
+pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
+    read_file(&file_name)
+        .unwrap_or_else(|error| panic!("Failed to read {file_name:?}: {error}"))
+        .pipe(sha256_data)
 }
 
 /// Deserialize JSON or YAML.

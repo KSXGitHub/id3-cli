@@ -1,9 +1,8 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
+use _utils::{assets, deserialize, serialize, sha256_file, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use id3_cli::text_data::picture::{self, Picture};
-use id3_cli::utils::sha256_file;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use std::{fs::read_dir, path::Path, process::Output};
