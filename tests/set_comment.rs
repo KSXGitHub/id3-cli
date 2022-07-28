@@ -43,6 +43,7 @@ macro_rules! comment {
         $(--description=$description:literal)?
         $(--format=$format:ident)?
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
@@ -115,6 +116,7 @@ macro_rules! comment {
         $(--format=$format:ident)?
         => $ejected:expr
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
@@ -188,6 +190,7 @@ macro_rules! comment {
         $(--description=$description:literal)?
         $(--format=$format:ident)?
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
@@ -267,6 +270,7 @@ macro_rules! comment {
         $(--format=$format:ident)?
         => $ejected:expr
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();

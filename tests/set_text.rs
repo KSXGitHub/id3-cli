@@ -14,6 +14,7 @@ macro_rules! set_text {
         $(#[$attributes:meta])*
         $name:ident: $field:literal --no-backup $audio_name:literal $text:literal => $method:ident
     ) => {
+        $(#[$attributes])*
         #[test]
         pub fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
@@ -55,6 +56,7 @@ macro_rules! set_text {
         $(#[$attributes:meta])*
         $name:ident: $field:literal $audio_name:literal $text:literal => $method:ident
     ) => {
+        $(#[$attributes])*
         #[test]
         pub fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();

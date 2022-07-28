@@ -17,6 +17,7 @@ macro_rules! comment {
         $(--description=$description:literal)?
         => $expected:expr
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let audio_path = assets().join($audio_name);
@@ -63,6 +64,7 @@ macro_rules! comment {
         $(--description=$description:literal)?
         => $expected:expr
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let expected = $expected.map(|comment: Comment<&str, &str, &str>| comment.to_owned_strings());
@@ -123,6 +125,7 @@ macro_rules! comment_fail {
         $(--description=$description:literal)?
         => $expected:expr
     ) => {
+        $(#[$attributes])*
         #[test]
         fn $name() {
             let audio_path = assets().join($audio_name);
