@@ -154,6 +154,10 @@ pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
         .pipe(sha256_data)
 }
 
+pub fn sha256_asset(name: &str) -> String {
+    assets().join(name).pipe(sha256_file)
+}
+
 /// Deserialize JSON or YAML.
 pub mod deserialize {
     pub use serde_json::from_str as json;
@@ -266,8 +270,4 @@ impl PictureInfo {
             .map(PictureInfo::from_id3_ref)
             .collect()
     }
-}
-
-pub fn sha256_asset(name: &str) -> String {
-    assets().join(name).pipe(sha256_file)
 }
