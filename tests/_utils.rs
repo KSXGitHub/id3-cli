@@ -259,3 +259,7 @@ impl PictureInfo {
             .collect()
     }
 }
+
+pub fn sha256_asset(name: &str) -> String {
+    assets().join(name).pipe(sha256_file)
+}
