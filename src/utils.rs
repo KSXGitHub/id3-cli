@@ -24,7 +24,7 @@ pub(crate) fn no_tag_to_empty_tag(error: id3::Error) -> id3::Result<Tag> {
 
 /// Read tag from a path.
 /// Return an empty tag if tag does not exist.
-pub(crate) fn read_tag_from_path(path: impl AsRef<Path>) -> Result<Tag, Error> {
+pub fn read_tag_from_path(path: impl AsRef<Path>) -> Result<Tag, Error> {
     path.pipe_as_ref(read_file)
         .map_err(|error| FileReadFailure {
             file: path.as_ref().to_path_buf(),
