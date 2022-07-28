@@ -171,8 +171,13 @@ impl Run for SetPicture {
             .or_else(|| infer::get(&data)?.mime_type().to_string().pipe(Some))
             .unwrap_or_default();
 
-        let description =
-            description.unwrap_or_else(|| target_picture.to_string_lossy().to_string());
+        let description = description.unwrap_or_else(|| {
+            target_picture
+                .file_name()
+                .map(|file_name| file_name.to_string_lossy())
+                .map(|file_name| file_name.to_string())
+                .unwrap_or_default()
+        });
 
         let picture_type: frame::PictureType = picture_type.into();
 
