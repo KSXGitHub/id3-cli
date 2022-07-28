@@ -154,6 +154,7 @@ pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
         .pipe(sha256_data)
 }
 
+/// Create sha256 hash of an asset file.
 pub fn sha256_asset(name: &str) -> String {
     assets().join(name).pipe(sha256_file)
 }
