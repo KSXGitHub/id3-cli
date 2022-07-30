@@ -4,8 +4,11 @@ use crate::{
         Run,
     },
     error::Error,
+    utils::ModifyTags,
 };
 use clap::{Args, Subcommand};
+use id3::Tag;
+use std::{mem::replace, path::PathBuf};
 
 /// Subcommand of the `delete` subcommand.
 #[derive(Debug, Subcommand)]
@@ -29,11 +32,26 @@ impl Run for Delete {
 /// CLI arguments of `delete all` subcommand.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct DeleteAllField {}
+pub struct DeleteAllField {
+    /// Don't create backup for the target audio file.
+    #[clap(long)]
+    pub no_backup: bool,
+    /// Path to the target audio file.
+    pub target_audio: PathBuf,
+}
 
 impl Run for DeleteAllField {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        let DeleteAllField {
+            no_backup,
+            target_audio,
+        } = self;
+        ModifyTags::builder()
+            .no_backup(no_backup)
+            .target_audio(&target_audio)
+            .build()
+            .run(|tag| replace(tag, Tag::new()))?;
+        Ok(())
     }
 }
 
