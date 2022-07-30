@@ -47,7 +47,6 @@ pub enum AppCmd {
     /// Modify metadata.
     #[clap(subcommand)]
     Set(Set),
-    // TODO: id3 set [--no-backup]
     // TODO: id3 delete [--no-backup]
 }
 
