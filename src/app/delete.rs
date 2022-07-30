@@ -26,7 +26,9 @@ impl Run for Delete {
     }
 }
 
+/// CLI arguments of `delete all` subcommand.
 #[derive(Debug, Args)]
+#[clap(about = "")]
 pub struct DeleteAllField {}
 
 impl Run for DeleteAllField {
@@ -53,7 +55,9 @@ impl ArgsTable for DeleteArgsTable {
     type Picture = DeletePicture;
 }
 
+/// CLI arguments of `delete <text-field>`.
 #[derive(Debug, Args)]
+#[clap(about = "")]
 pub struct DeleteText {}
 
 impl Run for DeleteText {
@@ -62,7 +66,9 @@ impl Run for DeleteText {
     }
 }
 
+/// CLI arguments of `delete comment`.
 #[derive(Debug, Args)]
+#[clap(about = "")]
 pub struct DeleteComment {}
 
 impl Run for DeleteComment {
@@ -71,7 +77,9 @@ impl Run for DeleteComment {
     }
 }
 
+/// CLI arguments of `delete picture`.
 #[derive(Debug, Args)]
+#[clap(about = "")]
 pub struct DeletePicture {}
 
 impl Run for DeletePicture {
