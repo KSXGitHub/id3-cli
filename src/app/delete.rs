@@ -5,10 +5,38 @@ use crate::{
     },
     error::Error,
 };
-use clap::Args;
+use clap::{Args, Subcommand};
 
 /// Subcommand of the `delete` subcommand.
-pub type Delete = Field<DeleteArgsTable>;
+#[derive(Debug, Subcommand)]
+pub enum Delete {
+    /// Remove the whole ID3 tag from the audio.
+    All(DeleteAllField),
+    /// Remove a single field.
+    #[clap(flatten)]
+    Single(DeleteSingleField),
+}
+
+impl Run for Delete {
+    fn run(self) -> Result<(), Error> {
+        match self {
+            Delete::All(args) => args.run(),
+            Delete::Single(args) => args.run(),
+        }
+    }
+}
+
+#[derive(Debug, Args)]
+pub struct DeleteAllField {}
+
+impl Run for DeleteAllField {
+    fn run(self) -> Result<(), Error> {
+        todo!()
+    }
+}
+
+/// Single-field subcommand of the `delete` subcommand.
+pub type DeleteSingleField = Field<DeleteArgsTable>;
 
 impl Run for Text<DeleteArgsTable> {
     fn run(self) -> Result<(), Error> {
