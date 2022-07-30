@@ -1,3 +1,4 @@
+pub mod delete;
 pub mod field;
 pub mod get;
 pub mod picture_type;
@@ -5,6 +6,7 @@ pub mod set;
 
 use crate::{error::Error, run::Run};
 use clap::{Parser, Subcommand};
+use delete::Delete;
 use get::Get;
 use set::Set;
 use std::process::ExitCode;
@@ -47,7 +49,8 @@ pub enum AppCmd {
     /// Modify metadata.
     #[clap(subcommand)]
     Set(Set),
-    // TODO: id3 delete [--no-backup]
+    #[clap(subcommand)]
+    Delete(Delete),
 }
 
 impl Run for AppCmd {
@@ -55,6 +58,7 @@ impl Run for AppCmd {
         match self {
             AppCmd::Get(proc) => proc.run(),
             AppCmd::Set(proc) => proc.run(),
+            AppCmd::Delete(proc) => proc.run(),
         }
     }
 }
