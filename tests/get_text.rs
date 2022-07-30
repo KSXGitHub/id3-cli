@@ -109,6 +109,11 @@ text!(genre_empty1: "genre" "audio1" => "");
 text!(genre_filled2: "genre" "audio2" => "Anime\n");
 text!(genre_filled3: "genre" "audio3" => "Pop\n");
 
+text!(genre_code_empty0: "genre-code" "audio0" => "");
+text!(genre_code_empty1: "genre-code" "audio1" => "");
+text!(genre_code_filled2: "genre-code" "audio2" => "(145)\n");
+text!(genre_code_filled3: "genre-code" "audio3" => "(13)\n");
+
 text!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
 text!(title_json_empty1: "title" --format=json "audio1" => None::<&str>);
 text!(title_json_filled2: "title" --format=json "audio2" => Some("砕月"));

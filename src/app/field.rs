@@ -54,6 +54,7 @@ pub enum Text<Args: ArgsTable> {
     Album(Args::Text),
     AlbumArtist(Args::Text),
     Genre(Args::Text),
+    GenreCode(Args::Text),
 }
 
 /// Frame field subcommand.

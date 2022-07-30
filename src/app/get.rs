@@ -43,6 +43,7 @@ impl Run for Text<GetArgsTable> {
             Text::Album(args) => get_text!(args, Tag::album),
             Text::AlbumArtist(args) => get_text!(args, Tag::album_artist),
             Text::Genre(args) => get_text!(args, Tag::genre_parsed),
+            Text::GenreCode(args) => get_text!(args, Tag::genre),
         }
     }
 }

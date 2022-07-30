@@ -38,6 +38,7 @@ impl Run for Text<SetArgsTable> {
             Text::Album(args) => set_text(args, Tag::set_album),
             Text::AlbumArtist(args) => set_text(args, Tag::set_album_artist),
             Text::Genre(args) => set_text(args, |_, _| unimplemented!()),
+            Text::GenreCode(args) => set_text(args, Tag::set_genre),
         }
     }
 }
