@@ -9,7 +9,7 @@ use crate::{
     text_format::TextFormat,
     utils::ModifyTags,
 };
-use clap::Args;
+use clap::{Args, Subcommand};
 use id3::{frame, Content, Tag, TagLike};
 use pipe_trait::Pipe;
 use std::{borrow::Cow, fs::read as read_file, path::PathBuf};
@@ -37,8 +37,7 @@ impl Run for Text<SetArgsTable> {
             Text::Artist(args) => set_text(args, Tag::set_artist),
             Text::Album(args) => set_text(args, Tag::set_album),
             Text::AlbumArtist(args) => set_text(args, Tag::set_album_artist),
-            Text::Genre(args) => set_text(args, |_, _| unimplemented!()),
-            Text::GenreCode(args) => set_text(args, Tag::set_genre),
+            Text::Genre(SetGenre::Code(args)) => set_text(args, Tag::set_genre),
         }
     }
 }
@@ -48,6 +47,7 @@ impl Run for Text<SetArgsTable> {
 pub struct SetArgsTable;
 impl ArgsTable for SetArgsTable {
     type Text = SetText;
+    type Genre = SetGenre;
     type Comment = SetComment;
     type Picture = SetPicture;
 }
@@ -63,6 +63,13 @@ pub struct SetText {
     pub target_audio: PathBuf,
     /// New value to set.
     pub value: String,
+}
+
+/// Genre fields.
+#[derive(Debug, Subcommand)]
+pub enum SetGenre {
+    #[clap(name = "genre-code")]
+    Code(SetText),
 }
 
 /// CLI arguments of `set comment`.

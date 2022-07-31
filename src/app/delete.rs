@@ -77,8 +77,7 @@ impl Run for Text<DeleteArgsTable> {
             Text::Artist(args) => delete_text(args, Tag::remove_artist),
             Text::Album(args) => delete_text(args, Tag::remove_album),
             Text::AlbumArtist(args) => delete_text(args, Tag::remove_album_artist),
-            Text::Genre(args) => delete_text(args, Tag::remove_genre),
-            Text::GenreCode(args) => delete_text(args, Tag::remove_genre),
+            Text::Genre(DeleteGenre::Genre(args)) => delete_text(args, Tag::remove_genre),
         }
     }
 }
@@ -88,6 +87,7 @@ impl Run for Text<DeleteArgsTable> {
 pub struct DeleteArgsTable;
 impl ArgsTable for DeleteArgsTable {
     type Text = DeleteText;
+    type Genre = DeleteGenre;
     type Comment = DeleteComment;
     type Picture = DeletePicture;
 }
@@ -101,6 +101,13 @@ pub struct DeleteText {
     pub no_backup: bool,
     /// Path to the target audio file.
     pub target_audio: PathBuf,
+}
+
+/// Genre fields.
+#[derive(Debug, Subcommand)]
+pub enum DeleteGenre {
+    #[clap(name = "genre")]
+    Genre(DeleteText),
 }
 
 /// CLI arguments of `delete comment`.

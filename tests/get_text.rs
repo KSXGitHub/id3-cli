@@ -104,10 +104,10 @@ text!(album_artist_empty1: "album-artist" "audio1" => "");
 text!(album_artist_filled2: "album-artist" "audio2" => "Astral Trip\n");
 text!(album_artist_filled3: "album-artist" "audio3" => "Astral Trip\n");
 
-text!(genre_empty0: "genre" "audio0" => "");
-text!(genre_empty1: "genre" "audio1" => "");
-text!(genre_filled2: "genre" "audio2" => "Anime\n");
-text!(genre_filled3: "genre" "audio3" => "Pop\n");
+text!(genre_name_empty0: "genre-name" "audio0" => "");
+text!(genre_name_empty1: "genre-name" "audio1" => "");
+text!(genre_name_filled2: "genre-name" "audio2" => "Anime\n");
+text!(genre_name_filled3: "genre-name" "audio3" => "Pop\n");
 
 text!(genre_code_empty0: "genre-code" "audio0" => "");
 text!(genre_code_empty1: "genre-code" "audio1" => "");

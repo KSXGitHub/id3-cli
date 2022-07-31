@@ -42,8 +42,8 @@ impl Run for Text<GetArgsTable> {
             Text::Artist(args) => get_text!(args, Tag::artist),
             Text::Album(args) => get_text!(args, Tag::album),
             Text::AlbumArtist(args) => get_text!(args, Tag::album_artist),
-            Text::Genre(args) => get_text!(args, Tag::genre_parsed),
-            Text::GenreCode(args) => get_text!(args, Tag::genre),
+            Text::Genre(GetGenre::Name(args)) => get_text!(args, Tag::genre_parsed),
+            Text::Genre(GetGenre::Code(args)) => get_text!(args, Tag::genre),
         }
     }
 }
@@ -53,6 +53,7 @@ impl Run for Text<GetArgsTable> {
 pub struct GetArgsTable;
 impl ArgsTable for GetArgsTable {
     type Text = GetText;
+    type Genre = GetGenre;
     type Comment = GetComment;
     type Picture = GetPicture;
 }
@@ -66,6 +67,15 @@ pub struct GetText {
     pub format: Option<TextFormat>,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
+}
+
+/// Genre fields.
+#[derive(Debug, Subcommand)]
+pub enum GetGenre {
+    #[clap(name = "genre-name")]
+    Name(GetText),
+    #[clap(name = "genre-code")]
+    Code(GetText),
 }
 
 /// CLI arguments of `get comment`.

@@ -6,6 +6,8 @@ use std::fmt::Debug;
 pub trait ArgsTable {
     /// CLI arguments for text fields.
     type Text: Args;
+    /// Genre fields.
+    type Genre: Subcommand;
     /// CLI arguments for the picture field.
     type Picture: Args;
     /// CLI arguments for the comment field.
@@ -18,6 +20,7 @@ pub enum Field<Args>
 where
     Args: ArgsTable,
     Args::Text: Debug,
+    Args::Genre: Debug,
     Args::Comment: Debug,
     Args::Picture: Debug,
 {
@@ -33,6 +36,7 @@ impl<Args> Run for Field<Args>
 where
     Args: ArgsTable,
     Args::Text: Debug,
+    Args::Genre: Debug,
     Args::Comment: Debug,
     Args::Picture: Debug,
     Text<Args>: Run,
@@ -53,8 +57,8 @@ pub enum Text<Args: ArgsTable> {
     Artist(Args::Text),
     Album(Args::Text),
     AlbumArtist(Args::Text),
-    Genre(Args::Text),
-    GenreCode(Args::Text),
+    #[clap(flatten)]
+    Genre(Args::Genre),
 }
 
 /// Frame field subcommand.
