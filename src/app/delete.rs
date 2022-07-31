@@ -78,12 +78,6 @@ impl ArgsTable for DeleteArgsTable {
 #[clap(about = "")]
 pub struct DeleteText {}
 
-impl Run for DeleteText {
-    fn run(self) -> Result<(), Error> {
-        todo!()
-    }
-}
-
 /// CLI arguments of `delete comment`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
