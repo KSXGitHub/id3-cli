@@ -7,7 +7,7 @@ use crate::{
     utils::ModifyTags,
 };
 use clap::{Args, Subcommand};
-use id3::Tag;
+use id3::{Tag, TagLike};
 use std::{mem::replace, path::PathBuf};
 
 /// Subcommand of the `delete` subcommand.
@@ -60,7 +60,26 @@ pub type DeleteSingleField = Field<DeleteArgsTable>;
 
 impl Run for Text<DeleteArgsTable> {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        fn delete_text(args: DeleteText, delete: impl FnOnce(&mut Tag)) -> Result<(), Error> {
+            let DeleteText {
+                no_backup,
+                target_audio,
+            } = args;
+            ModifyTags::builder()
+                .no_backup(no_backup)
+                .target_audio(&target_audio)
+                .build()
+                .run(delete)
+        }
+
+        match self {
+            Text::Title(args) => delete_text(args, Tag::remove_title),
+            Text::Artist(args) => delete_text(args, Tag::remove_artist),
+            Text::Album(args) => delete_text(args, Tag::remove_album),
+            Text::AlbumArtist(args) => delete_text(args, Tag::remove_album_artist),
+            Text::Genre(args) => delete_text(args, Tag::remove_genre),
+            Text::GenreCode(args) => delete_text(args, Tag::remove_genre),
+        }
     }
 }
 
@@ -76,7 +95,13 @@ impl ArgsTable for DeleteArgsTable {
 /// CLI arguments of `delete <text-field>`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct DeleteText {}
+pub struct DeleteText {
+    /// Don't create backup for the target audio file.
+    #[clap(long)]
+    pub no_backup: bool,
+    /// Path to the target audio file.
+    pub target_audio: PathBuf,
+}
 
 /// CLI arguments of `delete comment`.
 #[derive(Debug, Args)]
