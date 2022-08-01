@@ -32,7 +32,7 @@ macro_rules! format_comment {
     };
 }
 
-macro_rules! comment {
+macro_rules! set_comment {
     // With --no-backup, without ejection
     (
         $(#[$attributes:meta])*
@@ -344,73 +344,73 @@ macro_rules! comment {
     };
 }
 
-comment!(comment_no_backup_empty0: "audio0" --no-backup);
-comment!(comment_no_backup_empty1: "audio1" --no-backup);
+set_comment!(comment_no_backup_empty0: "audio0" --no-backup);
+set_comment!(comment_no_backup_empty1: "audio1" --no-backup);
 
-comment!(comment_no_backup_filled2: "audio2" --no-backup);
-comment!(comment_no_backup_eng_filled2: "audio2" --no-backup --language="eng");
-comment!(comment_no_backup_jpn_filled2: "audio2" --no-backup --language="jpn" => {
+set_comment!(comment_no_backup_filled2: "audio2" --no-backup);
+set_comment!(comment_no_backup_eng_filled2: "audio2" --no-backup --language="eng");
+set_comment!(comment_no_backup_jpn_filled2: "audio2" --no-backup --language="jpn" => {
     "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
 });
 
-comment!(comment_no_backup_eng_filled3: "audio3" --no-backup --language="eng" => {
+set_comment!(comment_no_backup_eng_filled3: "audio3" --no-backup --language="eng" => {
     "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
 });
-comment!(comment_no_backup_eng_json_filled3: "audio3" --no-backup --language="eng" --format=json => Comment {
+set_comment!(comment_no_backup_eng_json_filled3: "audio3" --no-backup --language="eng" --format=json => Comment {
     language: "eng",
     description: "",
     content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)",
 });
-comment!(comment_no_backup_eng_yaml_filled3: "audio3" --no-backup --language="eng" --format=yaml => Comment {
+set_comment!(comment_no_backup_eng_yaml_filled3: "audio3" --no-backup --language="eng" --format=yaml => Comment {
     language: "eng",
     description: "",
     content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)",
 });
-comment!(comment_no_backup_jpn_filled3: "audio3" --no-backup --language="jpn" => {
+set_comment!(comment_no_backup_jpn_filled3: "audio3" --no-backup --language="jpn" => {
     "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
 });
-comment!(comment_no_backup_jpn_json_filled3: "audio3" --no-backup --language="jpn" --format=json => Comment {
+set_comment!(comment_no_backup_jpn_json_filled3: "audio3" --no-backup --language="jpn" --format=json => Comment {
     language: "jpn",
     description: "",
     content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)",
 });
-comment!(comment_no_backup_jpn_yaml_filled3: "audio3" --no-backup --language="jpn" --format=yaml => Comment {
+set_comment!(comment_no_backup_jpn_yaml_filled3: "audio3" --no-backup --language="jpn" --format=yaml => Comment {
     language: "jpn",
     description: "",
     content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)",
 });
 
-comment!(comment_empty0: "audio0");
-comment!(comment_empty1: "audio1");
+set_comment!(comment_empty0: "audio0");
+set_comment!(comment_empty1: "audio1");
 
-comment!(comment_filled2: "audio2");
-comment!(comment_eng_filled2: "audio2" --language="eng");
-comment!(comment_jpn_filled2: "audio2" --language="jpn" => {
+set_comment!(comment_filled2: "audio2");
+set_comment!(comment_eng_filled2: "audio2" --language="eng");
+set_comment!(comment_jpn_filled2: "audio2" --language="jpn" => {
     "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
 });
 
-comment!(comment_eng_filled3: "audio3" --language="eng" => {
+set_comment!(comment_eng_filled3: "audio3" --language="eng" => {
     "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)"
 });
-comment!(comment_eng_json_filled3: "audio3" --language="eng" --format=json => Comment {
+set_comment!(comment_eng_json_filled3: "audio3" --language="eng" --format=json => Comment {
     language: "eng",
     description: "",
     content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)",
 });
-comment!(comment_eng_yaml_filled3: "audio3" --language="eng" --format=yaml => Comment {
+set_comment!(comment_eng_yaml_filled3: "audio3" --language="eng" --format=yaml => Comment {
     language: "eng",
     description: "",
     content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)",
 });
-comment!(comment_jpn_filled3: "audio3" --language="jpn" => {
+set_comment!(comment_jpn_filled3: "audio3" --language="jpn" => {
     "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)"
 });
-comment!(comment_jpn_json_filled3: "audio3" --language="jpn" --format=json => Comment {
+set_comment!(comment_jpn_json_filled3: "audio3" --language="jpn" --format=json => Comment {
     language: "jpn",
     description: "",
     content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)",
 });
-comment!(comment_jpn_yaml_filled3: "audio3" --language="jpn" --format=yaml => Comment {
+set_comment!(comment_jpn_yaml_filled3: "audio3" --language="jpn" --format=yaml => Comment {
     language: "jpn",
     description: "",
     content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)",

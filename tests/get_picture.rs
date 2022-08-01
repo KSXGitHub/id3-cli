@@ -25,7 +25,7 @@ macro_rules! picture {
     };
 }
 
-macro_rules! picture_list {
+macro_rules! get_picture_list {
     (
         $(#[$attributes:meta])*
         $name:ident: $audio_name:literal --format=$format:ident => $expected:expr
@@ -77,12 +77,12 @@ macro_rules! picture_list {
     };
 }
 
-picture_list!(picture_list_json_empty0: "audio0" --format=json => []);
-picture_list!(picture_list_yaml_empty0: "audio0" --format=yaml => []);
-picture_list!(picture_list_json_empty1: "audio1" --format=json => []);
-picture_list!(picture_list_yaml_empty1: "audio1" --format=yaml => []);
+get_picture_list!(picture_list_json_empty0: "audio0" --format=json => []);
+get_picture_list!(picture_list_yaml_empty0: "audio0" --format=yaml => []);
+get_picture_list!(picture_list_json_empty1: "audio1" --format=json => []);
+get_picture_list!(picture_list_yaml_empty1: "audio1" --format=yaml => []);
 
-picture_list!(picture_list_json_filled2: "audio2" --format=json => [
+get_picture_list!(picture_list_json_filled2: "audio2" --format=json => [
     picture! {
         id: 0,
         mime_type: "image/jpeg",
@@ -92,7 +92,7 @@ picture_list!(picture_list_json_filled2: "audio2" --format=json => [
     }
 ]);
 
-picture_list!(picture_list_yaml_filled2: "audio2" --format=yaml => [
+get_picture_list!(picture_list_yaml_filled2: "audio2" --format=yaml => [
     picture! {
         id: 0,
         mime_type: "image/jpeg",
@@ -102,7 +102,7 @@ picture_list!(picture_list_yaml_filled2: "audio2" --format=yaml => [
     }
 ]);
 
-picture_list!(picture_list_json_filled3: "audio3" --format=json => [
+get_picture_list!(picture_list_json_filled3: "audio3" --format=json => [
     picture! {
         id: 0,
         mime_type: "image/png",
@@ -133,7 +133,7 @@ picture_list!(picture_list_json_filled3: "audio3" --format=json => [
     },
 ]);
 
-picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
+get_picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
     picture! {
         id: 0,
         mime_type: "image/png",
@@ -164,7 +164,7 @@ picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
     },
 ]);
 
-macro_rules! picture_file {
+macro_rules! get_picture_file {
     (
         $(#[$attributes:meta])*
         $name:ident: $audio_name:literal $(--id=$id:literal)? => $expected:literal
@@ -298,15 +298,15 @@ picture_file_fail!(picture_file_0_empty0: "audio0" --id="0" => "error: Specified
 picture_file_fail!(picture_file_empty1: "audio1" => "error: Picture not found\n");
 picture_file_fail!(picture_file_0_empty1: "audio1" --id="1" => "error: Specified picture ID is out of bound\n");
 
-picture_file!(picture_file_filled2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
-picture_file!(picture_file_0_filled2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
+get_picture_file!(picture_file_filled2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
+get_picture_file!(picture_file_0_filled2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
 picture_file_fail!(picture_file_1_filled2: "audio2" --id="1" => "error: Specified picture ID is out of bound\n");
 
 picture_file_fail!(picture_file_filled3: "audio3" => "error: Too many pictures to choose from\n");
-picture_file!(picture_file_0_filled3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
-picture_file!(picture_file_1_filled3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
-picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
-picture_file!(picture_file_3_filled3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
+get_picture_file!(picture_file_0_filled3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
+get_picture_file!(picture_file_1_filled3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
+get_picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
+get_picture_file!(picture_file_3_filled3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
 picture_file_fail!(picture_file_4_filled3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
 
 picture_file_fail_fn!(#[cfg(unix)] picture_file_not_exist: "not-exist" => |wdir| {

@@ -6,7 +6,7 @@ use id3_cli::utils::read_tag_from_path;
 use pretty_assertions::assert_eq;
 use std::process::Output;
 
-macro_rules! all {
+macro_rules! delete_all {
     // With --no-backup
     ($(#[$attributes:meta])* $name:ident: $audio_name:literal --no-backup) => {
         #[test]
@@ -41,7 +41,7 @@ macro_rules! all {
     };
 }
 
-all!(delete_no_backup_empty0: "audio0" --no-backup);
-all!(delete_no_backup_empty1: "audio1" --no-backup);
-all!(delete_no_backup_filled2: "audio2" --no-backup);
-all!(delete_no_backup_filled3: "audio3" --no-backup);
+delete_all!(delete_no_backup_empty0: "audio0" --no-backup);
+delete_all!(delete_no_backup_empty1: "audio1" --no-backup);
+delete_all!(delete_no_backup_filled2: "audio2" --no-backup);
+delete_all!(delete_no_backup_filled3: "audio3" --no-backup);

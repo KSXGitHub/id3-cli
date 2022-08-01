@@ -7,7 +7,7 @@ use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use std::process::Output;
 
-macro_rules! comment {
+macro_rules! get_comment {
     // Without --format
     (
         $(#[$attributes:meta])*
@@ -165,12 +165,12 @@ macro_rules! comment_fail {
 
 comment_fail!(comment_fail0: "audio0" => "error: Comment not found\n");
 comment_fail!(comment_fail1: "audio1" => "error: Comment not found\n");
-comment!(comment_filled2: "audio2" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+get_comment!(comment_filled2: "audio2" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 comment_fail!(comment_eng_fail2: "audio2" --language="eng" => "error: Comment not found\n");
 comment_fail!(comment_fail3: "audio3" => "error: Too many comments to choose from\n");
-comment!(comment_jpn_filled2: "audio2" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
-comment!(comment_eng_filled3: "audio3" --language="eng" => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
-comment!(comment_jpn_filled3: "audio3" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+get_comment!(comment_jpn_filled2: "audio2" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
+get_comment!(comment_eng_filled3: "audio3" --language="eng" => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
+get_comment!(comment_jpn_filled3: "audio3" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 
 comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
@@ -181,12 +181,12 @@ comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
     assets().join("."),
 ));
 
-comment!(comment_json_empty0: "audio0" --format=json => []);
-comment!(comment_yaml_empty0: "audio0" --format=yaml => []);
-comment!(comment_json_empty1: "audio1" --format=json => []);
-comment!(comment_yaml_empty1: "audio1" --format=yaml => []);
+get_comment!(comment_json_empty0: "audio0" --format=json => []);
+get_comment!(comment_yaml_empty0: "audio0" --format=yaml => []);
+get_comment!(comment_json_empty1: "audio1" --format=json => []);
+get_comment!(comment_yaml_empty1: "audio1" --format=yaml => []);
 
-comment!(comment_json_filled2: "audio2" --format=json => [
+get_comment!(comment_json_filled2: "audio2" --format=json => [
     Comment {
         description: "",
         language: "jpn",
@@ -194,7 +194,7 @@ comment!(comment_json_filled2: "audio2" --format=json => [
     },
 ]);
 
-comment!(comment_yaml_filled2: "audio2" --format=yaml => [
+get_comment!(comment_yaml_filled2: "audio2" --format=yaml => [
     Comment {
         description: "",
         language: "jpn",
@@ -202,7 +202,7 @@ comment!(comment_yaml_filled2: "audio2" --format=yaml => [
     },
 ]);
 
-comment!(comment_json_filled3: "audio3" --format=json => [
+get_comment!(comment_json_filled3: "audio3" --format=json => [
     Comment {
         description: "",
         language: "eng",
@@ -215,7 +215,7 @@ comment!(comment_json_filled3: "audio3" --format=json => [
     },
 ]);
 
-comment!(comment_json_jpn_filled3: "audio3" --format=json --language="jpn" => [
+get_comment!(comment_json_jpn_filled3: "audio3" --format=json --language="jpn" => [
     Comment {
         description: "",
         language: "jpn",
@@ -223,7 +223,7 @@ comment!(comment_json_jpn_filled3: "audio3" --format=json --language="jpn" => [
     },
 ]);
 
-comment!(comment_yaml_filled3: "audio3" --format=yaml => [
+get_comment!(comment_yaml_filled3: "audio3" --format=yaml => [
     Comment {
         description: "",
         language: "eng",
@@ -236,7 +236,7 @@ comment!(comment_yaml_filled3: "audio3" --format=yaml => [
     },
 ]);
 
-comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language="eng" => [
+get_comment!(comment_yaml_eng_filled3: "audio3" --format=yaml --language="eng" => [
     Comment {
         description: "",
         language: "eng",
