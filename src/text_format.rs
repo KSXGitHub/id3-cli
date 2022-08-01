@@ -94,19 +94,18 @@ mod tests {
             .serialize(&TEST_SUBJECT)
             .expect("serialize test subject");
         let expected = text_block! {
-            "---"
             "number: 123"
             "string: text"
             "array:"
+            "- number: 0"
+            "  string: a"
+            "  array: []"
+            "- number: 1"
+            "  string: a"
+            "  array:"
             "  - number: 0"
-            "    string: a"
+            "    string: b"
             "    array: []"
-            "  - number: 1"
-            "    string: a"
-            "    array:"
-            "      - number: 0"
-            "        string: b"
-            "        array: []"
             ""
         };
         eprintln!("RECEIVED:\n{received}");
