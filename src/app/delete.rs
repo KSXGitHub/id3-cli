@@ -113,11 +113,35 @@ pub enum DeleteGenre {
 /// CLI arguments of `delete comment`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct DeleteComment {}
+pub struct DeleteComment {
+    /// Don't create backup for the target audio file.
+    #[clap(long)]
+    pub no_backup: bool,
+    /// Comment description.
+    #[clap(long)]
+    pub description: Option<String>,
+    /// Comment content.
+    #[clap(long)]
+    pub content: Option<String>,
+    /// Path to the target audio file.
+    pub target_audio: PathBuf,
+}
 
 impl Run for DeleteComment {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        let DeleteComment {
+            no_backup,
+            ref description,
+            ref content,
+            ref target_audio,
+        } = self;
+        let description = description.as_deref();
+        let content = content.as_deref();
+        ModifyTags::builder()
+            .no_backup(no_backup)
+            .target_audio(target_audio)
+            .build()
+            .run(|tag| tag.remove_comment(description, content))
     }
 }
 
