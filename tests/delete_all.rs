@@ -8,7 +8,10 @@ use std::process::Output;
 
 macro_rules! delete_all {
     // With --no-backup
-    ($(#[$attributes:meta])* $name:ident: $audio_name:literal --no-backup) => {
+    (
+        $(#[$attributes:meta])*
+        $name:ident: $audio_name:literal --no-backup
+    ) => {
         #[test]
         fn $name() {
             let Exe { cmd, wdir } = Exe::temp_workspace();
