@@ -197,7 +197,7 @@ set_picture!(picture_no_backup_mime_desc_empty1_il_jpg: "audio1" "Illustration" 
     }
 ]);
 
-set_picture!(picture_no_backup_filled2_il_jpg: "audio2" "Illustration" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio2_il_jpg: "audio2" "Illustration" "jpg-picture" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -206,7 +206,7 @@ set_picture!(picture_no_backup_filled2_il_jpg: "audio2" "Illustration" "jpg-pict
     }
 ]);
 
-set_picture!(picture_no_backup_filled2_cf_jpg: "audio2" "CoverFront" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio2_cf_jpg: "audio2" "CoverFront" "jpg-picture" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -221,7 +221,7 @@ set_picture!(picture_no_backup_filled2_cf_jpg: "audio2" "CoverFront" "jpg-pictur
     }
 ]);
 
-set_picture!(picture_no_backup_filled3_cf_jpg: "audio3" "CoverFront" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio3_cf_jpg: "audio3" "CoverFront" "jpg-picture" --no-backup => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Back cover".to_string(),
@@ -248,7 +248,7 @@ set_picture!(picture_no_backup_filled3_cf_jpg: "audio3" "CoverFront" "jpg-pictur
     },
 ]);
 
-set_picture!(picture_no_backup_filled3_il_jpg: "audio3" "Illustration" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio3_il_jpg: "audio3" "Illustration" "jpg-picture" --no-backup => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Front cover".to_string(),
@@ -299,7 +299,7 @@ set_picture!(picture_mime_desc_empty1_il_jpg: "audio1" "Illustration" "png-pictu
     }
 ]);
 
-set_picture!(picture_filled2_il_jpg: "audio2" "Illustration" "jpg-picture" => [
+set_picture!(picture_audio2_il_jpg: "audio2" "Illustration" "jpg-picture" => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -308,7 +308,7 @@ set_picture!(picture_filled2_il_jpg: "audio2" "Illustration" "jpg-picture" => [
     }
 ]);
 
-set_picture!(picture_filled3_il_jpg: "audio3" "Illustration" "jpg-picture" => [
+set_picture!(picture_audio3_il_jpg: "audio3" "Illustration" "jpg-picture" => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Front cover".to_string(),

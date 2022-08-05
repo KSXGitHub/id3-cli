@@ -63,9 +63,9 @@ macro_rules! delete_comment {
     };
 }
 
-delete_comment!(comment_no_backup_filled3: "audio3" --no-backup => []);
+delete_comment!(comment_no_backup_audio3: "audio3" --no-backup => []);
 
-delete_comment!(comment_no_backup_content_jpn_filled3: "audio3" --no-backup --content="【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)" => [
+delete_comment!(comment_no_backup_content_jpn_audio3: "audio3" --no-backup --content="【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)" => [
     CommentInfo {
         language: "eng".to_string(),
         description: "".to_string(),
@@ -73,9 +73,9 @@ delete_comment!(comment_no_backup_content_jpn_filled3: "audio3" --no-backup --co
     },
 ]);
 
-delete_comment!(comment_no_backup_desc_empty_filled3: "audio3" --no-backup --description="" => []);
+delete_comment!(comment_no_backup_desc_empty_audio3: "audio3" --no-backup --description="" => []);
 
-delete_comment!(comment_no_backup_desc_empty_content_jpn_filled3: "audio3" --no-backup --description="" --content="【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)" => [
+delete_comment!(comment_no_backup_desc_empty_content_jpn_audio3: "audio3" --no-backup --description="" --content="【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)" => [
     CommentInfo {
         language: "eng".to_string(),
         description: "".to_string(),
@@ -83,7 +83,7 @@ delete_comment!(comment_no_backup_desc_empty_content_jpn_filled3: "audio3" --no-
     },
 ]);
 
-delete_comment!(comment_no_backup_desc_empty_content_eng_filled3: "audio3" --no-backup --description="" --content="【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)" => [
+delete_comment!(comment_no_backup_desc_empty_content_eng_audio3: "audio3" --no-backup --description="" --content="【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)" => [
     CommentInfo {
         language: "jpn".to_string(),
         description: "".to_string(),
@@ -91,20 +91,7 @@ delete_comment!(comment_no_backup_desc_empty_content_eng_filled3: "audio3" --no-
     },
 ]);
 
-delete_comment!(comment_no_backup_desc_unmatched_content_eng_filled3: "audio3" --no-backup --description="description" --content="【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)" => [
-    CommentInfo {
-        language: "eng".to_string(),
-        description: "".to_string(),
-        content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)".to_string(),
-    },
-    CommentInfo {
-        language: "jpn".to_string(),
-        description: "".to_string(),
-        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)".to_string(),
-    },
-]);
-
-delete_comment!(comment_no_backup_desc_empty_content_unmatched_filled3: "audio3" --no-backup --description="" --content="content" => [
+delete_comment!(comment_no_backup_desc_unmatched_content_eng_audio3: "audio3" --no-backup --description="description" --content="【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)" => [
     CommentInfo {
         language: "eng".to_string(),
         description: "".to_string(),
@@ -117,7 +104,20 @@ delete_comment!(comment_no_backup_desc_empty_content_unmatched_filled3: "audio3"
     },
 ]);
 
-delete_comment!(comment_no_backup_desc_unmatched_content_unmatched_filled3: "audio3" --no-backup --description="description" --content="content" => [
+delete_comment!(comment_no_backup_desc_empty_content_unmatched_audio3: "audio3" --no-backup --description="" --content="content" => [
+    CommentInfo {
+        language: "eng".to_string(),
+        description: "".to_string(),
+        content: "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)".to_string(),
+    },
+    CommentInfo {
+        language: "jpn".to_string(),
+        description: "".to_string(),
+        content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)".to_string(),
+    },
+]);
+
+delete_comment!(comment_no_backup_desc_unmatched_content_unmatched_audio3: "audio3" --no-backup --description="description" --content="content" => [
     CommentInfo {
         language: "eng".to_string(),
         description: "".to_string(),

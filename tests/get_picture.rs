@@ -82,7 +82,7 @@ get_picture_list!(picture_list_yaml_empty0: "audio0" --format=yaml => []);
 get_picture_list!(picture_list_json_empty1: "audio1" --format=json => []);
 get_picture_list!(picture_list_yaml_empty1: "audio1" --format=yaml => []);
 
-get_picture_list!(picture_list_json_filled2: "audio2" --format=json => [
+get_picture_list!(picture_list_json_audio2: "audio2" --format=json => [
     picture! {
         id: 0,
         mime_type: "image/jpeg",
@@ -92,7 +92,7 @@ get_picture_list!(picture_list_json_filled2: "audio2" --format=json => [
     }
 ]);
 
-get_picture_list!(picture_list_yaml_filled2: "audio2" --format=yaml => [
+get_picture_list!(picture_list_yaml_audio2: "audio2" --format=yaml => [
     picture! {
         id: 0,
         mime_type: "image/jpeg",
@@ -102,7 +102,7 @@ get_picture_list!(picture_list_yaml_filled2: "audio2" --format=yaml => [
     }
 ]);
 
-get_picture_list!(picture_list_json_filled3: "audio3" --format=json => [
+get_picture_list!(picture_list_json_audio3: "audio3" --format=json => [
     picture! {
         id: 0,
         mime_type: "image/png",
@@ -133,7 +133,7 @@ get_picture_list!(picture_list_json_filled3: "audio3" --format=json => [
     },
 ]);
 
-get_picture_list!(picture_list_yaml_filled3: "audio3" --format=yaml => [
+get_picture_list!(picture_list_yaml_audio3: "audio3" --format=yaml => [
     picture! {
         id: 0,
         mime_type: "image/png",
@@ -298,16 +298,16 @@ picture_file_fail!(picture_file_0_empty0: "audio0" --id="0" => "error: Specified
 picture_file_fail!(picture_file_empty1: "audio1" => "error: Picture not found\n");
 picture_file_fail!(picture_file_0_empty1: "audio1" --id="1" => "error: Specified picture ID is out of bound\n");
 
-get_picture_file!(picture_file_filled2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
-get_picture_file!(picture_file_0_filled2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
-picture_file_fail!(picture_file_1_filled2: "audio2" --id="1" => "error: Specified picture ID is out of bound\n");
+get_picture_file!(picture_file_audio2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
+get_picture_file!(picture_file_0_audio2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
+picture_file_fail!(picture_file_1_audio2: "audio2" --id="1" => "error: Specified picture ID is out of bound\n");
 
-picture_file_fail!(picture_file_filled3: "audio3" => "error: Too many pictures to choose from\n");
-get_picture_file!(picture_file_0_filled3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
-get_picture_file!(picture_file_1_filled3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
-get_picture_file!(picture_file_2_filled3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
-get_picture_file!(picture_file_3_filled3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
-picture_file_fail!(picture_file_4_filled3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
+picture_file_fail!(picture_file_audio3: "audio3" => "error: Too many pictures to choose from\n");
+get_picture_file!(picture_file_0_audio3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
+get_picture_file!(picture_file_1_audio3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
+get_picture_file!(picture_file_2_audio3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
+get_picture_file!(picture_file_3_audio3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
+picture_file_fail!(picture_file_4_audio3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
 
 picture_file_fail_fn!(#[cfg(unix)] picture_file_not_exist: "not-exist" => |wdir| {
     format!("error: Failed to read {:?}: No such file or directory (os error 2)\n", wdir.join("assets").join("not-exist"))
@@ -416,12 +416,12 @@ macro_rules! picture_dir_filled {
 picture_dir_empty!(picture_dir_empty0: "audio0");
 picture_dir_empty!(picture_dir_empty1: "audio1");
 
-picture_dir_filled!(picture_dir_filled2: "audio2" => [(
+picture_dir_filled!(picture_dir_audio2: "audio2" => [(
     "0.jpg",
     "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4",
 )]);
 
-picture_dir_filled!(picture_dir_filled3: "audio3" => [
+picture_dir_filled!(picture_dir_audio3: "audio3" => [
     (
         "0.png",
         "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a",

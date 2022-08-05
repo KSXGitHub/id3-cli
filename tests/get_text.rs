@@ -86,43 +86,43 @@ macro_rules! get_text {
 
 get_text!(title_empty0: "title" "audio0" => "");
 get_text!(title_empty1: "title" "audio1" => "");
-get_text!(title_filled2: "title" "audio2" => "砕月\n");
-get_text!(title_filled3: "title" "audio3" => "Broken Moon\n");
+get_text!(title_audio2: "title" "audio2" => "砕月\n");
+get_text!(title_audio3: "title" "audio3" => "Broken Moon\n");
 
 get_text!(artist_empty0: "artist" "audio0" => "");
 get_text!(artist_empty1: "artist" "audio1" => "");
-get_text!(artist_filled2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
-get_text!(artist_filled3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
+get_text!(artist_audio2: "artist" "audio2" => "ココ&さつき が てんこもり\n");
+get_text!(artist_audio3: "artist" "audio3" => "Koko & Satsuki ga Tenkomori\n");
 
 get_text!(album_empty0: "album" "audio0" => "");
 get_text!(album_empty1: "album" "audio1" => "");
-get_text!(album_filled2: "album" "audio2" => "幻想郷ミソギバライ\n");
-get_text!(album_filled3: "album" "audio3" => "Gensoukyou Misogibarai\n");
+get_text!(album_audio2: "album" "audio2" => "幻想郷ミソギバライ\n");
+get_text!(album_audio3: "album" "audio3" => "Gensoukyou Misogibarai\n");
 
 get_text!(album_artist_empty0: "album-artist" "audio0" => "");
 get_text!(album_artist_empty1: "album-artist" "audio1" => "");
-get_text!(album_artist_filled2: "album-artist" "audio2" => "Astral Trip\n");
-get_text!(album_artist_filled3: "album-artist" "audio3" => "Astral Trip\n");
+get_text!(album_artist_audio2: "album-artist" "audio2" => "Astral Trip\n");
+get_text!(album_artist_audio3: "album-artist" "audio3" => "Astral Trip\n");
 
 get_text!(genre_name_empty0: "genre-name" "audio0" => "");
 get_text!(genre_name_empty1: "genre-name" "audio1" => "");
-get_text!(genre_name_filled2: "genre-name" "audio2" => "Anime\n");
-get_text!(genre_name_filled3: "genre-name" "audio3" => "Pop\n");
+get_text!(genre_name_audio2: "genre-name" "audio2" => "Anime\n");
+get_text!(genre_name_audio3: "genre-name" "audio3" => "Pop\n");
 
 get_text!(genre_code_empty0: "genre-code" "audio0" => "");
 get_text!(genre_code_empty1: "genre-code" "audio1" => "");
-get_text!(genre_code_filled2: "genre-code" "audio2" => "(145)\n");
-get_text!(genre_code_filled3: "genre-code" "audio3" => "(13)\n");
+get_text!(genre_code_audio2: "genre-code" "audio2" => "(145)\n");
+get_text!(genre_code_audio3: "genre-code" "audio3" => "(13)\n");
 
 get_text!(title_json_empty0: "title" --format=json "audio0" => None::<&str>);
 get_text!(title_json_empty1: "title" --format=json "audio1" => None::<&str>);
-get_text!(title_json_filled2: "title" --format=json "audio2" => Some("砕月"));
-get_text!(title_json_filled3: "title" --format=json "audio3" => Some("Broken Moon"));
+get_text!(title_json_audio2: "title" --format=json "audio2" => Some("砕月"));
+get_text!(title_json_audio3: "title" --format=json "audio3" => Some("Broken Moon"));
 
 get_text!(artist_yaml_empty0: "artist" --format=yaml "audio0" => None::<&str>);
 get_text!(artist_yaml_empty1: "artist" --format=yaml "audio1" => None::<&str>);
-get_text!(artist_yaml_filled2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
-get_text!(artist_yaml_filled3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
+get_text!(artist_yaml_audio2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
+get_text!(artist_yaml_audio3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
 
 macro_rules! text_fail {
     (
