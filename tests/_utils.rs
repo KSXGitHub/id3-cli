@@ -242,6 +242,35 @@ impl<'a> TestBackup<'a> {
     }
 }
 
+/// Information about a comment item in a tag.
+#[derive(Debug, PartialEq, Eq)]
+pub struct CommentInfo {
+    pub language: String,
+    pub description: String,
+    pub content: String,
+}
+
+impl CommentInfo {
+    /// Create a [`CommentInfo`] from an [id3](id3::frame::Comment) reference.
+    fn from_id3_ref(comment: &id3::frame::Comment) -> Self {
+        CommentInfo {
+            language: comment.lang.clone(),
+            description: comment.description.clone(),
+            content: comment.text.clone(),
+        }
+    }
+
+    /// List all [`CommentInfo`]s from an audio file.
+    pub fn from_audio_file(audio_path: impl AsRef<Path>) -> Vec<Self> {
+        audio_path
+            .pipe(read_tag_from_path)
+            .expect("read tag from path")
+            .comments()
+            .map(CommentInfo::from_id3_ref)
+            .collect()
+    }
+}
+
 /// Information about a picture item in a tag.
 #[derive(Debug, PartialEq, Eq)]
 pub struct PictureInfo {
