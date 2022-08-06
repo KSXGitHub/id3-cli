@@ -1,6 +1,7 @@
 use crate::{
     app::{
         field::{ArgsTable, Field, Text},
+        picture_type::PictureType,
         Run,
     },
     error::Error,
@@ -148,10 +149,45 @@ impl Run for DeleteComment {
 /// CLI arguments of `delete picture`.
 #[derive(Debug, Args)]
 #[clap(about = "")]
-pub struct DeletePicture {}
+pub struct DeletePicture {
+    /// Don't create backup for the target audio file.
+    #[clap(long)]
+    pub no_backup: bool,
+    /// Path to the target audio file.
+    pub target_audio: PathBuf,
+    /// Subcommand to execute.
+    #[clap(subcommand)]
+    pub command: DeletePictureCmd,
+}
 
 impl Run for DeletePicture {
     fn run(self) -> Result<(), Error> {
-        todo!()
+        let DeletePicture {
+            no_backup,
+            ref target_audio,
+            command,
+        } = self;
+
+        ModifyTags {
+            no_backup,
+            target_audio,
+        }
+        .run(|tag| match command {
+            DeletePictureCmd::All => tag.remove_all_pictures(),
+            DeletePictureCmd::ByType(picture_type) => {
+                tag.remove_picture_by_type(picture_type.into())
+            }
+        })
     }
+}
+
+/// Subcommand of `delete picture`.
+#[derive(Debug, Subcommand)]
+#[clap(about = "")]
+pub enum DeletePictureCmd {
+    /// Delete all pictures.
+    All,
+    /// Delete a picture by type.
+    #[clap(flatten)]
+    ByType(PictureType),
 }

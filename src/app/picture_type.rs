@@ -1,8 +1,8 @@
-use clap::ValueEnum;
+use clap::{Subcommand, ValueEnum};
 use id3::frame;
 
 /// Standard picture type.
-#[derive(Debug, Clone, Copy, ValueEnum)]
+#[derive(Debug, Clone, Copy, ValueEnum, Subcommand)]
 #[clap(rename_all = "PascalCase")]
 pub enum PictureType {
     Other,
