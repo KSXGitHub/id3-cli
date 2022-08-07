@@ -48,6 +48,7 @@ pub enum AppCmd {
     /// Modify metadata.
     #[clap(subcommand)]
     Set(Set),
+    /// Delete metadata.
     #[clap(subcommand)]
     Delete(Delete),
 }
