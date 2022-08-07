@@ -1,10 +1,11 @@
+use crate::text_data::picture_type::PictureTypeExtra;
 use id3::frame::Picture as Id3Picture;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Picture {
     pub mime_type: String,
-    pub picture_type: String,
+    pub picture_type: PictureTypeExtra,
     pub description: String,
     pub size: usize,
 }
@@ -18,7 +19,7 @@ impl Picture {
             data,
         } = source;
         let mime_type = mime_type.to_string();
-        let picture_type = picture_type.to_string();
+        let picture_type = (*picture_type).into();
         let description = description.to_string();
         let size = data.len();
         Picture {
