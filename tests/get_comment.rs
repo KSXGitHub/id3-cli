@@ -1,6 +1,6 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
+use _utils::{assets, deserialize, serialize, show_stdout_stderr, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use id3_cli::text_data::comment::Comment;
 use pipe_trait::Pipe;
@@ -42,8 +42,7 @@ macro_rules! get_comment {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -93,8 +92,7 @@ macro_rules! get_comment {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -150,8 +148,7 @@ macro_rules! get_comment_fail {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(!status.success());

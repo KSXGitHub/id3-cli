@@ -1,6 +1,6 @@
 pub mod _utils;
 
-use _utils::{sha256_file, u8v_to_string, Exe, TestBackup};
+use _utils::{sha256_file, show_stdout_stderr, Exe, TestBackup};
 use chrono::Local;
 use command_extra::CommandExtra;
 use std::process::Output;
@@ -31,8 +31,7 @@ macro_rules! backup {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());

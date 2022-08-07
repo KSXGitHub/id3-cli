@@ -1,6 +1,6 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, sha256_file, u8v_to_string, Exe};
+use _utils::{assets, deserialize, serialize, sha256_file, show_stdout_stderr, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use id3_cli::text_data::{picture::Picture, picture_type::PictureType};
 use pipe_trait::Pipe;
@@ -50,8 +50,7 @@ macro_rules! get_picture_list {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -180,8 +179,7 @@ macro_rules! get_picture_file {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -222,8 +220,7 @@ macro_rules! get_picture_file_fail {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(!status.success());
@@ -265,8 +262,7 @@ macro_rules! picture_file_fail_fn {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(!status.success());
@@ -327,8 +323,7 @@ macro_rules! get_picture_dir_empty {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -366,8 +361,7 @@ macro_rules! get_picture_dir_filled {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());

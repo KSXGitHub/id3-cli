@@ -147,6 +147,18 @@ pub fn u8v_to_string(u8v: &[u8]) -> &str {
     from_utf8(u8v).expect("convert [u8] to String")
 }
 
+/// Print stdout and stderr.
+pub fn show_stdout_stderr(stdout: &[u8], stderr: &[u8]) {
+    let object = serde_json::json!({
+        "STDOUT": u8v_to_string(stdout),
+        "STDERR": u8v_to_string(stderr),
+    });
+    match serialize::yaml(&object) {
+        Ok(yaml) => eprintln!("{yaml}"),
+        Err(error) => eprintln!("show_stdout_stderr: {error}"),
+    }
+}
+
 /// Create sha256 hash of a file.
 pub fn sha256_file(file_name: impl AsRef<Path> + Debug) -> String {
     read_file(&file_name)

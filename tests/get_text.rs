@@ -1,6 +1,6 @@
 pub mod _utils;
 
-use _utils::{assets, deserialize, serialize, u8v_to_string, Exe};
+use _utils::{assets, deserialize, serialize, show_stdout_stderr, u8v_to_string, Exe};
 use command_extra::CommandExtra;
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
@@ -31,7 +31,7 @@ macro_rules! get_text {
                 .expect("execute command");
 
             // for ease of debug
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
 
             // basic guarantees
             assert!(status.success());
@@ -75,8 +75,7 @@ macro_rules! get_text {
                 .with_arg(audio_path)
                 .output()
                 .expect("execute command");
-            eprintln!("STDOUT:\n{}", u8v_to_string(&stdout));
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
             assert!(status.success());
             assert!(stderr.is_empty());
             assert_eq!(u8v_to_string(&stdout), $stdout);
@@ -144,7 +143,7 @@ macro_rules! get_text_fail {
                 .with_arg(audio_path)
                 .output()
                 .expect("execute command");
-            eprintln!("STDERR:\n{}", u8v_to_string(&stderr));
+            show_stdout_stderr(&stdout, &stderr);
             assert!(!status.success());
             assert!(stdout.is_empty());
             assert_eq!(u8v_to_string(&stderr), $stderr);
