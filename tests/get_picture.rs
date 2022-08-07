@@ -2,17 +2,13 @@ pub mod _utils;
 
 use _utils::{assets, deserialize, serialize, sha256_file, u8v_to_string, Exe};
 use command_extra::CommandExtra;
-use id3_cli::text_data::{
-    picture::{self, Picture},
-    picture_type::PictureType,
-};
+use id3_cli::text_data::{picture::Picture, picture_type::PictureType};
 use pipe_trait::Pipe;
 use pretty_assertions::assert_eq;
 use std::{fs::read_dir, path::Path, process::Output};
 
 macro_rules! picture {
     (
-        id: $id:expr,
         mime_type: $mime_type:literal,
         picture_type: $picture_type:ident,
         description: $description:literal,
@@ -24,7 +20,6 @@ macro_rules! picture {
             description: $description.to_string(),
             size: $size,
         }
-        .with_id($id)
     };
 }
 
@@ -65,7 +60,7 @@ macro_rules! get_picture_list {
             // test the structured information
             let received = stdout
                 .pipe_as_ref(u8v_to_string)
-                .pipe(deserialize::$format::<Vec<picture::WithId>>)
+                .pipe(deserialize::$format::<Vec<Picture>>)
                 .expect("deserialize value");
             assert_eq!(received, expected);
 
@@ -87,7 +82,6 @@ get_picture_list!(picture_list_yaml_audio1: "audio1" --format=yaml => []);
 
 get_picture_list!(picture_list_json_audio2: "audio2" --format=json => [
     picture! {
-        id: 0,
         mime_type: "image/jpeg",
         picture_type: Illustration,
         description: "砕月.jpg",
@@ -97,7 +91,6 @@ get_picture_list!(picture_list_json_audio2: "audio2" --format=json => [
 
 get_picture_list!(picture_list_yaml_audio2: "audio2" --format=yaml => [
     picture! {
-        id: 0,
         mime_type: "image/jpeg",
         picture_type: Illustration,
         description: "砕月.jpg",
@@ -107,28 +100,24 @@ get_picture_list!(picture_list_yaml_audio2: "audio2" --format=yaml => [
 
 get_picture_list!(picture_list_json_audio3: "audio3" --format=json => [
     picture! {
-        id: 0,
         mime_type: "image/png",
         picture_type: CoverFront,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:00:01.717.png",
         size: 1874985,
     },
     picture! {
-        id: 1,
         mime_type: "image/png",
         picture_type: CoverBack,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:01:29.317.png",
         size: 1988938,
     },
     picture! {
-        id: 2,
         mime_type: "image/jpeg",
         picture_type: RecordingLocation,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:00:48.917.jpg",
         size: 293084,
     },
     picture! {
-        id: 3,
         mime_type: "image/jpeg",
         picture_type: LeadArtist,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:03:59.883.jpg",
@@ -138,28 +127,24 @@ get_picture_list!(picture_list_json_audio3: "audio3" --format=json => [
 
 get_picture_list!(picture_list_yaml_audio3: "audio3" --format=yaml => [
     picture! {
-        id: 0,
         mime_type: "image/png",
         picture_type: CoverFront,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:00:01.717.png",
         size: 1874985,
     },
     picture! {
-        id: 1,
         mime_type: "image/png",
         picture_type: CoverBack,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:01:29.317.png",
         size: 1988938,
     },
     picture! {
-        id: 2,
         mime_type: "image/jpeg",
         picture_type: RecordingLocation,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:00:48.917.jpg",
         size: 293084,
     },
     picture! {
-        id: 3,
         mime_type: "image/jpeg",
         picture_type: LeadArtist,
         description: "WE ARE JAPANESE GOBLIN [MMD].mp4-00:03:59.883.jpg",

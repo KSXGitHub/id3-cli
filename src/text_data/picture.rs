@@ -29,15 +29,4 @@ impl Picture {
             size,
         }
     }
-
-    pub fn with_id(self, id: u16) -> WithId {
-        WithId { id, picture: self }
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-pub struct WithId {
-    pub id: u16,
-    #[serde(flatten)]
-    pub picture: Picture,
 }
