@@ -1,9 +1,11 @@
+pub mod backup;
 pub mod delete;
 pub mod field;
 pub mod get;
 pub mod set;
 
 use crate::{error::Error, run::Run};
+use backup::Backup;
 use clap::{Parser, Subcommand};
 use delete::Delete;
 use get::Get;
@@ -42,6 +44,8 @@ impl Run for App {
 /// Subcommand of the program.
 #[derive(Debug, Subcommand)]
 pub enum AppCmd {
+    /// Run backup without modification.
+    Backup(Backup),
     /// Show or export metadata.
     #[clap(subcommand)]
     Get(Get),
@@ -56,6 +60,7 @@ pub enum AppCmd {
 impl Run for AppCmd {
     fn run(self) -> Result<(), Error> {
         match self {
+            AppCmd::Backup(proc) => proc.run(),
             AppCmd::Get(proc) => proc.run(),
             AppCmd::Set(proc) => proc.run(),
             AppCmd::Delete(proc) => proc.run(),
