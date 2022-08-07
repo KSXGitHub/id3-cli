@@ -317,7 +317,7 @@ picture_file_fail_fn!(#[cfg(unix)] picture_file_dir: "." => |wdir| {
     format!("error: Failed to read {:?}: Is a directory (os error 21)\n", wdir.join("assets").join("."))
 });
 
-macro_rules! picture_dir_empty {
+macro_rules! get_picture_dir_empty {
     (
         $(#[$attributes:meta])*
         $name:ident: $audio_name:literal
@@ -356,7 +356,7 @@ macro_rules! picture_dir_empty {
     };
 }
 
-macro_rules! picture_dir_filled {
+macro_rules! get_picture_dir_filled {
     (
         $(#[$attributes:meta])*
         $name:ident: $audio_name:literal => $expected:expr
@@ -414,15 +414,15 @@ macro_rules! picture_dir_filled {
     };
 }
 
-picture_dir_empty!(picture_dir_empty0: "audio0");
-picture_dir_empty!(picture_dir_empty1: "audio1");
+get_picture_dir_empty!(picture_dir_empty0: "audio0");
+get_picture_dir_empty!(picture_dir_empty1: "audio1");
 
-picture_dir_filled!(picture_dir_audio2: "audio2" => [(
+get_picture_dir_filled!(picture_dir_audio2: "audio2" => [(
     "0.jpg",
     "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4",
 )]);
 
-picture_dir_filled!(picture_dir_audio3: "audio3" => [
+get_picture_dir_filled!(picture_dir_audio3: "audio3" => [
     (
         "0.png",
         "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a",
