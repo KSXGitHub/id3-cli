@@ -19,11 +19,16 @@ path = "src/lib.rs"
 name = "id3"
 path = "cli/id3.rs"
 
+[[bin]]
+name = "id3-cli-completions"
+path = "cli/completions.rs"
+
 [dependencies]
 id3 = "1.2.0"
 mediatype = "0.19.3"
 infer = "0.9.0"
 clap = { version = "3.2.16", features = ["derive"] }
+clap_complete = "3.2.3"
 serde = { version = "1.0.138", features = ["derive"] }
 serde_json = "1.0.82"
 serde_yaml = "0.9.2"
