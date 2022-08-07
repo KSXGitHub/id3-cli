@@ -151,11 +151,11 @@ pub struct SetPicture {
     pub description: Option<String>,
     /// Path to the input audio file.
     pub target_audio: PathBuf,
+    /// Path to the input picture file.
+    pub target_picture: PathBuf,
     /// Type of picture.
     #[clap(value_enum)]
     pub picture_type: PictureType,
-    /// Path to the input picture file.
-    pub target_picture: PathBuf,
 }
 
 impl Run for SetPicture {
@@ -165,8 +165,8 @@ impl Run for SetPicture {
             mime_type,
             description,
             ref target_audio,
-            picture_type,
             ref target_picture,
+            picture_type,
         } = self;
 
         let data = read_file(target_picture).map_err(|error| FileReadFailure {

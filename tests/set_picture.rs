@@ -12,8 +12,8 @@ macro_rules! set_picture {
         $(#[$attributes:meta])*
         $name:ident:
         $audio_name:literal
-        $picture_type:literal
         $picture_name:literal
+        $picture_type:literal
         --no-backup
         $(--mime-type=$mime_type:literal)?
         $(--description=$description:literal)?
@@ -26,10 +26,10 @@ macro_rules! set_picture {
             dbg!(&wdir);
             let audio_path = wdir.join("assets").join($audio_name);
             dbg!(&audio_path);
-            let picture_path = wdir.join("assets").join($picture_name);
-            dbg!(&picture_path);
             let picture_type = $picture_type;
             dbg!(picture_type);
+            let picture_path = wdir.join("assets").join($picture_name);
+            dbg!(&picture_path);
             let Output {
                 status,
                 stdout,
@@ -47,8 +47,8 @@ macro_rules! set_picture {
                     .with_arg($description)
                 )?
                 .with_arg(&audio_path)
-                .with_arg(picture_type)
                 .with_arg(&picture_path)
+                .with_arg(picture_type)
                 .output()
                 .expect("execute command");
 
@@ -76,8 +76,8 @@ macro_rules! set_picture {
         $(#[$attributes:meta])*
         $name:ident:
         $audio_name:literal
-        $picture_type:literal
         $picture_name:literal
+        $picture_type:literal
         $(--mime-type=$mime_type:literal)?
         $(--description=$description:literal)?
         => $expected_picture_list:expr
@@ -91,10 +91,10 @@ macro_rules! set_picture {
             dbg!(&audio_path);
             let initial_hash = sha256_file(&audio_path);
             dbg!(&initial_hash);
-            let picture_path = wdir.join("assets").join($picture_name);
-            dbg!(&picture_path);
             let picture_type = $picture_type;
             dbg!(picture_type);
+            let picture_path = wdir.join("assets").join($picture_name);
+            dbg!(&picture_path);
             let before_run = Local::now();
             dbg!(before_run);
             let Output {
@@ -113,8 +113,8 @@ macro_rules! set_picture {
                     .with_arg($description)
                 )?
                 .with_arg(&audio_path)
-                .with_arg(picture_type)
                 .with_arg(&picture_path)
+                .with_arg(picture_type)
                 .output()
                 .expect("execute command");
 
@@ -143,7 +143,7 @@ macro_rules! set_picture {
     };
 }
 
-set_picture!(picture_no_backup_audio0_cf_jpg: "audio0" "CoverFront" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio0_cf_jpg: "audio0" "jpg-picture" "CoverFront" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Front cover".to_string(),
@@ -152,7 +152,7 @@ set_picture!(picture_no_backup_audio0_cf_jpg: "audio0" "CoverFront" "jpg-picture
     }
 ]);
 
-set_picture!(picture_no_backup_audio0_cb_png: "audio0" "CoverBack" "png-picture" --no-backup => [
+set_picture!(picture_no_backup_audio0_cb_png: "audio0" "png-picture" "CoverBack" --no-backup => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Back cover".to_string(),
@@ -161,7 +161,7 @@ set_picture!(picture_no_backup_audio0_cb_png: "audio0" "CoverBack" "png-picture"
     }
 ]);
 
-set_picture!(picture_no_backup_mime_audio0_cf_jpg: "audio0" "CoverFront" "jpg-picture" --no-backup --mime-type="MIME TYPE" => [
+set_picture!(picture_no_backup_mime_audio0_cf_jpg: "audio0" "jpg-picture" "CoverFront" --no-backup --mime-type="MIME TYPE" => [
     PictureInfo {
         mime_type: "MIME TYPE".to_string(),
         picture_type: "Front cover".to_string(),
@@ -170,7 +170,7 @@ set_picture!(picture_no_backup_mime_audio0_cf_jpg: "audio0" "CoverFront" "jpg-pi
     }
 ]);
 
-set_picture!(picture_no_backup_desc_audio0_cb_png: "audio0" "CoverBack" "png-picture" --no-backup --description="DESCRIPTION" => [
+set_picture!(picture_no_backup_desc_audio0_cb_png: "audio0" "png-picture" "CoverBack" --no-backup --description="DESCRIPTION" => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Back cover".to_string(),
@@ -179,7 +179,7 @@ set_picture!(picture_no_backup_desc_audio0_cb_png: "audio0" "CoverBack" "png-pic
     }
 ]);
 
-set_picture!(picture_no_backup_audio1_il_jpg: "audio1" "Illustration" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio1_il_jpg: "audio1" "jpg-picture" "Illustration" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -188,7 +188,7 @@ set_picture!(picture_no_backup_audio1_il_jpg: "audio1" "Illustration" "jpg-pictu
     }
 ]);
 
-set_picture!(picture_no_backup_mime_desc_audio1_il_jpg: "audio1" "Illustration" "png-picture" --no-backup --mime-type="MIME" --description="DESC" => [
+set_picture!(picture_no_backup_mime_desc_audio1_il_jpg: "audio1" "png-picture" "Illustration" --no-backup --mime-type="MIME" --description="DESC" => [
     PictureInfo {
         mime_type: "MIME".to_string(),
         picture_type: "Illustration".to_string(),
@@ -197,7 +197,7 @@ set_picture!(picture_no_backup_mime_desc_audio1_il_jpg: "audio1" "Illustration" 
     }
 ]);
 
-set_picture!(picture_no_backup_audio2_il_jpg: "audio2" "Illustration" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio2_il_jpg: "audio2" "jpg-picture" "Illustration" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -206,7 +206,7 @@ set_picture!(picture_no_backup_audio2_il_jpg: "audio2" "Illustration" "jpg-pictu
     }
 ]);
 
-set_picture!(picture_no_backup_audio2_cf_jpg: "audio2" "CoverFront" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio2_cf_jpg: "audio2" "jpg-picture" "CoverFront" --no-backup => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -221,7 +221,7 @@ set_picture!(picture_no_backup_audio2_cf_jpg: "audio2" "CoverFront" "jpg-picture
     }
 ]);
 
-set_picture!(picture_no_backup_audio3_cf_jpg: "audio3" "CoverFront" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio3_cf_jpg: "audio3" "jpg-picture" "CoverFront" --no-backup => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Back cover".to_string(),
@@ -248,7 +248,7 @@ set_picture!(picture_no_backup_audio3_cf_jpg: "audio3" "CoverFront" "jpg-picture
     },
 ]);
 
-set_picture!(picture_no_backup_audio3_il_jpg: "audio3" "Illustration" "jpg-picture" --no-backup => [
+set_picture!(picture_no_backup_audio3_il_jpg: "audio3" "jpg-picture" "Illustration" --no-backup => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Front cover".to_string(),
@@ -281,7 +281,7 @@ set_picture!(picture_no_backup_audio3_il_jpg: "audio3" "Illustration" "jpg-pictu
     },
 ]);
 
-set_picture!(picture_audio0_cf_jpg: "audio0" "CoverFront" "jpg-picture" => [
+set_picture!(picture_audio0_cf_jpg: "audio0" "jpg-picture" "CoverFront" => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Front cover".to_string(),
@@ -290,7 +290,7 @@ set_picture!(picture_audio0_cf_jpg: "audio0" "CoverFront" "jpg-picture" => [
     }
 ]);
 
-set_picture!(picture_mime_desc_audio1_il_jpg: "audio1" "Illustration" "png-picture" --mime-type="MIME" --description="DESC" => [
+set_picture!(picture_mime_desc_audio1_il_jpg: "audio1" "png-picture" "Illustration" --mime-type="MIME" --description="DESC" => [
     PictureInfo {
         mime_type: "MIME".to_string(),
         picture_type: "Illustration".to_string(),
@@ -299,7 +299,7 @@ set_picture!(picture_mime_desc_audio1_il_jpg: "audio1" "Illustration" "png-pictu
     }
 ]);
 
-set_picture!(picture_audio2_il_jpg: "audio2" "Illustration" "jpg-picture" => [
+set_picture!(picture_audio2_il_jpg: "audio2" "jpg-picture" "Illustration" => [
     PictureInfo {
         mime_type: "image/jpeg".to_string(),
         picture_type: "Illustration".to_string(),
@@ -308,7 +308,7 @@ set_picture!(picture_audio2_il_jpg: "audio2" "Illustration" "jpg-picture" => [
     }
 ]);
 
-set_picture!(picture_audio3_il_jpg: "audio3" "Illustration" "jpg-picture" => [
+set_picture!(picture_audio3_il_jpg: "audio3" "jpg-picture" "Illustration" => [
     PictureInfo {
         mime_type: "image/png".to_string(),
         picture_type: "Front cover".to_string(),
