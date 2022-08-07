@@ -58,10 +58,10 @@ id3 get picture list --format=json ~/Music/target-audio.mp3
 id3 get picture file ~/Music/target-audio.mp3 ~/Pictures/output-picture.jpg
 ```
 
-##### Export the first picture of many
+##### Export the a front cover picture amongst multiple pictures
 
 ```sh
-id3 get picture file --id=0 ~/Music/target-audio.mp3 ~/Pictures/exported-picture.jpg
+id3 get picture file ~/Music/target-audio.mp3 ~/Pictures/exported-picture.jpg CoverFront
 ```
 
 ##### Export all pictures to a directory
@@ -103,7 +103,7 @@ id3 set comment --language=eng ~/Music/target-audio.mp3 'My comment'
 #### `id3 set picture`
 
 ```sh
-id3 set picture ~/Music/target-audio.mp3 CoverFront ~/Pictures/front-cover.jpg
+id3 set picture ~/Music/target-audio.mp3 ~/Pictures/front-cover.jpg CoverFront
 ```
 
 ### `id3 delete`
