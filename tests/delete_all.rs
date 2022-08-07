@@ -44,7 +44,7 @@ macro_rules! delete_all {
     };
 }
 
-delete_all!(delete_no_backup_empty0: "audio0" --no-backup);
-delete_all!(delete_no_backup_empty1: "audio1" --no-backup);
+delete_all!(delete_no_backup_audio0: "audio0" --no-backup);
+delete_all!(delete_no_backup_audio1: "audio1" --no-backup);
 delete_all!(delete_no_backup_audio2: "audio2" --no-backup);
 delete_all!(delete_no_backup_audio3: "audio3" --no-backup);

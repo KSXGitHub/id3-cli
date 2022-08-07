@@ -344,8 +344,8 @@ macro_rules! set_comment {
     };
 }
 
-set_comment!(comment_no_backup_empty0: "audio0" --no-backup);
-set_comment!(comment_no_backup_empty1: "audio1" --no-backup);
+set_comment!(comment_no_backup_audio0: "audio0" --no-backup);
+set_comment!(comment_no_backup_audio1: "audio1" --no-backup);
 
 set_comment!(comment_no_backup_audio2: "audio2" --no-backup);
 set_comment!(comment_no_backup_eng_audio2: "audio2" --no-backup --language="eng");
@@ -380,8 +380,8 @@ set_comment!(comment_no_backup_jpn_yaml_audio3: "audio3" --no-backup --language=
     content: "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)",
 });
 
-set_comment!(comment_empty0: "audio0");
-set_comment!(comment_empty1: "audio1");
+set_comment!(comment_audio0: "audio0");
+set_comment!(comment_audio1: "audio1");
 
 set_comment!(comment_audio2: "audio2");
 set_comment!(comment_eng_audio2: "audio2" --language="eng");

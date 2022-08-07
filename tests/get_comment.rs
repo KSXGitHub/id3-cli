@@ -181,10 +181,10 @@ comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
     assets().join("."),
 ));
 
-get_comment!(comment_json_empty0: "audio0" --format=json => []);
-get_comment!(comment_yaml_empty0: "audio0" --format=yaml => []);
-get_comment!(comment_json_empty1: "audio1" --format=json => []);
-get_comment!(comment_yaml_empty1: "audio1" --format=yaml => []);
+get_comment!(comment_json_audio0: "audio0" --format=json => []);
+get_comment!(comment_yaml_audio0: "audio0" --format=yaml => []);
+get_comment!(comment_json_audio1: "audio1" --format=json => []);
+get_comment!(comment_yaml_audio1: "audio1" --format=yaml => []);
 
 get_comment!(comment_json_audio2: "audio2" --format=json => [
     Comment {

@@ -80,10 +80,10 @@ macro_rules! get_picture_list {
     };
 }
 
-get_picture_list!(picture_list_json_empty0: "audio0" --format=json => []);
-get_picture_list!(picture_list_yaml_empty0: "audio0" --format=yaml => []);
-get_picture_list!(picture_list_json_empty1: "audio1" --format=json => []);
-get_picture_list!(picture_list_yaml_empty1: "audio1" --format=yaml => []);
+get_picture_list!(picture_list_json_audio0: "audio0" --format=json => []);
+get_picture_list!(picture_list_yaml_audio0: "audio0" --format=yaml => []);
+get_picture_list!(picture_list_json_audio1: "audio1" --format=json => []);
+get_picture_list!(picture_list_yaml_audio1: "audio1" --format=yaml => []);
 
 get_picture_list!(picture_list_json_audio2: "audio2" --format=json => [
     picture! {
@@ -293,11 +293,11 @@ macro_rules! picture_file_fail_fn {
     };
 }
 
-get_picture_file_fail!(picture_file_empty0: "audio0" => "error: Picture not found\n");
-get_picture_file_fail!(picture_file_cf_empty0: "audio0" "CoverFront" => "error: Specified picture type not found\n");
+get_picture_file_fail!(picture_file_audio0: "audio0" => "error: Picture not found\n");
+get_picture_file_fail!(picture_file_cf_audio0: "audio0" "CoverFront" => "error: Specified picture type not found\n");
 
-get_picture_file_fail!(picture_file_empty1: "audio1" => "error: Picture not found\n");
-get_picture_file_fail!(picture_file_cb_empty1: "audio1" "CoverBack" => "error: Specified picture type not found\n");
+get_picture_file_fail!(picture_file_audio1: "audio1" => "error: Picture not found\n");
+get_picture_file_fail!(picture_file_cb_audio1: "audio1" "CoverBack" => "error: Specified picture type not found\n");
 
 get_picture_file!(picture_file_audio2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
 get_picture_file!(picture_file_il_audio2: "audio2" "Illustration" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
@@ -414,8 +414,8 @@ macro_rules! get_picture_dir_filled {
     };
 }
 
-get_picture_dir_empty!(picture_dir_empty0: "audio0");
-get_picture_dir_empty!(picture_dir_empty1: "audio1");
+get_picture_dir_empty!(picture_dir_audio0: "audio0");
+get_picture_dir_empty!(picture_dir_audio1: "audio1");
 
 get_picture_dir_filled!(picture_dir_audio2: "audio2" => [(
     "0.jpg",
