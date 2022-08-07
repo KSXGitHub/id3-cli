@@ -149,7 +149,7 @@ pub struct SetPicture {
     /// Description of the picture.
     #[clap(long)]
     pub description: Option<String>,
-    /// Path to the input audio file.
+    /// Path to the target audio file.
     pub target_audio: PathBuf,
     /// Path to the input picture file.
     pub target_picture: PathBuf,
