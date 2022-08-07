@@ -116,7 +116,7 @@ macro_rules! get_comment {
     };
 }
 
-macro_rules! comment_fail {
+macro_rules! get_comment_fail {
     (
         $(#[$attributes:meta])*
         $name:ident:
@@ -163,20 +163,20 @@ macro_rules! comment_fail {
     };
 }
 
-comment_fail!(comment_fail0: "audio0" => "error: Comment not found\n");
-comment_fail!(comment_fail1: "audio1" => "error: Comment not found\n");
+get_comment_fail!(comment_fail0: "audio0" => "error: Comment not found\n");
+get_comment_fail!(comment_fail1: "audio1" => "error: Comment not found\n");
 get_comment!(comment_audio2: "audio2" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
-comment_fail!(comment_eng_fail2: "audio2" --language="eng" => "error: Comment not found\n");
-comment_fail!(comment_fail3: "audio3" => "error: Too many comments to choose from\n");
+get_comment_fail!(comment_eng_fail2: "audio2" --language="eng" => "error: Comment not found\n");
+get_comment_fail!(comment_fail3: "audio3" => "error: Too many comments to choose from\n");
 get_comment!(comment_jpn_audio2: "audio2" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 get_comment!(comment_eng_audio3: "audio3" --language="eng" => "【Touhou MMD PV】Broken Moon (Koko & Satsuki ga Tenkomori's Work Obstruction Remix)\n");
 get_comment!(comment_jpn_audio3: "audio3" --language="jpn" => "【東方3DPV風】砕月 (ココ&さつき が てんこもり's 作業妨害Remix)\n");
 
-comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
+get_comment_fail!(#[cfg(unix)] comment_not_exist: "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
     assets().join("not-exist"),
 ));
-comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
+get_comment_fail!(#[cfg(unix)] comment_dir: "." => format!(
     "error: Failed to read {:?}: Is a directory (os error 21)\n",
     assets().join("."),
 ));
