@@ -1,7 +1,6 @@
 pub mod delete;
 pub mod field;
 pub mod get;
-pub mod picture_type;
 pub mod set;
 
 use crate::{error::Error, run::Run};

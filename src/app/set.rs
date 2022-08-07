@@ -1,11 +1,10 @@
 use crate::{
     app::{
         field::{ArgsTable, Field, Text},
-        picture_type::PictureType,
         Run,
     },
     error::{Error, FileReadFailure},
-    text_data::comment::Comment,
+    text_data::{comment::Comment, picture_type::PictureType},
     text_format::TextFormat,
     utils::ModifyTags,
 };

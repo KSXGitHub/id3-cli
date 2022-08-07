@@ -1,10 +1,10 @@
 use crate::{
     app::{
         field::{ArgsTable, Field, Text},
-        picture_type::PictureType,
         Run,
     },
     error::Error,
+    text_data::picture_type::PictureType,
     utils::ModifyTags,
 };
 use clap::{Args, Subcommand};
