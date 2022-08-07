@@ -124,7 +124,7 @@ get_text!(artist_yaml_audio1: "artist" --format=yaml "audio1" => None::<&str>);
 get_text!(artist_yaml_audio2: "artist" --format=yaml "audio2" => Some("ココ&さつき が てんこもり"));
 get_text!(artist_yaml_audio3: "artist" --format=yaml "audio3" => Some("Koko & Satsuki ga Tenkomori"));
 
-macro_rules! text_fail {
+macro_rules! get_text_fail {
     (
         $(#[$attributes:meta])*
         $name:ident: $field:literal $audio_name:literal => $stderr:expr
@@ -152,11 +152,11 @@ macro_rules! text_fail {
     };
 }
 
-text_fail!(#[cfg(unix)] title_not_exist: "title" "not-exist" => format!(
+get_text_fail!(#[cfg(unix)] title_not_exist: "title" "not-exist" => format!(
     "error: Failed to read {:?}: No such file or directory (os error 2)\n",
     assets().join("not-exist"),
 ));
-text_fail!(#[cfg(unix)] title_dir: "title" "." => format!(
+get_text_fail!(#[cfg(unix)] title_dir: "title" "." => format!(
     "error: Failed to read {:?}: Is a directory (os error 21)\n",
     assets().join("."),
 ));
