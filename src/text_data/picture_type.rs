@@ -1,10 +1,12 @@
 use clap::{Subcommand, ValueEnum};
-use derive_more::From;
+use derive_more::{Display, From};
 use id3::frame;
 use serde::{Deserialize, Serialize};
 
 /// Standard picture type.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, ValueEnum, Subcommand)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, Display, ValueEnum, Subcommand,
+)]
 #[serde(rename_all = "PascalCase")]
 #[clap(rename_all = "PascalCase")]
 pub enum PictureType {
@@ -90,7 +92,7 @@ impl TryFrom<frame::PictureType> for PictureType {
 }
 
 /// Standard or non-Standard picture type.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, From, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, From, Display, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum PictureTypeExtra {
     Defined(PictureType),

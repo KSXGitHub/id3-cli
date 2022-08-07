@@ -5,7 +5,11 @@ use crate::{
         OutputDirCreationFailure, PictureFileWriteFailure, PictureNotFound, PictureTypeNotFound,
     },
     run::Run,
-    text_data::{comment::Comment, picture::Picture, picture_type::PictureType},
+    text_data::{
+        comment::Comment,
+        picture::Picture,
+        picture_type::{PictureType, PictureTypeExtra},
+    },
     text_format::TextFormat,
     utils::{get_image_extension, read_tag_from_path},
 };
@@ -249,22 +253,23 @@ impl Run for GetPictureDir {
         } = self;
 
         let tag = read_tag_from_path(input_audio)?;
-        let pictures = tag.pictures().zip(0..);
-        for (picture, index) in pictures {
+        let pictures = tag.pictures();
+        for picture in pictures {
             let id3::frame::Picture {
                 picture_type,
                 mime_type,
                 description,
                 data,
             } = picture;
+            let picture_type: PictureTypeExtra = (*picture_type).into();
             fs::create_dir_all(&output_directory).map_err(OutputDirCreationFailure::from)?;
-            eprintln!("#{index}: {picture_type} {mime_type} {description}");
+            eprintln!("{picture_type}: {mime_type} {description}");
             let ext = MediaType::parse(mime_type)
                 .ok()
                 .and_then(get_image_extension);
             let output_file_name = match ext {
-                Some(ext) => format!("{index}.{ext}"),
-                None => index.to_string(),
+                Some(ext) => format!("{picture_type}.{ext}"),
+                None => picture_type.to_string(),
             };
             let output_file_path = output_directory.join(output_file_name);
             fs::write(output_file_path, data).map_err(PictureFileWriteFailure::from)?;

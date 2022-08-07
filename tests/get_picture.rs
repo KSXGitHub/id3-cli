@@ -403,25 +403,25 @@ get_picture_dir_empty!(picture_dir_audio0: "audio0");
 get_picture_dir_empty!(picture_dir_audio1: "audio1");
 
 get_picture_dir_filled!(picture_dir_audio2: "audio2" => [(
-    "0.jpg",
+    "Illustration.jpg",
     "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4",
 )]);
 
 get_picture_dir_filled!(picture_dir_audio3: "audio3" => [
     (
-        "0.png",
-        "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a",
-    ),
-    (
-        "1.png",
+        "CoverBack.png",
         "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169",
     ),
     (
-        "2.jpg",
-        "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a",
+        "CoverFront.png",
+        "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a",
     ),
     (
-        "3.jpg",
+        "LeadArtist.jpg",
         "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4",
+    ),
+    (
+        "RecordingLocation.jpg",
+        "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a",
     ),
 ]);
