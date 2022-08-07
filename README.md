@@ -1,5 +1,11 @@
 # id3-cli
 
+## Installation
+
+```sh
+cargo install id3-cli
+```
+
 ## Some CLI examples
 
 ### `id3 get`
