@@ -170,7 +170,7 @@ get_picture_list!(picture_list_yaml_audio3: "audio3" --format=yaml => [
 macro_rules! get_picture_file {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_name:literal $(--id=$id:literal)? => $expected:literal
+        $name:ident: $audio_name:literal $($picture_type:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
@@ -189,8 +189,7 @@ macro_rules! get_picture_file {
                 .with_arg(&audio_path)
                 .with_arg(&image_path)
                 $(
-                    .with_arg("--id")
-                    .with_arg($id)
+                    .with_arg($picture_type)
                 )?
                 .output()
                 .expect("execute command");
@@ -213,7 +212,7 @@ macro_rules! get_picture_file {
 macro_rules! picture_file_fail {
     (
         $(#[$attributes:meta])*
-        $name:ident: $audio_name:literal $(--id=$id:literal)? => $expected:literal
+        $name:ident: $audio_name:literal $($picture_type:literal)? => $expected:literal
     ) => {
         $(#[$attributes])*
         #[test]
@@ -232,8 +231,7 @@ macro_rules! picture_file_fail {
                 .with_arg(&audio_path)
                 .with_arg(&image_path)
                 $(
-                    .with_arg("--id")
-                    .with_arg($id)
+                    .with_arg($picture_type)
                 )?
                 .output()
                 .expect("execute command");
@@ -296,21 +294,21 @@ macro_rules! picture_file_fail_fn {
 }
 
 picture_file_fail!(picture_file_empty0: "audio0" => "error: Picture not found\n");
-picture_file_fail!(picture_file_0_empty0: "audio0" --id="0" => "error: Specified picture ID is out of bound\n");
+picture_file_fail!(picture_file_cf_empty0: "audio0" "CoverFront" => "error: Specified picture type not found\n");
 
 picture_file_fail!(picture_file_empty1: "audio1" => "error: Picture not found\n");
-picture_file_fail!(picture_file_0_empty1: "audio1" --id="1" => "error: Specified picture ID is out of bound\n");
+picture_file_fail!(picture_file_cb_empty1: "audio1" "CoverBack" => "error: Specified picture type not found\n");
 
 get_picture_file!(picture_file_audio2: "audio2" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
-get_picture_file!(picture_file_0_audio2: "audio2" --id="0" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
-picture_file_fail!(picture_file_1_audio2: "audio2" --id="1" => "error: Specified picture ID is out of bound\n");
+get_picture_file!(picture_file_il_audio2: "audio2" "Illustration" => "98efb430f0e307315ee46a81bfaf4ba9cf79e5996dcd227a306e1aaaf438cda4");
+picture_file_fail!(picture_file_cf_audio2: "audio2" "CoverFront" => "error: Specified picture type not found\n");
 
 picture_file_fail!(picture_file_audio3: "audio3" => "error: Too many pictures to choose from\n");
-get_picture_file!(picture_file_0_audio3: "audio3" --id="0" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
-get_picture_file!(picture_file_1_audio3: "audio3" --id="1" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
-get_picture_file!(picture_file_2_audio3: "audio3" --id="2" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
-get_picture_file!(picture_file_3_audio3: "audio3" --id="3" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
-picture_file_fail!(picture_file_4_audio3: "audio3" --id="4" => "error: Specified picture ID is out of bound\n");
+get_picture_file!(picture_file_cf_audio3: "audio3" "CoverFront" => "668c0693f36c2c08f8a04fd09cf9dcf38d14a52f2d65134077939a62b363d48a");
+get_picture_file!(picture_file_cb_audio3: "audio3" "CoverBack" => "deaad585bd1cdbf05011c88a10cff00e630878dbc1408c1c365c19ba8ee5e169");
+get_picture_file!(picture_file_rl_audio3: "audio3" "RecordingLocation" => "96c87d647f1be8168d7b52198fe80345808e2cde8fac30733887abc9414c5a4a");
+get_picture_file!(picture_file_la_audio3: "audio3" "LeadArtist" => "ff1b6b1c8a2fcb256b2f6ac5f8678dc4d185fe652d2815364b1f268475bbd4c4");
+picture_file_fail!(picture_file_bl_audio3: "audio3" "BandLogo" => "error: Specified picture type not found\n");
 
 picture_file_fail_fn!(#[cfg(unix)] picture_file_not_exist: "not-exist" => |wdir| {
     format!("error: Failed to read {:?}: No such file or directory (os error 2)\n", wdir.join("assets").join("not-exist"))

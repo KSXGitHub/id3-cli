@@ -2,10 +2,10 @@ use crate::{
     app::field::{ArgsTable, Field, Text},
     error::{
         AmbiguousCommentChoices, AmbiguousPictureChoices, CommentNotFound, Error,
-        OutputDirCreationFailure, PictureFileWriteFailure, PictureIdOutOfBound, PictureNotFound,
+        OutputDirCreationFailure, PictureFileWriteFailure, PictureNotFound, PictureTypeNotFound,
     },
     run::Run,
-    text_data::{comment::Comment, picture::Picture},
+    text_data::{comment::Comment, picture::Picture, picture_type::PictureType},
     text_format::TextFormat,
     utils::{get_image_extension, read_tag_from_path},
 };
@@ -201,29 +201,27 @@ impl Run for GetPictureList {
 /// CLI arguments of `get picture file`.
 #[derive(Debug, Args)]
 pub struct GetPictureFile {
-    /// Picture ID to export. Required if there are multiple pictures.
-    #[clap(long)]
-    pub id: Option<u16>,
     /// Path to the input audio file.
     pub input_audio: PathBuf,
     /// Path to the output picture file.
     pub output_picture: PathBuf,
+    /// Type of picture to export. Required if there are multiple pictures.
+    #[clap(value_enum)]
+    pub picture_type: Option<PictureType>,
 }
 
 impl Run for GetPictureFile {
     fn run(self) -> Result<(), Error> {
         let GetPictureFile {
-            id,
             input_audio,
             output_picture,
+            picture_type,
         } = self;
         let tag = read_tag_from_path(input_audio)?;
-        let data = if let Some(target_id) = id {
+        let data = if let Some(target_picture_type) = picture_type {
             &tag.pictures()
-                .zip(0u16..)
-                .find(|(_, current_id)| *current_id == target_id)
-                .ok_or(PictureIdOutOfBound)?
-                .0
+                .find(|picture| picture.picture_type.try_into() == Ok(target_picture_type))
+                .ok_or(PictureTypeNotFound)?
                 .data
         } else {
             let mut iter = tag.pictures().map(|picture| &picture.data);

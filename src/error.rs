@@ -10,7 +10,7 @@ pub enum Error {
     TagWriteFailure(TagWriteFailure),
     CommentNotFound(CommentNotFound),
     AmbiguousCommentChoices(AmbiguousCommentChoices),
-    PictureIdOutOfBound(PictureIdOutOfBound),
+    PictureTypeNotFound(PictureTypeNotFound),
     PictureNotFound(PictureNotFound),
     AmbiguousPictureChoices(AmbiguousPictureChoices),
     DeserializationFailure(DeserializationFailure),
@@ -45,8 +45,8 @@ pub struct CommentNotFound;
 pub struct AmbiguousCommentChoices;
 
 #[derive(Debug, Error)]
-#[error("Specified picture ID is out of bound")]
-pub struct PictureIdOutOfBound;
+#[error("Specified picture type not found")]
+pub struct PictureTypeNotFound;
 
 #[derive(Debug, Error)]
 #[error("Picture not found")]
