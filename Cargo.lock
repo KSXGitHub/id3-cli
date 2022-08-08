@@ -312,7 +312,7 @@ dependencies = [
 
 [[package]]
 name = "id3-cli"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "assert-cmp",
  "chrono",
