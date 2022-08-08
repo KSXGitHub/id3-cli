@@ -164,4 +164,4 @@ id3 delete picture ~/Music/target-audio.mp3 CoverFront
 
 ## License
 
-[MIT](https://github.com/KSXGitHub/id3-cli/blob/master/LICENSE.md) @ [Hoàng Văn Khải](https://ksxgithub.github.io/).
+[MIT](https://github.com/KSXGitHub/id3-cli/blob/master/LICENSE.md) © [Hoàng Văn Khải](https://ksxgithub.github.io/).
