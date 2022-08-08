@@ -110,12 +110,13 @@ dependencies = [
 
 [[package]]
 name = "clap-utilities"
-version = "0.0.0"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f8ba834e2461a4f0a327821b0a27950c9efb62321597cf318ffef575f27b9c0"
+checksum = "27149fe92e15009adc7ae78f0d7e6919e34afb4c9bc1273d1cf47019c9be79b5"
 dependencies = [
  "clap",
  "clap_complete",
+ "pipe-trait",
  "thiserror",
 ]
 
