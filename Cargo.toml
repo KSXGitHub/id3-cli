@@ -29,7 +29,7 @@ name = "id3-cli-completions"
 path = "cli/completions.rs"
 
 [dependencies]
-id3 = "1.2.0"
+id3 = "1.3.0"
 mediatype = "0.19.3"
 infer = "0.9.0"
 clap = { version = "3.2.16", features = ["derive"] }
