@@ -1,8 +1,13 @@
 [package]
 name = "id3-cli"
+description = "View and modify IDv3 tags"
 version = "0.0.0"
+authors = ["khai96_ <hvksmr1996@gmail.com>"]
 edition = "2021"
 license = "MIT"
+keywords = ["id3", "tag", "audio", "mp3"]
+categories = ["command-line-utilities"]
+repository = "https://github.com/KSXGitHub/id3-cli.git"
 include = [
   "/src",
   "/cli",
