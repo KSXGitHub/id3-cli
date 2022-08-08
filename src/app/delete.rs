@@ -24,8 +24,8 @@ pub enum Delete {
 impl Run for Delete {
     fn run(self) -> Result<(), Error> {
         match self {
-            Delete::All(args) => args.run(),
-            Delete::Single(args) => args.run(),
+            Delete::All(proc) => proc.run(),
+            Delete::Single(proc) => proc.run(),
         }
     }
 }
