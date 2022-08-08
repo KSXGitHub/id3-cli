@@ -1,5 +1,7 @@
 # id3-cli
 
+View and modify IDv3 tags.
+
 ## Installation
 
 ```sh
