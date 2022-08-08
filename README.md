@@ -8,6 +8,29 @@ View and modify IDv3 tags.
 cargo install id3-cli
 ```
 
+**Shell completions:**
+
+_Bash:_
+
+```bash
+mkdir -p ~/.local/share/bash-completion/completions/
+curl -L https://github.com/KSXGitHub/id3-cli/raw/master/exports/completion.bash > ~/.local/share/bash-completion/completions/id3
+```
+
+_ZSH:_
+
+```zsh
+mkdir -p ~/.local/share/zsh/site-functions/
+curl -L https://github.com/KSXGitHub/id3-cli/raw/master/exports/completion.zsh > ~/.local/share/zsh/site-functions/_id3
+```
+
+_Fish:_
+
+```fish
+mkdir -p ~/.local/share/fish/completions/
+curl -L https://github.com/KSXGitHub/id3-cli/raw/master/exports/completion.zsh > ~/.local/share/fish/completions/id3.fish
+```
+
 ## Some CLI examples
 
 ### `id3 get`
