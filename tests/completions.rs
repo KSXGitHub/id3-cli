@@ -1,3 +1,4 @@
+#![cfg(unix)]
 use clap_complete::Shell;
 use clap_utilities::CommandFactoryExtra;
 use id3_cli::app::App;
