@@ -253,8 +253,8 @@ impl Run for GetPictureDir {
         } = self;
 
         let tag = read_tag_from_path(input_audio)?;
-        let pictures = tag.pictures();
-        for picture in pictures {
+        let pictures = tag.pictures().zip(0..);
+        for (picture, index) in pictures {
             let id3::frame::Picture {
                 picture_type,
                 mime_type,
@@ -263,13 +263,13 @@ impl Run for GetPictureDir {
             } = picture;
             let picture_type: PictureTypeExtra = (*picture_type).into();
             fs::create_dir_all(&output_directory).map_err(OutputDirCreationFailure::from)?;
-            eprintln!("{picture_type}: {mime_type} {description}");
+            eprintln!("{index}: {picture_type} {mime_type} {description}");
             let ext = MediaType::parse(mime_type)
                 .ok()
                 .and_then(get_image_extension);
             let output_file_name = match ext {
-                Some(ext) => format!("{picture_type}.{ext}"),
-                None => picture_type.to_string(),
+                Some(ext) => format!("{index}-{picture_type}.{ext}"),
+                None => format!("{index}-{picture_type}"),
             };
             let output_file_path = output_directory.join(output_file_name);
             fs::write(output_file_path, data).map_err(PictureFileWriteFailure::from)?;
