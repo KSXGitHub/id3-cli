@@ -20,6 +20,8 @@ set edit:completion:arg-completer[id3] = {|@words|
         &'id3'= {
             cand -h 'Print help information'
             cand --help 'Print help information'
+            cand -V 'Print version information'
+            cand --version 'Print version information'
             cand backup 'Run backup without modification'
             cand get 'Show or export metadata'
             cand set 'Modify metadata'

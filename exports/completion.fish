@@ -1,4 +1,5 @@
 complete -c id3 -n "__fish_use_subcommand" -s h -l help -d 'Print help information'
+complete -c id3 -n "__fish_use_subcommand" -s V -l version -d 'Print version information'
 complete -c id3 -n "__fish_use_subcommand" -f -a "backup" -d 'Run backup without modification'
 complete -c id3 -n "__fish_use_subcommand" -f -a "get" -d 'Show or export metadata'
 complete -c id3 -n "__fish_use_subcommand" -f -a "set" -d 'Modify metadata'

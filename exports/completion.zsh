@@ -17,6 +17,8 @@ _id3() {
     _arguments "${_arguments_options[@]}" \
 '-h[Print help information]' \
 '--help[Print help information]' \
+'-V[Print version information]' \
+'--version[Print version information]' \
 ":: :_id3_commands" \
 "*::: :->id3" \
 && ret=0

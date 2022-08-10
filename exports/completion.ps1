@@ -23,6 +23,8 @@ Register-ArgumentCompleter -Native -CommandName 'id3' -ScriptBlock {
         'id3' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Print version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Print version information')
             [CompletionResult]::new('backup', 'backup', [CompletionResultType]::ParameterValue, 'Run backup without modification')
             [CompletionResult]::new('get', 'get', [CompletionResultType]::ParameterValue, 'Show or export metadata')
             [CompletionResult]::new('set', 'set', [CompletionResultType]::ParameterValue, 'Modify metadata')

@@ -136,7 +136,7 @@ _id3() {
 
     case "${cmd}" in
         id3)
-            opts="-h --help backup get set delete help"
+            opts="-h -V --help --version backup get set delete help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
