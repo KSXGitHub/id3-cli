@@ -14,7 +14,7 @@ use std::process::ExitCode;
 
 /// The main application.
 #[derive(Debug, Parser)]
-#[clap(name = "id3")]
+#[clap(name = "id3", version)]
 pub struct App {
     /// Subcommand to execute.
     #[clap(subcommand)]
