@@ -397,9 +397,9 @@ dependencies = [
 
 [[package]]
 name = "mediatype"
-version = "0.19.5"
+version = "0.19.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f2bee1f1fdf11fbde304d00f133e7b0492c58fea6541eb65f4cd9bf7bec0e71"
+checksum = "90da6e15720cff55898a02a2ed6e9a21b152f0283a5ad89465f8d8f80c9750ca"
 
 [[package]]
 name = "miniz_oxide"
