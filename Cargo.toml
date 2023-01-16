@@ -33,7 +33,7 @@ id3 = "1.6.0"
 mediatype = "0.19.5"
 infer = "0.12.0"
 clap = { version = "3.2.16", features = ["derive"] }
-clap_complete = "3.2.3"
+clap_complete = "4.1.0"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.89"
 serde_yaml = "0.9.16"
